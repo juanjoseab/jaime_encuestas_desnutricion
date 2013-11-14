@@ -69,7 +69,7 @@ class ControlSesiones {
        
        function sessionTtl(){
            $now = mktime( date('H'),date('i'),date('s'),date('n'),date('j'),date('Y') );
-           if($_SESSION['user_session_ttl'] > $now  ){
+           if(isset($_SESSION['user_session_ttl']) && $_SESSION['user_session_ttl'] > $now  ){
                $_SESSION['user_session_ttl'] = mktime( date('H')+1,date('i'),date('s'),date('n'),date('j'),date('Y') );
                return true;
            }else{
@@ -88,7 +88,7 @@ class ControlSesiones {
        }
        
        function sessionActive(){
-           if($_SESSION['user_session']!='ok'){
+           if(isset($_SESSION['user_session']) && $_SESSION['user_session']!='ok'){
                return false;
            }
            

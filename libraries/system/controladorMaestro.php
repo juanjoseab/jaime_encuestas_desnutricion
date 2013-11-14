@@ -54,7 +54,7 @@ class MasterController {
     
     
     function aclConfirm(){
-        if($_SESSION["user_session"]=="ok"){
+        if(isset($_SESSION['user_session']) && $_SESSION["user_session"]=="ok"){
             return true;
         }else{
             return false;

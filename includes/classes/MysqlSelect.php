@@ -110,7 +110,7 @@ class MysqlSelect {
         if(count($this->selection) > 0){
             //$selection = array("table"=>$table, "selection"=>$select, "alias"=>$alias);
             foreach ($this->selection AS $select){
-                $this->query .= "{$select[table]}.{$select[selection]}";
+                $this->query .= "{$select['table']}.{$select['selection']}";
                 if($select['alias']){
                     $this->query .= " AS {$select[alias]}, ";
                 }else{

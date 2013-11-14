@@ -66,7 +66,7 @@
           </a>
           <a class="brand" href="#"><?=SITE_NAME;?></a>
           <div class="nav-collapse collapse">
-            <?php if($_SESSION['user_session']=='ok'){?>
+            <?php if(isset($_SESSION['user_session']) && $_SESSION['user_session']=='ok'){?>
             <p class="navbar-text pull-right">
               Registrado como: <a href="#" class="navbar-link"><?php echo $_SESSION['user_nombre'];?> </a> | <a href="?v=login&action=logout" class="label label-important">Cerrar Sesi&oacute;n</a>
             </p>

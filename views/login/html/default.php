@@ -8,7 +8,7 @@
           <h4>Error en el registro!</h4>
           Es posible que el usuario y/o la clave esten incorrectos, por favor intente de nuevo
           </div>
-          <?
+          <?php
           
       }?>
       

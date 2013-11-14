@@ -31,7 +31,7 @@ class Display {
 
     function deployContent(){
         if(!$this->acl->sessionActive()){
-            if($_GET['v']){
+            if(isset($_GET['v']) && $_GET['v']){
                 $this->vista = $_GET['v'];
             }else{
                 $this->vista = "inicio";
