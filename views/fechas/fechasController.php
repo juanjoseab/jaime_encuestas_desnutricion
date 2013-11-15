@@ -241,6 +241,40 @@ class fechasController extends Display {
         $item->setFechaId($id);
         $item->getValuesBySetedId();
         $item->setEstado("0");
+        $this->transaction->loadClass($item);
+        
+        if ($this->transaction->update()) {
+            $this->done = true;
+            $this->doneMsg = "Fecha de ingreso bloqueada";
+            $this->loadContentView("default");
+            return true;
+        } else {
+            $this->loadContentView("default");
+            return false;
+        }
+        
+    }
+    
+    
+    function unblock() {
+        $id = $_GET['itemId'];
+        MasterController::requerirModelo("fecha");
+        $item = new fecha();
+        $item->setFechaId($id);
+        $item->getValuesBySetedId();
+        $item->setEstado("1");
+        $this->transaction->loadClass($item);
+        
+        if ($this->transaction->update()) {
+            $this->done = true;
+            $this->doneMsg = "Fecha de ingreso activada";
+            $this->loadContentView("default");
+            return true;
+        } else {
+            $this->loadContentView("default");
+            return false;
+        }
+        
     }
     
     
