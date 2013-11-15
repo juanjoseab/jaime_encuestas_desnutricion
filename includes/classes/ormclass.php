@@ -396,7 +396,7 @@ class OrmClass {
             }
         }
     }
-
+       
     function returnfunctionSet($property) {
         return "set" . str_replace(" ", "", ucwords(str_replace("_", " ", $property)));
     }

@@ -144,42 +144,36 @@ class fechasController extends Display {
             return false;
         }
 
-        if (!$_POST['nombre']) {
+        if (!$_POST['anio'] || !$_POST['mes'] ) {
             $this->error = true;
-            $this->errorMsg = "<h4>Campos incompletos!</h4>Los datos de nombre y estado son obligatorios";
+            $this->errorMsg = "<h4>Campos incompletos!</h4>Todos los campos son obligatorios";
             $this->loadContentView("viewAgregar");
             return false;
         }
 
-        MasterController::requerirModelo("estandar");
-        $item = new estandar();
-        if ($_POST['nombre'] != '') {
-            $item->nombre['val'] = $_POST['nombre'];
-        }
-
-        $item->estado['val'] = $_POST['estado'];
-
+        MasterController::requerirModelo("fecha");
+        $item = new fecha();
+        $item->postToObject();
+        $item->setDate($item->getAnio()."-".$item->getMes()."-01");
 
         $this->transaction->loadClass($item);
 
         if ($this->transaction->save()) {
             $this->done = true;
-            $this->doneMsg = "Estandar {$_POST[nombre]} Agregado con exito";
+            $this->doneMsg = "Fecha de ingreso Agregado con exito";
             $this->loadContentView("viewAgregar");
             return true;
         }
     }
 
-    function viewUpdateEstandarForm() {
-        $this->loadContentView("updateEstandarForm");
-    }
+ 
 
     function viewDetails() {
         $this->loadContentView("viewDetails");
     }
 
     function viewUpdateForm() {
-        $this->loadContentView("updateForm");
+        $this->loadContentView("updaterForm");
     }
 
     function update() {
@@ -189,39 +183,30 @@ class fechasController extends Display {
         if (!$_POST) {
             $this->alert = true;
             $this->alertMsg = "<h4>Alerta!</h4> No se han recibido datos";
-            $this->loadContentView("default");
+            $this->loadContentView("viewAgregar");
             return false;
         }
 
-        if (!$_POST['nombre']) {
+        if (!$_POST['anio'] || !$_POST['mes']) {
             $this->error = true;
-            $this->errorMsg = "<h4>Campos incompletos!</h4>Los datos de nombre y estado son obligatorios";
-            $this->loadContentView("default");
+            $this->errorMsg = "<h4>Campos incompletos!</h4>Todos los campos son obligatorios";
+            $this->loadContentView("viewAgregar");
             return false;
         }
 
 
 
-        MasterController::requerirModelo("estandar");
-        $item = new estandar();
-        if ($_POST['estandar_id'] != '') {
-            $item->estandar_id['val'] = $_POST['estandar_id'];
-        }
-
-        if ($_POST['nombre'] != '') {
-            $item->nombre['val'] = $_POST['nombre'];
-        }
-
-
-        $item->estado['val'] = $_POST['estado'];
-
-
+        MasterController::requerirModelo("fecha");
+        $item = new fecha();
+        $item->postToObject();
+        $item->setDate($item->getAnio()."-".$item->getMes()."-01");
+        //die($item->getDate());
         $this->transaction->loadClass($item);
 
         //echo $this->transaction->update();
         if ($this->transaction->update()) {
             $this->done = true;
-            $this->doneMsg = "Estandar {$_POST[nombre]} editado con exito";
+            $this->doneMsg = "Fecha de ingreso editada con exito";
             $this->loadContentView("default");
             return true;
         } else {
@@ -248,70 +233,17 @@ class fechasController extends Display {
             return false;
         }
     }
-
-    function addChild() {
-
-        if ($_POST) {
-            MasterController::requerirModelo("distrito_salud");
-            $item = new distrito_salud();
-
-            //nombre=asdf&codigo=asdf&departamentoNombre=Guatemala&departamento_id=1&estado=1
-            if ($_POST['nombre'] != "") {
-                $item->nombre['val'] = utf8_decode($_POST['nombre']);
-            } else {
-                $this->error = true;
-                $this->errorMsg = "<h4>Datos incompleto!</h4>El nombre no puede quedar vacio";
-            }
-
-            if ($_POST['municipio_id'] != "") {
-                $item->municipio_id['val'] = $_POST['municipio_id'];
-            } else {
-                $this->error = true;
-                $this->errorMsg = "<h4>Datos incompleto!</h4>El campo del municipio no puede quedar vacio";
-            }
-
-
-            if ($_POST['area_salud_id'] != "") {
-                $item->area_salud_id['val'] = $_POST['area_salud_id'];
-            } else {
-                $this->error = true;
-                $this->errorMsg = "<h4>Datos incompleto!</h4>El campo del area de salud no puede quedar vacio";
-            }
-
-            if ($_POST['estado'] != "") {
-                $item->estado['val'] = $_POST['estado'];
-            } else {
-                $this->error = true;
-                $this->errorMsg = "<h4>Datos incompleto!</h4>El campo del estado no puede quedar vacio";
-            }
-
-
-
-            $this->transaction->loadClass($item);
-            if ($this->transaction->save()) {
-                $this->done = true;
-                $this->doneMsg = "Distrio de Salud {$_POST[nombre]} agregado con exito";
-                //$this->loadContentView("default"); 
-            } else {
-                $this->error = true;
-                $this->errorMsg = "<h4>Ooops!</h4>Error el ingreso, intentelo de nuevo";
-            }
-        } else {
-            $this->error = true;
-            $this->errorMsg = "<h4>Datos no recibidos!</h4>Error en el ingreso, intentelo de nuevo";
-        }
-
-
-        $this->loadContentView("resultadoAddChild");
-        $this->getContentView();
-        die;
+    
+    function block() {
+        $id = $_GET['itemId'];
+        MasterController::requerirModelo("fecha");
+        $item = new fecha();
+        $item->setFechaId($id);
+        $item->getValuesBySetedId();
+        $item->setEstado("0");
     }
-
-    function returnOptions() {
-        $this->loadContentView("getById");
-        $this->getContentView();
-        die;
-    }
+    
+    
 
 }
 

@@ -14,7 +14,7 @@ if ($this->acl->acl("Agregar")) {
     }
     ?>
 
-        <form  method="post" action="?v=estandares&action=insert">
+        <form  method="post" action="?v=fechas&action=insert">
             <label><span class="text-warning">*</span> A&ntilde;o:</label>
             <select name="anio">
                 <?php

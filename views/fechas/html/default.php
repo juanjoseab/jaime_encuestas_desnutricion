@@ -48,7 +48,7 @@ if ($alerts) {
                                 <a data-toggle="tooltip" 
                                    title="Editar fecha" 
                                    class="btn btn-info" 
-                                   href="?v=fechas&action=viewUpdateEstandarForm&itemId=<?= $r['fecha_id'] ?>">
+                                   href="?v=fechas&action=viewUpdateForm&itemId=<?= $r['fecha_id'] ?>">
                                     <i class="icon icon-pencil icon-white"></i>
 
                                 </a>
