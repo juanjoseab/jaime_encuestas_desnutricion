@@ -85,7 +85,7 @@
     ?>
 
 
-<? $this->createGrid(false);?>
+<?php $this->createGrid(false);?>
 <div class="span9">
     
     <table class="table table-hover">
@@ -98,7 +98,7 @@
         </thead>
             
         
-        <? if (count ($this->grid) > 0){ 
+        <?php if (count ($this->grid) > 0){ 
             foreach($this->grid AS $row => $r){
         ?>
         <tr>
@@ -115,25 +115,25 @@
                       
                       
                     
-                      <? if($this->acl->acl("Modificar")){ ?>
+                      <?php if($this->acl->acl("Modificar")){ ?>
                         <li><a href="?v=hospital&action=viewUpdateForm&itemId=<?=$r['hospital_id']?>">Editar</a></li>
-                      <?}?>
+                      <?php }?>
                       
                       
-                      <? if($this->acl->acl("Eliminar")){ ?>
+                      <?php if($this->acl->acl("Eliminar")){ ?>
                         <li><a class="needAlertConfirm" href="?v=hospital&action=delete&itemId=<?=$r['hospital_id']?>">Eliminar</a></li>
-                      <?}?>
+                      <?php }?>
                       
                   </ul>
                 </div>
                 
             </td>
         </tr>
-        <? 
+        <?php 
             }
         } ?>
     </table>
-    <? 
+    <?php
         
         $pags = $this->getArrayPaginacion();
         if($_GET['pag']==0 || !$_GET['pag'] ){
@@ -148,7 +148,7 @@
             if(count($pags)==1){
             ?>
             <li class="active"><a href="#">1</a></li>
-            <?
+            <?php
             }else{
                 foreach ($pags as $pag){
                 ?>
@@ -187,7 +187,7 @@
             <div class="controls">
                 <select name="departamento_id" id="select_departamento_combo_box">
                     <option value="0">Elija un departamento</option>
-                <?
+                <?php
                  MasterController::requerirClase("MysqlSelect");
                  $mselect =  new MysqlSelect();
                  $mselect->setTableReference("departamento");
@@ -196,7 +196,7 @@
                  if($mselect->execute()){
                     $grid = $mselect->rows;                    
                     foreach($grid AS $dep){
-                        ?><option value="<?=$dep['departamento_id']?>"><?=$dep['nombre']?></option><?
+                        ?><option value="<?=$dep['departamento_id']?>"><?=$dep['nombre']?></option><?php
                     }
 
                 }
