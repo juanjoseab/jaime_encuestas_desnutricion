@@ -35,7 +35,27 @@ if($_GET){
 
             }
             break;
-        
+            
+        case 'hospitales':
+            echo 2;
+            if($_GET['itemId']){
+                $sl->setTableReference("hospital");
+                $sl->addSelection("hospital", "hospital_id");
+                $sl->addSelection("hospital", "nombre");
+                $sl->addJoin("municipio", "municipio_id", "=", "hospital", "municipio_id");
+                $sl->addJoin("departamento", "departamento_id", "=", "municipio", "departamento_id");
+                
+                $sl->addFilter("departamento", "departamento_id", $_GET['itemId'], "=");
+            if ( $sl->execute() ){
+                if (count($sl->rows)){
+                    foreach($sl->rows AS $r){
+                        echo '<option value="'.$r['departamento_id'].'">'.$r['nombre'].'</option>';
+                    }
+                }
+            }
+
+            }
+            break;
         
         case 'indicadores':
             if($_GET['itemId']){

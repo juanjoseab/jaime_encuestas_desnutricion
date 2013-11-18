@@ -176,25 +176,16 @@ class submisionController extends Display{
         }else{
             $item->nombre_personal['val']=$_POST['nombre_personal'];
         }
+  
         
-        if(!$_POST['anio'] ){
-            $this->error = true;
-            $this->errorMsg = "<h4>Campos incompletos!</h4> El dato del a&ntilde;o es obligatorio";
-            $this->loadContentView("submision");
-            $this->getContentView();
-            die;
-        }else{
-            $item->anio['val']=$_POST['anio'];
-        }
-        
-        if(!$_POST['mes'] ){
+        if(!$_POST['date'] ){
             $this->error = true;
             $this->errorMsg = "<h4>Campos incompletos!</h4> El dato del mes es obligatorio";
             $this->loadContentView("submision");
             $this->getContentView();
             die;
         }else{
-            $item->mes['val']=$_POST['mes'];
+            $item->setFechaId($_POST['mes']);
         }
         
         if(!$_POST['estandar_id'] ){
@@ -226,21 +217,12 @@ class submisionController extends Display{
         }else{
             $item->servicio_intrahospitalario_id['val']=$_POST['servicio_intrahospitalario_id'];
         }
-        
-        
-        if(!$_POST['municipio_id'] ){
-            $this->error = true;
-            $this->errorMsg = "<h4>Campos incompletos!</h4>El dato del municipio es obligatorio";
-            $this->loadContentView("submision");
-            $this->getContentView();
-            die;
-        }else{
-            $item->municipio_id['val']=$_POST['municipio_id'];
-        }
+
         
         //$item->fecha['val'] = date("Y-m-d");
         $item->cargo['val'] = $_POST['cargo'];
         $item->historia_clinica['val'] = $_POST['historia_clinica'];
+
         
         //$this->grid = $item;
         
