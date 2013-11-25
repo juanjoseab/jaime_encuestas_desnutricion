@@ -1,47 +1,3 @@
-<script type="text/javascript" lang="JavaScript">
-    $(function() {
-        $("select#select_departamaento_combo_box").change(function() {
-            $("select#select_municipio_combo_box option").remove();
-            $.ajax({
-                url: '?v=reportes&action=returnOptions&referencia=municipios&itemId=' + $(this).val(),
-                type: 'GET',
-                data: '',
-                success: function(res) {
-                    $("select#select_municipio_combo_box").append(res);
-                }
-            });
-        })
-
-
-        $("select#select_estandar_combo_box").change(function() {
-            $("select#select_intrahosp_combo_box option").remove();
-            $.ajax({
-                url: '?v=reportes&action=returnOptions&referencia=servicios&itemId=' + $(this).val(),
-                type: 'GET',
-                data: '',
-                success: function(res) {
-                    $("select#select_intrahosp_combo_box").append(res);
-                }
-            });
-
-            $.ajax({
-                url: '?v=reportes&action=returnOptions&referencia=indicadores&itemId=' + $(this).val(),
-                type: 'GET',
-                data: '',
-                success: function(res) {
-                    $("select#select_indicador_combo_box option").remove();
-                    $("select#select_indicador_combo_box").append(res);
-                }
-            });
-        })
-
-
-    });
-</script>
-
-
-
-
 <div class="span9">
 
     <h1>Reportes</h1>
@@ -154,16 +110,7 @@
                 </select>
             </div>            
         </div>
-        <div class="control-group">
-            <label class="control-label"><span class="text-warning">*</span> Servicio Intra-Hospitalario:</label>
-            <div class="controls">
-                <select class="input-xxlarge" name="servicio_intrahospitalario_id" id="select_intrahosp_combo_box">
-                    <option class="showFristSelect" value="0">elija antes un estandar</option>
-
-                </select>
-            </div>            
-        </div>
-
+        
         <div class="control-group">
             <label class="control-label"><span class="text-warning">*</span> Hospital:</label>
             <div class="controls">
@@ -184,6 +131,18 @@
                 </select>
             </div>            
         </div>
+        
+        <div class="control-group">
+            <label class="control-label"><span class="text-warning">*</span> Servicio Intra-Hospitalario:</label>
+            <div class="controls">
+                <select class="input-xxlarge" name="servicio_intrahospitalario_id" id="select_intrahosp_combo_box">
+                    <option class="showFristSelect" value="0">elija antes un estandar</option>
+
+                </select>
+            </div>            
+        </div>
+
+        
         <div id="formIndicadores"></div>
 
 
@@ -193,3 +152,88 @@
     </form>
 
 </div>
+
+
+<script type="text/javascript" lang="JavaScript">
+    $(function() {
+        $("select#select_departamaento_combo_box").change(function() {
+            showLoader();
+            $("select#select_municipio_combo_box option").remove();
+            $.ajax({
+                url: '?v=reportes&action=returnOptions&referencia=municipios&itemId=' + $(this).val(),
+                type: 'GET',
+                data: '',
+                success: function(res) {
+                    $("select#select_municipio_combo_box").append(res);
+                    hideLoader();
+                }
+            });
+        })
+
+
+        $("select#select_estandar_combo_box").change(function() {
+            showLoader();
+            $("select#select_intrahosp_combo_box option").remove();
+            
+            $.ajax({
+                url: '?v=reportes&action=returnOptions&referencia=servicios&itemId=' + $(this).val(),
+                type: 'GET',
+                data: '',
+                success: function(res) {
+                    $("select#select_intrahosp_combo_box").append(res);
+                    
+                }
+            });
+
+            $.ajax({
+                url: '?v=reportes&action=returnOptions&referencia=indicadores&itemId=' + $(this).val(),
+                type: 'GET',
+                data: '',
+                success: function(res) {
+                    $("select#select_indicador_combo_box option").remove();
+                    $("select#select_indicador_combo_box").append(res);
+                }
+            });
+            
+            
+            
+            
+            
+            hideLoader();
+        });
+        
+        function showLoader(){
+            var ww = $(window).width();
+            var wh = $(window).height();
+            alert(0);
+            $('<div class="preloaderContainer"><div class="preloaderBox"></div></div>').appendTo("body");
+        }
+        
+        function hideLoader(){
+            var ww = $(window).width();
+            var wh = $(window).height();
+            //$(".preloaderContainer, .preloaderBox").remove();
+         
+        }
+
+    });
+</script>
+
+<style>
+    .preloaderContainer {
+        width: 200px;
+        height: 200px;
+        background: url(template/img/loadingbg.png) no-repeat center center;
+        position: absolute;
+        top: 200px;
+        left: 200px;
+            
+    }
+    
+    .preloaderBox {
+        width: 200px;
+        height: 200px;
+        background: url(template/img/loading.gif) no-repeat center center;
+    }
+    
+</style>

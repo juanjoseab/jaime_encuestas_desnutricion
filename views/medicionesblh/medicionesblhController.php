@@ -10,14 +10,14 @@
  *
  * @author webmaster
  */
-class submisionController extends Display{
+class medicionesblhController extends Display{
     var $grid;
     var $rowsCount;
     
     function deploy(){
         $this->deployMainMenu();
         $this->deploySideMenu();
-        $this->vista = "submision";
+        $this->vista = "medicionesblh";
         if(!empty ($_GET['action'])){            
             $action = $_GET['action'];
             if(method_exists($this,$action)){
@@ -35,7 +35,7 @@ class submisionController extends Display{
          
         
     }
-    
+    /*
     function createGrid($loadGrid=true){
         MasterController::requerirClase("MysqlSelect");
         $mselect =  new MysqlSelect();
@@ -108,7 +108,7 @@ class submisionController extends Display{
     function viewAgregar(){
         $this->loadContentView("viewAgregar");
     }
-    
+    */
     
     function insert(){
         

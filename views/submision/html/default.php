@@ -7,21 +7,71 @@ if ($this->acl->acl("Submision")) {
 
     <script type="text/javascript" lang="JavaScript">
         $(function() {
+
+            function getSubmisions() {
+                if (
+                        $("select#select_hospital_combo_box").val() > 0
+                        && $("select#select_estandar_combo_box").val() > 0
+                        && $("select#asignacionFecha").val() > 0
+                        ) {
+                    var idH = $("select#select_hospital_combo_box").val();
+                    var idE = $("select#select_estandar_combo_box").val();
+                    var idF = $("select#asignacionFecha").val();
+                    var Uri = "&idh=" + idH
+                            + "&ide=" + idE
+                            + "&idf=" + idF;
+
+                    $.ajax({
+                        url: '?v=submision&action=returnOptions&referencia=submisiones' + Uri,
+                        type: 'GET',
+                        data: '',
+                        success: function(res) {
+
+                            var json = $.parseJSON(res);
+                            $("div#headerFormIndicadores h2").remove();
+                            $("div#headerFormIndicadores blockquote").remove();
+                            $("<h2>Submision # " + (json.counter + 1) + "</h2>")
+                                    .appendTo("div#headerFormIndicadores");
+                            $("<blockquote>Actualmente se han submitido " + json.counter + " registros de este estandar para este hospital en dicha fecha<br />"
+                                    + "<b>Estandar</b>: " + $("select#select_estandar_combo_box option[value='" + idE + "']").text() + "<br />"
+                                    + "<b>Hostpital</b>: " + $("select#select_hospital_combo_box option[value='" + idH + "']").text() + "<br />"
+                                    + "<b>Fecha</b>: " + $("select#asignacionFecha option[value='" + idF + "']").text() + "<br />"
+                                    + "</blockquote>")
+                                    .appendTo("div#headerFormIndicadores");
+
+
+
+
+                            //console.log(res);
+                            hideLoader();
+                            //return true;
+
+                        }
+                    });
+                }
+                return true;
+            }
+
             $("select#select_departamaento_combo_box").change(function() {
                 $("select#select_hospital_combo_box option").remove();
+                showLoader();
                 $.ajax({
                     url: '?v=submision&action=returnOptions&referencia=hospitales&itemId=' + $(this).val(),
                     type: 'GET',
                     data: '',
                     success: function(res) {
                         $("select#select_hospital_combo_box").append(res);
+                        hideLoader();
                     }
                 });
+
             })
 
 
             $("select#select_estandar_combo_box").change(function() {
-                $("select#select_intrahosp_combo_box option").remove();
+                showLoader();
+                $("select#select_intrahosp_combo_box option").remove();                
+                $("div#formIndicadores div").remove();
                 $.ajax({
                     url: '?v=submision&action=returnOptions&referencia=servicios&itemId=' + $(this).val(),
                     type: 'GET',
@@ -36,14 +86,16 @@ if ($this->acl->acl("Submision")) {
                     type: 'GET',
                     data: '',
                     success: function(res) {
-                        $("div#formIndicadores div").remove();
+                        
                         $("div#formIndicadores").append(res);
+
                     }
                 });
-
+                getSubmisions();
             })
 
             $("form#sendSubmitSubmision").submit(function() {
+                showLoader();
                 var values = $(this).serialize();
                 $.ajax({
                     url: '?v=submision&action=doSubmission',
@@ -53,12 +105,33 @@ if ($this->acl->acl("Submision")) {
                         $("div#mensajesDeAlerta .alert").remove();
                         $("div#mensajesDeAlerta").append(res);
                         $('body,html').animate({scrollTop: 0}, 800);
+                        getSubmisions();
+                        //hideLoader();
                         return false;
                     }
                 });
+                //hideLoader();
                 return false;
             });
 
+            function showLoader() {
+                
+                var ww = $(window).width();
+                var wh = $(window).height();
+                
+                $('<div class="preloaderContainer"><div class="preloaderBox"></div></div>').appendTo("body");
+                
+                $(".preloaderContainer")
+                        .css("position", "absolute")
+                        .css("left", ((ww / 2) - 100))
+                        .css("top", ((wh / 2) - 100) + $(window).scrollTop() );
+                
+            }
+
+            function hideLoader() {
+                $(".preloaderContainer, .preloaderBox").remove();
+
+            }
 
         });
     </script>
@@ -109,7 +182,7 @@ if ($this->acl->acl("Submision")) {
                         if (count($fechasActivas) > 0) {
                             foreach ($fechasActivas AS $fi) {
                                 ?>
-                                <option value="<?= $fi['fecha_id'] ?>"><?= $fi['mes'] . ", " . $fi['anio'] ?></option>
+                                <option value="<?= $fi['fecha_id'] ?>"><?= $this->monthName($fi['mes']) . ", " . $fi['anio'] ?></option>
                                 <?php
                             }
                         }
@@ -160,7 +233,7 @@ if ($this->acl->acl("Submision")) {
                     </select>
                 </div>            
             </div>
-            
+
             <div class="control-group">
                 <label class="control-label"><span class="text-warning">*</span> Estandar:</label>
                 <div class="controls">
@@ -192,11 +265,13 @@ if ($this->acl->acl("Submision")) {
                 </div>            
             </div>
 
-            
 
 
 
 
+            <div id="headerFormIndicadores">
+
+            </div>
             <div id="formIndicadores"></div>
 
 
@@ -226,4 +301,19 @@ if ($this->acl->acl("Submision")) {
  */
 ?>
 
+<style>
+    .preloaderContainer {
+        width: 200px;
+        height: 200px;
+        background: url(template/img/loadingbg.png) no-repeat center center;
+        position: absolute;
 
+    }
+
+    .preloaderBox {
+        width: 200px;
+        height: 200px;
+        background: url(template/img/loading.gif) no-repeat center center;
+    }
+
+</style>

@@ -406,7 +406,9 @@ class OrmClass {
     }
     
     function getList(array $selection = array(), array $filters = array()) {
+        
         if (method_exists($this, 'getReference')) {
+            
             MasterController::requerirClase("MysqlSelect");
             $sl = new MysqlSelect();
             $sl->setTableReference($this->getReference());
@@ -421,11 +423,12 @@ class OrmClass {
                     $sl->addFilter($table, $field, $value[0], $value[1]);
                 }
             }
-            if ($sl->execute()) {
+            if ($sl->execute()) {                
                return $sl->rows;               
             }else{
-                return false;
+               return false;
             }
+            
         } else {
             return false;
         }

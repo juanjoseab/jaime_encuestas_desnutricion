@@ -10,6 +10,7 @@
 
     <!-- Le styles -->
     <link href="template/css/bootstrap.css" rel="stylesheet">
+    <link href="template/css/bootstrap-responsive.css" rel="stylesheet">
     <style type="text/css">
       body {
         padding-top: 60px;
@@ -19,7 +20,7 @@
         padding: 9px 0;
       }
     </style>
-    <link href="template/css/bootstrap-responsive.css" rel="stylesheet">
+    
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -27,18 +28,8 @@
     <![endif]-->
 
     <script src="template/js/jquery.js"></script>
-    <script src="template/js/bootstrap-transition.js"></script>
-    <script src="template/js/bootstrap-alert.js"></script>
-    <script src="template/js/bootstrap-modal.js"></script>
-    <script src="template/js/bootstrap-dropdown.js"></script>
-    <script src="template/js/bootstrap-button.js"></script>
-    <!--<script src="template/js/bootstrap-collapse.js"></script>
-    <script src="template/js/bootstrap-carousel.js"></script> 
-    <script src="template/js/bootstrap-typeahead.js"></script>
-    <script src="template/js/bootstrap-scrollspy.js"></script>
-    <script src="template/js/bootstrap-tab.js"></script>
-    <script src="template/js/bootstrap-tooltip.js"></script>
-    <script src="template/js/bootstrap-popover.js"></script>-->
+    <script src="template/js/bootstrap.min.js"></script>
+    
     
     <script type="text/javascript" lang="JavaScript">
         $(function(){
