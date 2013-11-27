@@ -17,10 +17,14 @@ class Display {
     var $doneMsg = Null;
     var $alertMsg = Null;
     var $infoMsg = Null;
-
+    var $masterCtrl;
+    var $params;
+    
     public function __construct() {
-        MasterController::requerirControlador("ControlSesiones");
-        MasterController::requerirClase("ClassTransaction");
+        $this->masterCtrl = new MasterController();
+        $this->masterCtrl->requerirControlador("ControlSesiones");
+        $this->masterCtrl->requerirClase("ClassTransaction");
+        
         $this->acl = new ControlSesiones();
         $this->transaction = new ClassTransaction();
     }
@@ -261,6 +265,10 @@ class Display {
             12 => "Diciembre"
         );
         return $months[$monthNumber];
+    }
+    
+    function passParam($param,&$var){
+        $this->params[$param] = $var;
     }
 
 }

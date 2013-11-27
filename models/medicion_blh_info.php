@@ -1,6 +1,6 @@
 <?php
 class medicion_blh_info extends OrmClass{
-    	protected $_datasource = "medicion_blh_info";	public $medicion_blh_info_id = Array ('type' => 'int', 'size' => '10', 'unsigned' => TRUE, 'null' =>  'NO', 'primary' => TRUE, 'auto_increment' => TRUE, 'val'=>''); 	public $fecha = Array ('type' => '', 'null' =>  'NO', 'val'=>''); 	public $fecha_medicion = Array ('type' => '', 'null' =>  'NO', 'val'=>''); 	public $hospital_id = Array ('type' => 'int', 'size' => '10', 'unsigned' => TRUE, 'null' =>  'NO', 'foreign' => TRUE, 'reference' => 'hospital', 'val'=>''); 	public $inauguracion = Array ('type' => '', 'null' =>  'NO', 'val'=>''); 	public $cantidad_cunas_servicio_recien_nacido = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $cantidad_camas_maternidad = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $nombre_coordinadora = Array ('type' => 'varchar', 'null' =>  'NO', 'val'=>''); 	public $profesion_cordinadora_id = Array ('type' => 'int', 'size' => '10', 'unsigned' => TRUE, 'null' =>  'NO', 'val'=>''); 	public $telefono = Array ('type' => 'text', 'null' =>  'YES', 'val'=>''); 	public $email_contacto = Array ('type' => 'text', 'null' =>  'YES', 'val'=>''); 	function getReference() {
+    	protected $_datasource = "medicion_blh_info";	public $medicion_blh_info_id = Array ('type' => 'int', 'size' => '10', 'unsigned' => TRUE, 'null' =>  'NO', 'primary' => TRUE, 'auto_increment' => TRUE, 'val'=>''); 	public $fecha = Array ('type' => '', 'null' =>  'NO', 'val'=>''); 	public $fecha_medicion = Array ('type' => '', 'null' =>  'NO', 'val'=>''); 	public $hospital_id = Array ('type' => 'int', 'size' => '10', 'unsigned' => TRUE, 'null' =>  'NO', 'foreign' => TRUE, 'reference' => 'hospital', 'val'=>''); 	public $inauguracion = Array ('type' => '', 'null' =>  'NO', 'val'=>''); 	public $cantidad_cunas_servicio_recien_nacido = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $cantidad_camas_maternidad = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $nombre_coordinadora = Array ('type' => 'varchar', 'null' =>  'NO', 'val'=>''); 	public $profesion_coordinadora = Array ('type' => 'varchar', 'null' =>  'NO', 'val'=>''); 	public $telefono = Array ('type' => 'text', 'null' =>  'YES', 'val'=>''); 	public $email_contacto = Array ('type' => 'text', 'null' =>  'YES', 'val'=>''); 	function getReference() {
             return $this->_datasource;
         }	function setMedicionBlhInfoId($var){
                 $this->medicion_blh_info_id['val'] = $var;
@@ -34,10 +34,10 @@ class medicion_blh_info extends OrmClass{
                 $this->nombre_coordinadora['val'] = $var;
              }	function getNombreCoordinadora(){
                 return $this->nombre_coordinadora['val'];
-             }	function setProfesionCordinadoraId($var){
-                $this->profesion_cordinadora_id['val'] = $var;
-             }	function getProfesionCordinadoraId(){
-                return $this->profesion_cordinadora_id['val'];
+             }	function setProfesionCoordinadora($var){
+                $this->profesion_coordinadora['val'] = $var;
+             }	function getProfesionCoordinadora(){
+                return $this->profesion_coordinadora['val'];
              }	function setTelefono($var){
                 $this->telefono['val'] = $var;
              }	function getTelefono(){

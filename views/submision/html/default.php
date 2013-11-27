@@ -43,7 +43,7 @@ if ($this->acl->acl("Submision")) {
 
 
                             //console.log(res);
-                            hideLoader();
+                            $.hideLoader();
                             //return true;
 
                         }
@@ -54,14 +54,14 @@ if ($this->acl->acl("Submision")) {
 
             $("select#select_departamaento_combo_box").change(function() {
                 $("select#select_hospital_combo_box option").remove();
-                showLoader();
+                $.showLoader();
                 $.ajax({
                     url: '?v=submision&action=returnOptions&referencia=hospitales&itemId=' + $(this).val(),
                     type: 'GET',
                     data: '',
                     success: function(res) {
                         $("select#select_hospital_combo_box").append(res);
-                        hideLoader();
+                        $.hideLoader();
                     }
                 });
 
@@ -69,7 +69,7 @@ if ($this->acl->acl("Submision")) {
 
 
             $("select#select_estandar_combo_box").change(function() {
-                showLoader();
+                $.showLoader();
                 $("select#select_intrahosp_combo_box option").remove();                
                 $("div#formIndicadores div").remove();
                 $.ajax({
@@ -95,7 +95,7 @@ if ($this->acl->acl("Submision")) {
             })
 
             $("form#sendSubmitSubmision").submit(function() {
-                showLoader();
+                $.showLoader();
                 var values = $(this).serialize();
                 $.ajax({
                     url: '?v=submision&action=doSubmission',
@@ -114,24 +114,7 @@ if ($this->acl->acl("Submision")) {
                 return false;
             });
 
-            function showLoader() {
-                
-                var ww = $(window).width();
-                var wh = $(window).height();
-                
-                $('<div class="preloaderContainer"><div class="preloaderBox"></div></div>').appendTo("body");
-                
-                $(".preloaderContainer")
-                        .css("position", "absolute")
-                        .css("left", ((ww / 2) - 100))
-                        .css("top", ((wh / 2) - 100) + $(window).scrollTop() );
-                
-            }
-
-            function hideLoader() {
-                $(".preloaderContainer, .preloaderBox").remove();
-
-            }
+            
 
         });
     </script>
