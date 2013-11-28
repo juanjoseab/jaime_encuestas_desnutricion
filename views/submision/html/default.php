@@ -30,9 +30,9 @@ if ($this->acl->acl("Submision")) {
                             var json = $.parseJSON(res);
                             $("div#headerFormIndicadores h2").remove();
                             $("div#headerFormIndicadores blockquote").remove();
-                            $("<h2>Submision # " + (json.counter + 1) + "</h2>")
+                            $("<h2>Ingreso # " + (json.counter + 1) + "</h2>")
                                     .appendTo("div#headerFormIndicadores");
-                            $("<blockquote>Actualmente se han submitido " + json.counter + " registros de este estandar para este hospital en dicha fecha<br />"
+                            $("<blockquote>Actualmente se han ingresado " + json.counter + " registros de este estandar para este hospital en dicha fecha<br />"
                                     + "<b>Estandar</b>: " + $("select#select_estandar_combo_box option[value='" + idE + "']").text() + "<br />"
                                     + "<b>Hostpital</b>: " + $("select#select_hospital_combo_box option[value='" + idH + "']").text() + "<br />"
                                     + "<b>Fecha</b>: " + $("select#asignacionFecha option[value='" + idF + "']").text() + "<br />"
