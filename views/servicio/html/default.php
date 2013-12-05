@@ -14,6 +14,7 @@
         
     });
 </script>
+<div class="span9">
 <h3>Lista de servicios intra-hospitalarios</h3>
 
      <?php
@@ -23,7 +24,7 @@
 
 
 <? $this->createGrid(false);?>
-<div class="span9">
+
     
     <table class="table table-hover">
         <thead>

@@ -19,6 +19,20 @@
             .sidebar-nav {
                 padding: 9px 0;
             }
+            .subhead {
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+            }
+            .subhead h1 {
+                font-size: 60px;
+            }
+            .subhead p {
+                margin-bottom: 20px;
+            }
+            .subhead .navbar {
+                display: none;
+            }
+
         </style>
 
 
@@ -76,17 +90,31 @@
                 </div>
             </div>
         </div>
+        <header class="jumbotron subhead" id="overview">
+            <div class="container">
+                <div class="row">
+                    <center>
+                        <img src="template/ops.jpg" border="0" /> 
+                        <img src="template/fiodm.jpg" border="0" /> 
+                        <img src="template/mspas.jpg" border="0" />
 
-        <div class="container-fluid">
-            <div class="row-fluid">
+                    </center>
+                </div>
+
+            </div>
+        </header>
+        <br />
+
+        <div class="container">
+            <div class="row">
                 <?= $this->sideMenu; ?>
-                <div class="span9">
-
-                    <?= $this->getContentView() ?>
 
 
+                <?= $this->getContentView() ?>
 
-                </div><!--/span-->
+
+
+                <!--/span-->
             </div><!--/row-->
 
             <hr>
@@ -94,12 +122,7 @@
             <footer>
                 <p>&copy; Ministerio de Salud P&uacute;blica y Asistencia Social <?= date('Y') ?> </p>
 
-                <center>
-                    <img src="template/ops.jpg" border="0" /> 
-                    <img src="template/fiodm.jpg" border="0" /> 
-                    <img src="template/mspas.jpg" border="0" />
 
-                </center>
             </footer>
 
         </div><!--/.fluid-container-->
@@ -108,6 +131,6 @@
         ================================================== -->
         <!-- Placed at the end of the document so the pages load faster -->
 
-        
+
     </body>
 </html>

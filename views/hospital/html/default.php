@@ -77,6 +77,7 @@
         
     });
 </script>
+<div class="span9">
 <h1>Hospitales</h1>
 
      <?php
@@ -86,7 +87,7 @@
 
 
 <?php $this->createGrid(false);?>
-<div class="span9">
+
     
     <table class="table table-hover">
         <thead>

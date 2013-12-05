@@ -1,5 +1,5 @@
 <?php
-sleep(3);
+
 if ($_GET) {
     MasterController::requerirClase("MysqlSelect");
     $sl = new MysqlSelect();

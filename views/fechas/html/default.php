@@ -1,15 +1,16 @@
-<h2>Listado de fechas <small>para ingreso de datos</small></h2>
-
-<?php
-$alerts = $this->activesMsgs();
-if ($alerts) {
-    echo $alerts;
-}
-?>
-
-
-<? $this->createGrid(false); ?>
 <div class="span9">
+    <h2>Listado de fechas <small>para ingreso de datos</small></h2>
+
+    <?php
+    $alerts = $this->activesMsgs();
+    if ($alerts) {
+        echo $alerts;
+    }
+    ?>
+
+
+    <? $this->createGrid(false); ?>
+
 
     <table class="table table-hover" id="waza">
         <thead>
@@ -72,7 +73,7 @@ if ($alerts) {
                                     </a>
                                 <? } ?>
                             <? } ?>
-                                    
+
                             <? if ($this->acl->acl("Eliminar")) { ?>
                                 <a  data-toggle="tooltip" 
                                     title="Elimiar fecha" 

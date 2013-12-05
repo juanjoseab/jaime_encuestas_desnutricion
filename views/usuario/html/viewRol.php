@@ -13,6 +13,7 @@ MasterController::requerirClase("MysqlSelect");
         
     });
 </script>
+<div class="span9">
 <h1>Usuarios</h1>
 
      <?php
@@ -22,7 +23,7 @@ MasterController::requerirClase("MysqlSelect");
 
 
 <? $this->createRolGrid();?>
-<div class="span9">
+
 
     
     

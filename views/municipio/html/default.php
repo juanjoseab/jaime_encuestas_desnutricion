@@ -67,6 +67,7 @@
         
     });
 </script>
+<div class="span9">
 <h1>Municipios</h1>
 
      <?php
@@ -76,7 +77,7 @@
 
 
 <? $this->createDepartamentoGrid(false);?>
-<div class="span9">
+
     <div class="row-fluid">
         <div class="span1">
             <button type="button" class="btn" data-toggle="button" id="verfiltros">filtros</button>

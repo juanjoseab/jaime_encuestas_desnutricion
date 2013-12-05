@@ -19,12 +19,12 @@ class Display {
     var $infoMsg = Null;
     var $masterCtrl;
     var $params;
-    
+
     public function __construct() {
         $this->masterCtrl = new MasterController();
         $this->masterCtrl->requerirControlador("ControlSesiones");
         $this->masterCtrl->requerirClase("ClassTransaction");
-        
+
         $this->acl = new ControlSesiones();
         $this->transaction = new ClassTransaction();
     }
@@ -33,23 +33,22 @@ class Display {
         
     }
 
-    function deployContent(){
-        if(!$this->acl->sessionActive()){
-            if(isset($_GET['v']) && $_GET['v']){
+    function deployContent() {
+        if (!$this->acl->sessionActive()) {
+            if (isset($_GET['v']) && $_GET['v']) {
                 $this->vista = $_GET['v'];
-            }else{
+            } else {
                 $this->vista = "inicio";
             }
-            
-        }elseif($_GET['v']){
+        } elseif ($_GET['v']) {
             $this->vista = $_GET['v'];
-        }else{
+        } else {
             $this->vista = "inicio";
         }
-        
+
         MasterController::requerirControladorDeVista($this->vista);
-        $ctrl = $this->vista."Controller";
-        
+        $ctrl = $this->vista . "Controller";
+
         $controller = new $ctrl();
         $controller->deploy();
     }
@@ -76,22 +75,34 @@ class Display {
         }
     }
 
-    function deployMainMenu (){
-        if($this->acl->sessionActive()){
-            
-            if($this->acl->acl("Administrar Parametros")){
+    function deployMainMenu() {
+        if ($this->acl->sessionActive()) {
+
+            if ($this->acl->acl("Administrar Parametros")) {
+                $this->mainMenu .= '<li class="dropdown">'
+                        . '             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administraci&oacute;n <b class="caret"></b></a>'
+                        . '             <ul class="dropdown-menu">';
                 $this->mainMenu .= '<li ><a href="?v=estandares">Estandares</a></li>';
                 $this->mainMenu .= '<li ><a href="?v=hospital">Servicios</a></li>';
+                $this->mainMenu .= '<li ><a href="?v=medicionesblh&action=verlistadohospitales">Ficha hospitalaria de BLH</a></li>';
+                if ($this->acl->acl("Administrar Usuarios")) {
+                    $this->mainMenu .= '<li ><a href="?v=usuario">usuarios</a></li>';
+                }
+                $this->mainMenu .= '</ul><li>';
             }
-            
-            if($this->acl->acl("Submision")){
-                $this->mainMenu .= '<li ><a href="?v=submision">Registro de datos</a></li>';
+
+            if ($this->acl->acl("Submision")) {
+                $this->mainMenu .= '<li class="dropdown">'
+                        . '             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Registro de datos <b class="caret"></b></a>'
+                        . '             <ul class="dropdown-menu">';
+                $this->mainMenu .= '<li ><a href="?v=submision">Estandares</a></li>';
+                $this->mainMenu .= '<li ><a href="?v=submision">Bancos de Leche Humana (BLH)</a></li>';
+
+                $this->mainMenu .= '</ul><li>';
             }
-            
-            if($this->acl->acl("Administrar Usuarios")){
-                $this->mainMenu .= '<li ><a href="?v=usuario">usuarios</a></li>';
-            }
-            
+
+
+
             //$this->mainMenu .= '<li ><a href="?v=reportes">ver reportes</a></li>';
             $this->mainMenu .= '<li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reportes <b class="caret"></b></a>
@@ -101,10 +112,9 @@ class Display {
                   
                 </ul>
               </li>';
-            
-        }else{
+        } else {
             //$this->mainMenu .= '<li ><a href="?v=reportes">ver reportes</a></li>';
-            
+
             $this->mainMenu .= '<li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reportes <b class="caret"></b></a>
                 <ul class="dropdown-menu">
@@ -115,7 +125,6 @@ class Display {
               </li>';
             $this->mainMenu .= '<li ><a href="?v=login">ingreso</a></li>';
         }
-        
     }
 
     function deploy() {
@@ -218,8 +227,8 @@ class Display {
             $actionAfterSign = "&";
         }
 
-        if (  $params != NULL) {
-            $link .= $actionAfterSign . $params;             
+        if ($params != NULL) {
+            $link .= $actionAfterSign . $params;
         }
 
 
@@ -248,7 +257,7 @@ class Display {
     function hashPass($string) {
         return base64_encode(hash("sha256", base_convert($string, 10, 32)));
     }
-    
+
     function monthName($monthNumber) {
         $months = array(
             1 => "Enero",
@@ -266,8 +275,8 @@ class Display {
         );
         return $months[$monthNumber];
     }
-    
-    function passParam($param,&$var){
+
+    function passParam($param, &$var) {
         $this->params[$param] = $var;
     }
 

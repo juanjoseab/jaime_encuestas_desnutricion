@@ -120,25 +120,36 @@ class medicionesblhController extends Display {
       }
      */
 
-     function submitBasicInfoTEST() {
-     	echo ' 
+    function submitBasicInfoTEST() {
+        echo ' 
                 <div class="alert alert-success" id="alertResponseBox">
                   <button type="button" class="close" data-dismiss="alert">&times;</button>
                   <h4>¡Éxito!</h4>
                   Medición guardada con exito!!
                 </div>
             ';
-			
-			die;
-		
-     }
-     
-     
-     
+
+        die;
+    }
+
     function submitBasicInfo() {
         if (
+                !isset($_POST['hospital_id'])
+        ) {
+            echo ' 
+                <div class="alert alert-error" id="alertResponseBox">
+                  <button type="button" class="close" data-dismiss="alert">&times;</button>
+                  <h4>¡Ooops!</h4>
+                  Error guardando la medición de información básica <br />
+                  El campo -- Hospital -- es obligatorio
+                </div>
+            ';
+            die;
+        }
+
+        if (
                 !isset($_POST['cantidad_cunas_servicio_recien_nacido']) ||
-                !is_int($_POST['cantidad_cunas_servicio_recien_nacido'])
+                !is_numeric($_POST['cantidad_cunas_servicio_recien_nacido'])
         ) {
             echo ' 
                 <div class="alert alert-error" id="alertResponseBox">
@@ -150,10 +161,10 @@ class medicionesblhController extends Display {
             ';
             die;
         }
-        
+
         if (
                 !isset($_POST['cantidad_camas_maternidad']) ||
-                !is_int($_POST['cantidad_camas_maternidad'])
+                !is_numeric($_POST['cantidad_camas_maternidad'])
         ) {
             echo ' 
                 <div class="alert alert-error" id="alertResponseBox">
@@ -166,12 +177,38 @@ class medicionesblhController extends Display {
             die;
         }
 
+        if (
+                empty($_POST['nombre_coordinadora'])
+        ) {
+            echo ' 
+                <div class="alert alert-error" id="alertResponseBox">
+                  <button type="button" class="close" data-dismiss="alert">&times;</button>
+                  <h4>¡Ooops!</h4>
+                  Error guardando la medición de información básica <br />
+                  El campo -- Nombre de la coordinadora -- es obligatorio
+                </div>
+            ';
+            die;
+        }
+        //echo "<pre>"; print_r($_POST); echo "</pre>"; die;
+        if ($_POST['isnew'] == "isnew") {
+            $this->saveBasicInfo();
+        } else {
+            $this->updateBasicInfo();
+        }
+    }
+
+    function saveBasicInfo() {
+
+        //echo "<pre>"; print_r($_POST); echo "</pre>"; die;
 
         $this->masterCtrl->requerirModelo("medicion_blh_info");
         $item = new medicion_blh_info();
         $item->postToObject();
         $item->setFecha(date("Y-m-d"));
+        //$item->setHospitalId($_POST['hid']);
         $this->transaction->loadClass($item);
+        //echo $this->transaction->save(false, true);die;
         if ($this->transaction->save()) {
             echo ' 
                 <div class="alert alert-success" id="alertResponseBox">
@@ -189,14 +226,39 @@ class medicionesblhController extends Display {
                 </div>
             ';
         }
-
-
-        //print_r($item);
-
         die;
     }
 
-    
+    function updateBasicInfo() {
+
+        //echo "<pre>"; print_r($_POST); echo "</pre>"; die;
+
+        $this->masterCtrl->requerirModelo("medicion_blh_info");
+        $item = new medicion_blh_info();
+        $item->postToObject();
+        $item->setFecha(date("Y-m-d"));
+        $this->transaction->loadClass($item);
+        //echo $this->transaction->save(false, true);die;
+        if ($this->transaction->update()) {
+            echo ' 
+                <div class="alert alert-success" id="alertResponseBox">
+                  <button type="button" class="close" data-dismiss="alert">&times;</button>
+                  <h4>¡Éxito!</h4>
+                  Medición de informaci&oacute;n B&aacute;sica editada con exito!!
+                </div>
+            ';
+        } else {
+            echo ' 
+                <div class="alert alert-error" id="alertResponseBox">
+                  <button type="button" class="close" data-dismiss="alert">&times;</button>
+                  <h4>¡Error!</h4>
+                  Error editando la medición de información básica
+                </div>
+            ';
+        }
+        die;
+    }
+
     function submitProduccion() {
         if (
                 !isset($_POST['cantidad_cunas_servicio_recien_nacido']) ||
@@ -212,7 +274,7 @@ class medicionesblhController extends Display {
             ';
             die;
         }
-        
+
         if (
                 !isset($_POST['cantidad_camas_maternidad']) ||
                 !is_int($_POST['cantidad_camas_maternidad'])
@@ -257,8 +319,7 @@ class medicionesblhController extends Display {
 
         die;
     }
-    
-    
+
     function insert() {
 
         if (!$_POST) {
@@ -472,76 +533,38 @@ class medicionesblhController extends Display {
         }
     }
 
-    function delete() {
-        if ($this->acl->acl("Eliminar")) {
-            $id = $_GET['itemId'];
-            MasterController::requerirModelo("indicador");
-            $item = new indicador();
-            $item->indicador_id['val'] = $id;
-            $this->transaction->loadClass($item);
-            if ($this->transaction->delete()) {
-                $this->done = true;
-                $this->doneMsg = "Indicador eliminado con exito";
-                $this->loadContentView("default");
-                return true;
-            } else {
-                $this->error = true;
-                $this->doneMsg = "Error al eliminar el Indicador";
-                $this->loadContentView("default");
-                return false;
-            }
-        } else {
-            $this->error = true;
-            $this->doneMsg = "No tiene permisos para eliminar";
-            $this->loadContentView("default");
-            return false;
-        }
-    }
-
-    function addChild() {
-
-        if ($_POST) {
-            MasterController::requerirModelo("valor_indicador");
-            $item = new valor_indicador();
-
-            //nombre=asdf&codigo=asdf&departamentoNombre=Guatemala&departamento_id=1&estado=1
-            if ($_POST['valor'] != "") {
-                $item->valor['val'] = utf8_decode($_POST['valor']);
-            } else {
-                $this->error = true;
-                $this->errorMsg = "<h4>Datos incompleto!</h4> El valor no puede quedar vacio";
-            }
-
-            if ($_POST['indicador_id'] != "") {
-                $item->indicador_id['val'] = $_POST['indicador_id'];
-            } else {
-                $this->error = true;
-                $this->errorMsg = "<h4>Datos incompleto!</h4>El campo del indicador no puede quedar vacio";
-            }
-
-
-            $this->transaction->loadClass($item);
-            if ($this->transaction->save()) {
-                $this->done = true;
-                $this->doneMsg = "Valor {$_POST[nombre]} agregado con exito";
-                //$this->loadContentView("default"); 
-            } else {
-                $this->error = true;
-                $this->errorMsg = "<h4>Ooops!</h4>Error en el ingreso, intentelo de nuevo";
-            }
-        } else {
-            $this->error = true;
-            $this->errorMsg = "<h4>Datos no recibidos!</h4>Error en el ingreso, intentelo de nuevo";
-        }
-
-
-        $this->loadContentView("resultadoAddChild");
+    function returnOptions() {
+        $this->loadContentView("getReferencias");
         $this->getContentView();
         die;
     }
 
-    function returnOptions() {
-        $this->loadContentView("getReferencias");
+    function formInfoBasica() {
+        //sleep(3);
+        $this->loadContentView("infoBasicaForm");
+        $this->getContentView();
+        die;
+    }
+
+    function verListadoHospitales() {
+        $this->loadContentView("listadoHospitales");
+    }
+
+    function verIngresoMediciones() {
+        $this->loadContentView("mediciones");
+    }
+
+    function viewMedicionesForms() {
+        $this->masterCtrl->requerirModelo("hospital");
+        $hsp = new hospital();
+        if (isset($_GET['idh'])) {
+            $hsp->setHospitalId($_GET['idh']);
+            $hsp->getValuesBySetedId();
+            $this->passParam("hospital", $hsp);
+        } else {
+            $this->alertMsg = "<h4>Alerta!</h4> No se han recibido el identificador del hospital";
+        }
+        $this->loadContentView("default");
         $this->getContentView();
         die;
     }
