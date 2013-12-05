@@ -96,8 +96,8 @@ class Display {
             $this->mainMenu .= '<li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reportes <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <li><a href="?v=reportes&action=especifico">Indicador especifico</a></li>
-                  <li><a href="?v=reportes&action=todos">Todos los indicadores</a></li>
+                  <li><a href="?v=reportes">Indicadores</a></li>
+                  <li><a href="#">Mediciones BLH</a></li>
                   
                 </ul>
               </li>';
@@ -108,8 +108,8 @@ class Display {
             $this->mainMenu .= '<li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reportes <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <li><a href="?v=reportes&action=especifico">Indicador especifico</a></li>
-                  <li><a href="?v=reportes&action=todos">Todos los indicadores</a></li>
+                  <li><a href="?v=reportes">Indicadores</a></li>
+                  <li><a href="#">Mediciones BLH</a></li>
                   
                 </ul>
               </li>';

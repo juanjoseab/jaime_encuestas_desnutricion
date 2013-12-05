@@ -136,15 +136,11 @@ if ($this->acl->acl("Submision")) {
             <div class="tab-pane" id="profile">
                 <h2>Variables de Producción</h2>
 
-                <form accept-charset="utf-8" class="form-horizontal" id="infoBasica" method="POST" action="http://localhost/projects/jaime_encuestas_desnutricion?v=medicionblh&action=saveInfoBasica&idh=" ><fieldset><legend></legend><div class="control-group">
-                            <label class="control-label" >Fecha</label>
-                            <div class="controls">
-                                <input type="text" class=" signedField notNulleable" maxsize=""  required="required"  placeholder="Fecha"  id="Fecha"  name="fecha" value="" />
-                            </div>
-                        </div><div class="control-group">
+                <form accept-charset="utf-8" class="form-horizontal" id="infoProduccion" method="POST" action="http://localhost/projects/jaime_encuestas_desnutricion?v=medicionblh&action=saveInfoBasica&idh=" ><fieldset><legend></legend>
+					<div class="control-group">
                             <label class="control-label" >Fecha de medición</label>
                             <div class="controls">
-                                <input type="text" class=" signedField notNulleable" maxsize=""  required="required"  placeholder="Fecha Medicion"  id="Fecha Medicion"  name="fecha_medicion" value="" />
+                                <input type="text" class="datepicker signedField notNulleable" maxsize=""  required="required"  placeholder="Fecha Medicion"  id="Fecha Medicion"  name="fecha_medicion" value="" />
                             </div>
                         </div><div class="control-group">
                             <label class="control-label" >Litros de leche recolectada</label>
@@ -158,9 +154,7 @@ if ($this->acl->acl("Submision")) {
                             </div>
                         </div><div class="control-group">
                             <label class="control-label" >Uso de leche recolectada</label>
-                            <div class="controls">
-                                <input type="text" class=" stringField signedField Nulleable" maxsize=""  placeholder="Uso Leche Recolectada"  id="Uso Leche Recolectada"  name="uso_leche_recolectada" value="" />
-                            </div>
+                            
                         </div><div class="control-group">
                             <label class="control-label" >Recien nacidos atendidos en UCIP/Neonatología/RN</label>
                             <div class="controls">
@@ -173,9 +167,7 @@ if ($this->acl->acl("Submision")) {
                             </div>
                         </div><div class="control-group">
                             <label class="control-label" >Cobertura de atención</label>
-                            <div class="controls">
-                                <input type="text" type="text" class=" stringField signedField notNulleable" maxsize=""  required="required"  placeholder="Cobertura Atencion"  id="Cobertura Atencion"  name="cobertura_atencion" value="" />
-                            </div>
+                            
                         </div><div class="control-group">
                             <label class="control-label" >Cantidad de partos atendidos</label>
                             <div class="controls">
@@ -188,22 +180,25 @@ if ($this->acl->acl("Submision")) {
                             </div>
                         </div><div class="control-group">
                             <label class="control-label" >Captacion de donadoras</label>
-                            <div class="controls">
-                                <input type="text" class=" stringField signedField notNulleable" maxsize=""  required="required"  placeholder="Captacion Donadoras"  id="Captacion Donadoras"  name="captacion_donadoras" value="" />
-                            </div>
-                        </div><div class="control-group">
+                            
+                        </div>
+                        
+                        <div class="control-group">
                             <label class="control-label">Hospital</label>
                             <div class="controls">
-
-                                <select id="select_Hospital_combo_box" name="hospital_id" >
-                                    <option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"<option value=""></option>"
-                                </select>
-
+                                <input type="hidden" value="<?= $this->params['hospital']->getHospitalId() ?>" 
+                                       name="hospital_id" />
+                                <span class="input-xxlarge uneditable-input">
+                                    <?= $this->params['hospital']->getNombre() ?>
+                                </span>
                             </div>
-                        </div><div class="control-group">
+                        </div>
+                        
+                        
+						<div class="control-group">
                             <div class="controls">
 
-                                <button type="submit" class="btn">Guardar</button>
+                                <button type="button" class="btn sbmttest">Guardar</button>
                             </div>
                         </div>
                     </fieldset></form>
@@ -211,9 +206,149 @@ if ($this->acl->acl("Submision")) {
 
             <div class="tab-pane" id="messages">
                 <h2>Variables de Calidad</h2>
+                
+                <form accept-charset="utf-8" class="form-horizontal" id="infoCalidad" method="POST" action="http://encuestanutricional.org/dev/?v=medicionblh&amp;action=saveInfoCalidad&amp;idh="><fieldset><legend></legend>
+                	
+				<div class="control-group">
+                        <label class="control-label" for="inputEmail">Fecha de medicion</label>
+                        <div class="controls">
+                          <input type="text" class="datepicker signedField notNulleable" maxsize="" required="required" placeholder="Fecha Medicion" id="Fecha Medicion" name="fecha_medicion" value="">
+                        </div>
+                      </div><div class="control-group">
+                        <label class="control-label" for="inputEmail">Cantidad de analisis de acidez dormic</label>
+                        <div class="controls">
+                          <input type="text" class=" intField signedField notNulleable" maxsize="" required="required" placeholder="Cantidad Analisis Acidez Dormic" id="Cantidad Analisis Acidez Dormic" name="cantidad_analisis_acidez_dormic" value="">
+                        </div>
+                      </div><div class="control-group">
+                        <label class="control-label" for="inputEmail">Cantidad aceptable de acidez dormic</label>
+                        <div class="controls">
+                          <input type="text" class=" intField signedField notNulleable" maxsize="" required="required" placeholder="Cantidad Aceptable Acidez Dormic" id="Cantidad Aceptable Acidez Dormic" name="cantidad_aceptable_acidez_dormic" value="">
+                        </div>
+                      </div><div class="control-group">
+                        <label class="control-label" for="inputEmail">Cantidad no aceptable de acidez dormic</label>
+                        <div class="controls">
+                          <input type="text" class=" intField signedField notNulleable" maxsize="" required="required" placeholder="Cantidad No Aceptable Acidez Dormic" id="Cantidad No Aceptable Acidez Dormic" name="cantidad_no_aceptable_acidez_dormic" value="">
+                        </div>
+                      </div><div class="control-group">
+                        <label class="control-label" for="inputEmail">Conformidad acidez dormic</label>
+                        
+                      </div><div class="control-group">
+                        <label class="control-label" for="inputEmail">Cantidad de analisis de crematocrito</label>
+                        <div class="controls">
+                          <input type="text" class=" intField signedField notNulleable" maxsize="" required="required" placeholder="Cantidad Analisis Crematocrito" id="Cantidad Analisis Crematocrito" name="cantidad_analisis_crematocrito" value="">
+                        </div>
+                      </div><div class="control-group">
+                        <label class="control-label" for="inputEmail">Cantidad aceptable de crematocrito</label>
+                        <div class="controls">
+                          <input type="text" class=" intField signedField notNulleable" maxsize="" required="required" placeholder="Cantidad Aceptable Crematocrito" id="Cantidad Aceptable Crematocrito" name="cantidad_aceptable_crematocrito" value="">
+                        </div>
+                      </div><div class="control-group">
+                        <label class="control-label" for="inputEmail">Cantidad no aceptable de crematocrito</label>
+                        <div class="controls">
+                          <input type="text" class=" intField signedField notNulleable" maxsize="" required="required" placeholder="Cantidad No Aceptable Crematocrito" id="Cantidad No Aceptable Crematocrito" name="cantidad_no_aceptable_crematocrito" value="">
+                        </div>
+                      </div><div class="control-group">
+                        <label class="control-label" for="inputEmail">Conformidad crematocrito</label>
+                        
+                      </div><div class="control-group">
+                        <label class="control-label" for="inputEmail">Cantidad de analisis de coliformes</label>
+                        <div class="controls">
+                          <input type="text" class=" intField signedField notNulleable" maxsize="" required="required" placeholder="Cantidad Analisis Coliformes" id="Cantidad Analisis Coliformes" name="cantidad_analisis_coliformes" value="">
+                        </div>
+                      </div><div class="control-group">
+                        <label class="control-label" for="inputEmail">Cantidad aceptable de coliformes</label>
+                        <div class="controls">
+                          <input type="text" class=" intField signedField notNulleable" maxsize="" required="required" placeholder="Cantidad Aceptable Coliformes" id="Cantidad Aceptable Coliformes" name="cantidad_aceptable_coliformes" value="">
+                        </div>
+                      </div><div class="control-group">
+                        <label class="control-label" for="inputEmail">Cantidad no aceptable de coliformes</label>
+                        <div class="controls">
+                          <input type="text" class=" intField signedField notNulleable" maxsize="" required="required" placeholder="Cantidad No Aceptable Coliformes" id="Cantidad No Aceptable Coliformes" name="cantidad_no_aceptable_coliformes" value="">
+                        </div>
+                      </div><div class="control-group">
+                        <label class="control-label" for="inputEmail">Conformidad coliformes</label>
+                        
+                      </div>
+                      
+                      
+                      <div class="control-group">
+                            <label class="control-label">Hospital</label>
+                            <div class="controls">
+                                <input type="hidden" value="<?= $this->params['hospital']->getHospitalId() ?>" 
+                                       name="hospital_id" />
+                                <span class="input-xxlarge uneditable-input">
+                                    <?= $this->params['hospital']->getNombre() ?>
+                                </span>
+                            </div>
+                        </div>
+                      
+                      
+						<div class="control-group">
+                        <div class="controls">
+                          
+                          <button type="button" class="btn sbmttest">Guardar</button>
+                        </div>
+                      </div>
+                  </fieldset></form>
+                
+                
+                
+                
             </div>
             <div class="tab-pane" id="settings">
                 <h2>Variables de funcionamiento</h2>
+                
+                <form accept-charset="utf-8" class="form-horizontal" id="infoFuncionamiento" method="POST" action="http://encuestanutricional.org/dev/?v=medicionblh&action=saveInfoFuncionamiento&idh=" ><fieldset><legend></legend>
+                	
+                	
+					<div class="control-group">
+                        <label class="control-label" for="inputEmail">Fecha medicion</label>
+                        <div class="controls">
+                          <input type="text" class="datepicker signedField notNulleable" maxsize=""  required="required"  placeholder="Fecha Medicion"  id="Fecha Medicion"  name="fecha_medicion" value="" />
+                        </div>
+                      </div><div class="control-group">
+                        <label class="control-label" for="inputEmail">Centros recolectores extrahospitalarios</label>
+                        <div class="controls">
+                          <input type="text" class=" intField signedField notNulleable" maxsize=""  required="required"  placeholder="Centros Recolectores Extrahospitalarios"  id="Centros Recolectores Extrahospitalarios"  name="centros_recolectores_extrahospitalarios" value="" />
+                        </div>
+                      </div><div class="control-group">
+                        <label class="control-label" for="inputEmail">Clinicas de lactancia materna</label>
+                        <div class="controls">
+                          <input type="text" class=" intField signedField notNulleable" maxsize=""  required="required"  placeholder="Clinicas Lactancia Materna"  id="Clinicas Lactancia Materna"  name="clinicas_lactancia_materna" value="" />
+                        </div>
+                      </div><div class="control-group">
+                        <label class="control-label" for="inputEmail">Actividades de recoleccion extrahospitalaria</label>
+                        <div class="controls">
+                          <input type="text" class=" intField signedField notNulleable" maxsize=""  required="required"  placeholder="Actividades Recoleccion Extrahospitalaria"  id="Actividades Recoleccion Extrahospitalaria"  name="actividades_recoleccion_extrahospitalaria" value="" />
+                        </div>
+                      </div><div class="control-group">
+                        <label type="text" class="control-label" for="inputEmail">Actividades de promocion donacion extrahospitalaria</label>
+                        <div class="controls">
+                          <input type="text" class=" intField signedField notNulleable" maxsize=""  required="required"  placeholder="Actividades Promocion Donacion Extrahospitalaria"  id="Actividades Promocion Donacion Extrahospitalaria"  name="actividades_promocion_donacion_extrahospitalaria" value="" />
+                        </div>
+                      </div>
+                      
+						<div class="control-group">
+                            <label class="control-label">Hospital</label>
+                            <div class="controls">
+                                <input type="hidden" value="<?= $this->params['hospital']->getHospitalId() ?>" 
+                                       name="hospital_id" />
+                                <span class="input-xxlarge uneditable-input">
+                                    <?= $this->params['hospital']->getNombre() ?>
+                                </span>
+                            </div>
+                        </div>
+                      
+                          
+                          
+                          <div class="control-group">
+                        <div class="controls">
+                          
+                          <button type="button" class="btn sbmttest">Guardar</button>
+                        </div>
+                      </div>
+                  </fieldset></form>
+                
             </div>
         </div>
 
@@ -275,8 +410,9 @@ if ($this->acl->acl("Submision")) {
 <script>
     $(function() {
         $("#myModal").modal("hide");
+        
         $("#sbmt").click(function() {
-            var values = $("form#infoBasica").serialize();
+            //var values = $("form#infoBasica").serialize();
 
             $.ajax({
                 url: '?v=medicionesblh&action=submitBasicInfo',
@@ -292,6 +428,25 @@ if ($this->acl->acl("Submision")) {
                 }
             })
         });
+        
+        $(".sbmttest").click(function() {
+            var values = $("form#infoBasica").serialize();
+
+            $.ajax({
+                url: '?v=medicionesblh&action=submitBasicInfoTEST',
+                type: 'POST',
+                data: values,
+                success: function(res) {
+                    $("#modalBodyP *").remove();
+                    $("#modalBodyP").append(res);
+                    $("#myModal").modal("show");
+                    $('form#infoBasica input[type="text"]').val("");
+
+                    //alert(res);
+                }
+            })
+        });
+        
     })
 </script>
 

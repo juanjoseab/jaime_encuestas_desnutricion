@@ -59,6 +59,9 @@ class MysqlSelect {
         $this->filter[]= $filter;
     }
     
+	function addCustomFilter($customFilter){        
+        $this->customFilter[]= $customFilter;
+    }
     
     function addGroup($table,$field){
         $group = Array ("table"=>$table, "field"=>$field);

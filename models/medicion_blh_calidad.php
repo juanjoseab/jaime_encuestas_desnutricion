@@ -1,69 +1,69 @@
 <?php
 class medicion_blh_calidad extends OrmClass{
-    	protected $_datasource = "medicion_blh_calidad";	public $medicion_blh_calidad_id = Array ('type' => 'int', 'size' => '10', 'unsigned' => TRUE, 'null' =>  'NO', 'primary' => TRUE, 'auto_increment' => TRUE, 'val'=>''); 	public $fecha = Array ('type' => '', 'null' =>  'NO', 'val'=>''); 	public $fecha_medicion = Array ('type' => '', 'null' =>  'NO', 'val'=>''); 	public $cantidad_analisis_acidez_dormic = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $cantidad_aceptable_acidez_dormic = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $cantidad_no_aceptable_acidez_dormic = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $conformidad_acidez_dormic = Array ('type' => 'varchar', 'null' =>  'NO', 'val'=>''); 	public $cantidad_analisis_crematocrito = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $cantidad_aceptable_crematocrito = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $cantidad_no_aceptable_crematocrito = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $conformidad_crematocrito = Array ('type' => 'varchar', 'null' =>  'NO', 'val'=>''); 	public $cantidad_analisis_coliformes = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $cantidad_aceptable_coliformes = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $cantidad_no_aceptable_coliformes = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $conformidad_coliformes = Array ('type' => 'varchar', 'null' =>  'NO', 'val'=>''); 	public $hospital_id = Array ('type' => 'int', 'size' => '10', 'unsigned' => TRUE, 'null' =>  'NO', 'foreign' => TRUE, 'reference' => 'hospital', 'val'=>''); 	function getReference() {
+    	protected $_datasource = "medicion_blh_calidad";	public $medicion_blh_calidad_id = Array ('type' => 'int', 'size' => '10', 'unsigned' => TRUE, 'null' =>  'NO', 'primary' => TRUE, 'auto_increment' => TRUE, 'val'=>''); 	public $fecha = Array ('type' => '', 'null' =>  'NO', 'val'=>''); 	public $fecha_medicion = Array ('type' => '', 'null' =>  'NO', 'val'=>''); 	public $cantidad_analisis_acidez_dormic = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $cantidad_aceptable_acidez_dormic = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $cantidad_no_aceptable_acidez_dormic = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $conformidad_acidez_dormic = Array ('type' => 'varchar', 'null' =>  'NO', 'val'=>''); 	public $cantidad_analisis_crematocrito = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $cantidad_aceptable_crematocrito = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $cantidad_no_aceptable_crematocrito = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $conformidad_crematocrito = Array ('type' => 'varchar', 'null' =>  'NO', 'val'=>''); 	public $cantidad_analisis_coliformes = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $cantidad_aceptable_coliformes = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $cantidad_no_aceptable_coliformes = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $conformidad_coliformes = Array ('type' => 'varchar', 'null' =>  'NO', 'val'=>''); 	public $hospital_id = Array ('type' => 'int', 'size' => '10', 'unsigned' => TRUE, 'null' =>  'NO', 'foreign' => TRUE, 'reference' => 'hospital', 'val'=>''); 	function getReference() {
             return $this->_datasource;
-        }	function setMedicionBlhCalidadId($var){
+        }	function setMedicionBlhCalidadId($var){
                 $this->medicion_blh_calidad_id['val'] = $var;
-             }	function getMedicionBlhCalidadId(){
+             }	function getMedicionBlhCalidadId(){
                 return $this->medicion_blh_calidad_id['val'];
-             }	function setFecha($var){
+             }	function setFecha($var){
                 $this->fecha['val'] = $var;
-             }	function getFecha(){
+             }	function getFecha(){
                 return $this->fecha['val'];
-             }	function setFechaMedicion($var){
+             }	function setFechaMedicion($var){
                 $this->fecha_medicion['val'] = $var;
-             }	function getFechaMedicion(){
+             }	function getFechaMedicion(){
                 return $this->fecha_medicion['val'];
-             }	function setCantidadAnalisisAcidezDormic($var){
+             }	function setCantidadAnalisisAcidezDormic($var){
                 $this->cantidad_analisis_acidez_dormic['val'] = $var;
-             }	function getCantidadAnalisisAcidezDormic(){
+             }	function getCantidadAnalisisAcidezDormic(){
                 return $this->cantidad_analisis_acidez_dormic['val'];
-             }	function setCantidadAceptableAcidezDormic($var){
+             }	function setCantidadAceptableAcidezDormic($var){
                 $this->cantidad_aceptable_acidez_dormic['val'] = $var;
-             }	function getCantidadAceptableAcidezDormic(){
+             }	function getCantidadAceptableAcidezDormic(){
                 return $this->cantidad_aceptable_acidez_dormic['val'];
-             }	function setCantidadNoAceptableAcidezDormic($var){
+             }	function setCantidadNoAceptableAcidezDormic($var){
                 $this->cantidad_no_aceptable_acidez_dormic['val'] = $var;
-             }	function getCantidadNoAceptableAcidezDormic(){
+             }	function getCantidadNoAceptableAcidezDormic(){
                 return $this->cantidad_no_aceptable_acidez_dormic['val'];
-             }	function setConformidadAcidezDormic($var){
+             }	function setConformidadAcidezDormic($var){
                 $this->conformidad_acidez_dormic['val'] = $var;
-             }	function getConformidadAcidezDormic(){
+             }	function getConformidadAcidezDormic(){
                 return $this->conformidad_acidez_dormic['val'];
-             }	function setCantidadAnalisisCrematocrito($var){
+             }	function setCantidadAnalisisCrematocrito($var){
                 $this->cantidad_analisis_crematocrito['val'] = $var;
-             }	function getCantidadAnalisisCrematocrito(){
+             }	function getCantidadAnalisisCrematocrito(){
                 return $this->cantidad_analisis_crematocrito['val'];
-             }	function setCantidadAceptableCrematocrito($var){
+             }	function setCantidadAceptableCrematocrito($var){
                 $this->cantidad_aceptable_crematocrito['val'] = $var;
-             }	function getCantidadAceptableCrematocrito(){
+             }	function getCantidadAceptableCrematocrito(){
                 return $this->cantidad_aceptable_crematocrito['val'];
-             }	function setCantidadNoAceptableCrematocrito($var){
+             }	function setCantidadNoAceptableCrematocrito($var){
                 $this->cantidad_no_aceptable_crematocrito['val'] = $var;
-             }	function getCantidadNoAceptableCrematocrito(){
+             }	function getCantidadNoAceptableCrematocrito(){
                 return $this->cantidad_no_aceptable_crematocrito['val'];
-             }	function setConformidadCrematocrito($var){
+             }	function setConformidadCrematocrito($var){
                 $this->conformidad_crematocrito['val'] = $var;
-             }	function getConformidadCrematocrito(){
+             }	function getConformidadCrematocrito(){
                 return $this->conformidad_crematocrito['val'];
-             }	function setCantidadAnalisisColiformes($var){
+             }	function setCantidadAnalisisColiformes($var){
                 $this->cantidad_analisis_coliformes['val'] = $var;
-             }	function getCantidadAnalisisColiformes(){
+             }	function getCantidadAnalisisColiformes(){
                 return $this->cantidad_analisis_coliformes['val'];
-             }	function setCantidadAceptableColiformes($var){
+             }	function setCantidadAceptableColiformes($var){
                 $this->cantidad_aceptable_coliformes['val'] = $var;
-             }	function getCantidadAceptableColiformes(){
+             }	function getCantidadAceptableColiformes(){
                 return $this->cantidad_aceptable_coliformes['val'];
-             }	function setCantidadNoAceptableColiformes($var){
+             }	function setCantidadNoAceptableColiformes($var){
                 $this->cantidad_no_aceptable_coliformes['val'] = $var;
-             }	function getCantidadNoAceptableColiformes(){
+             }	function getCantidadNoAceptableColiformes(){
                 return $this->cantidad_no_aceptable_coliformes['val'];
-             }	function setConformidadColiformes($var){
+             }	function setConformidadColiformes($var){
                 $this->conformidad_coliformes['val'] = $var;
-             }	function getConformidadColiformes(){
+             }	function getConformidadColiformes(){
                 return $this->conformidad_coliformes['val'];
-             }	function setHospitalId($var){
+             }	function setHospitalId($var){
                 $this->hospital_id['val'] = $var;
-             }	function getHospitalId(){
+             }	function getHospitalId(){
                 return $this->hospital_id['val'];
-             }}
+             }}

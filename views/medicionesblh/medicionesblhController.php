@@ -120,6 +120,21 @@ class medicionesblhController extends Display {
       }
      */
 
+     function submitBasicInfoTEST() {
+     	echo ' 
+                <div class="alert alert-success" id="alertResponseBox">
+                  <button type="button" class="close" data-dismiss="alert">&times;</button>
+                  <h4>¡Éxito!</h4>
+                  Medición guardada con exito!!
+                </div>
+            ';
+			
+			die;
+		
+     }
+     
+     
+     
     function submitBasicInfo() {
         if (
                 !isset($_POST['cantidad_cunas_servicio_recien_nacido']) ||

@@ -1,3 +1,15 @@
+<?php
+MasterController::requerirModelo("fecha");
+$fecha = new fecha();
+$finit = new fecha();
+$fend = new fecha();
+$finit->setFechaId($_POST['fecha_id_init']);
+$fend->setFechaId($_POST['fecha_id_end']);
+$finit->getValuesBySetedId();
+$fend->getValuesBySetedId();
+$fechas = $fecha->getList(array(),array());
+
+?>
 <script type="text/javascript" language="JavaScript">
     
     $(function(){
@@ -103,7 +115,7 @@ if($_POST['hospital_id']!='todos' && is_numeric($_POST['hospital_id']) ){
 <div style="span10">
             
 
-            <h1>Generaci&oacute;n de Reporte <small> [<?=$this->covertirAMes($_POST['mes-inicio']).", ".$_POST['anio-inicio']?>] - [<?=$this->covertirAMes($_POST['mes-fin']).", ".$_POST['anio-fin']?>] </small></h1>
+            <h1>Generaci&oacute;n de Reporte <small> [<?=$this->covertirAMes($finit->getMes()).", ".$finit->getAnio()?>] - [<?=$this->covertirAMes($fend->getMes()).", ".$fend->getAnio()?>] </small></h1>
 			
             <div id="nuevoReporte" style="border: 1px solid #ccc; border-radius:4px; padding: 10px;">
                 <a href="#" id="linkVerNuevoReporte">Nuevo reporte</a>
@@ -119,35 +131,20 @@ if($_POST['hospital_id']!='todos' && is_numeric($_POST['hospital_id']) ){
                 ?>
 
                 <form  method="post" action="?v=reportes&action=visualizar" accept-charset="utf-8" class="form-horizontal" id="sendSubmitSubmision">
-                    <div class="control-group">
+        <div class="control-group">
                         <label class="control-label"><span class="text-warning">*</span> Inicio:</label>
                         <div class="controls">
-                            <select class="input-large" name="anio-inicio" placeholder="año de la captura de los datos">
+                            <select class="input-large" name="fecha_id_init" placeholder="fecha">
                                 <?php 
-									if( is_array( $this->data["anios"]) ) {
-										foreach($this->data["anios"] AS $year){
+									if( is_array( $fechas) ) {
+										foreach($fechas AS $fec){
 								?>
 								
-								<option value="<?=$year['anio']?>"><?=$year['anio']?></option>
+								<option value="<?=$fec['fecha_id']?>"><?=$this->monthName($fec['mes']) . " " . $fec['anio']?></option>
                                 <?php
 										}
 									}
 								?>
-                            </select>
-							
-							<select class="input-large" name="mes-inicio" placeholder="mes de la captura de los datos">
-                                <option value="1">Enero</option>
-                                <option value="2">Febrero</option>
-                                <option value="3">Marzo</option>
-                                <option value="4">Abril</option>
-                                <option value="5">Mayo</option>
-                                <option value="6">Junio</option>
-                                <option value="7">Julio</option>
-                                <option value="8">Agosto</option>
-                                <option value="9">Septiembre</option>
-                                <option value="10">Octubre</option>
-                                <option value="11">Noviembre</option>
-                                <option value="12">Diciembre</option>                    
                             </select>
                         </div>            
                     </div>
@@ -155,106 +152,92 @@ if($_POST['hospital_id']!='todos' && is_numeric($_POST['hospital_id']) ){
                     <div class="control-group">
                         <label class="control-label"><span class="text-warning">*</span> Final:</label>
                         <div class="controls">
-                            <select class="input-large" name="anio-fin" placeholder="año de la captura de los datos">
+                            <select class="input-large" name="fecha_id_end" placeholder="fecha">
                                 <?php 
-									if( is_array( $this->data["anios"]) ) {
-										foreach($this->data["anios"] AS $year){
+									if( is_array( $fechas) ) {
+										foreach($fechas AS $fec){
 								?>
 								
-								<option value="<?=$year['anio']?>"><?=$year['anio']?></option>
+								<option value="<?=$fec['fecha_id']?>"><?=$this->monthName($fec['mes']) . " " . $fec['anio']?></option>
                                 <?php
 										}
 									}
 								?>
                             </select>
 							
-							<select class="input-large" name="mes-fin" placeholder="mes de la captura de los datos">
-                                <option value="1">Enero</option>
-                                <option value="2">Febrero</option>
-                                <option value="3">Marzo</option>
-                                <option value="4">Abril</option>
-                                <option value="5">Mayo</option>
-                                <option value="6">Junio</option>
-                                <option value="7">Julio</option>
-                                <option value="8">Agosto</option>
-                                <option value="9">Septiembre</option>
-                                <option value="10">Octubre</option>
-                                <option value="11">Noviembre</option>
-                                <option value="12">Diciembre</option>                    
-                            </select>
                         </div>
                     </div>
-                     <div class="control-group">
-                        <label class="control-label"><span class="text-warning">*</span> Estandar:</label>
-                        <div class="controls">
-                            <select name="estandar_id" class="input-xxlarge" id="select_estandar_combo_box">
-                              <option class="input-xxlarge" selected="selected" value="0">Indique un Estandar</option>
-                                    <?
+         <div class="control-group">
+            <label class="control-label"><span class="text-warning">*</span> Estandar:</label>
+            <div class="controls">
+                <select name="estandar_id" class="input-xxlarge" id="select_estandar_combo_box">
+                  <option class="input-xxlarge" selected="selected" value="0">Indique un Estandar</option>
+                        <?
 
-                                     $mselect =  new MysqlSelect();
-                                     $mselect->setTableReference("estandar");
-                                     $mselect->addFilter("estandar", "estado", "1", "=");
+                         $mselect =  new MysqlSelect();
+                         $mselect->setTableReference("estandar");
+                         $mselect->addFilter("estandar", "estado", "1", "=");
 
-                                     if($mselect->execute()){
-                                        $grid = $mselect->rows;                    
-                                        foreach($grid AS $r){
-                                            ?><option value="<?=$r['estandar_id']?>"><?=$r['nombre']?></option><?
-                                        }
+                         if($mselect->execute()){
+                            $grid = $mselect->rows;                    
+                            foreach($grid AS $r){
+                                ?><option value="<?=$r['estandar_id']?>"><?=$r['nombre']?></option><?
+                            }
 
-                                    }
+                        }
 
-                                     ?>
-                            </select>
-                        </div>            
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label"><span class="text-warning">*</span> Indicador:</label>
-                        <div class="controls">
-                            <select name="indicador_id" class="input-xxlarge" id="select_indicador_combo_box">
-                              <option class="input-xxlarge" selected="selected" value="0">Indique un Estandar</option>                        
-                            </select>
-                        </div>            
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label"><span class="text-warning">*</span> Servicio Intra-Hospitalario:</label>
-                        <div class="controls">
-                            <select class="input-xxlarge" name="servicio_intrahospitalario_id" id="select_intrahosp_combo_box">
-                                <option class="showFristSelect" value="0">elija antes un estandar</option>
+                         ?>
+                </select>
+            </div>            
+        </div>
+        <div class="control-group">
+            <label class="control-label"><span class="text-warning">*</span> Indicador:</label>
+            <div class="controls">
+                <select name="indicador_id" class="input-xxlarge" id="select_indicador_combo_box">
+                  <option class="input-xxlarge" selected="selected" value="0">Indique un Estandar</option>                        
+                </select>
+            </div>            
+        </div>
+        <div class="control-group">
+            <label class="control-label"><span class="text-warning">*</span> Servicio Intra-Hospitalario:</label>
+            <div class="controls">
+                <select class="input-xxlarge" name="servicio_intrahospitalario_id" id="select_intrahosp_combo_box">
+                    <option class="showFristSelect" value="0">elija antes un estandar</option>
+                    
+                </select>
+            </div>            
+        </div>
+        
+         <div class="control-group">
+            <label class="control-label"><span class="text-warning">*</span> Hospital:</label>
+            <div class="controls">
+                <select class="input-xxlarge" name="hospital_id" id="select_hospital_combo_box">
+                    <option selected="selected" value="todos">Todos los hospitales</option>
+                        <?
 
-                            </select>
-                        </div>            
-                    </div>
-
-                     <div class="control-group">
-                        <label class="control-label"><span class="text-warning">*</span> Hospital:</label>
-                        <div class="controls">
-                            <select class="input-xxlarge" name="hospital_id" id="select_hospital_combo_box">
-                                <option selected="selected" value="todos">Todos los hospitales</option>
-                                    <?
-
-                                     $mselect =  new MysqlSelect();
-                                     $mselect->setTableReference("hospital");
-
-
-                                     if($mselect->execute()){
-                                        $grid = $mselect->rows;                    
-                                        foreach($grid AS $r){
-                                            ?><option value="<?=$r['hospital_id']?>"><?=$r['nombre']?></option><?
-                                        }
-
-                                    }
-
-                                     ?>
-                            </select>
-                        </div>            
-                    </div>
-                    <div id="formIndicadores"></div>
+                         $mselect =  new MysqlSelect();
+                         $mselect->setTableReference("hospital");
 
 
+                         if($mselect->execute()){
+                            $grid = $mselect->rows;                    
+                            foreach($grid AS $r){
+                                ?><option value="<?=$r['hospital_id']?>"><?=$r['nombre']?></option><?
+                            }
 
-                  <br />
-                  <button type="submit" class="btn">Ver reporte</button>
-                </form>
+                        }
+
+                         ?>
+                </select>
+            </div>            
+        </div>
+        <div id="formIndicadores"></div>
+        
+    
+      
+      <br />
+      <button type="submit" class="btn">Ver reporte</button>
+    </form>
                 </div>
             </div>
             <div>
@@ -303,19 +286,17 @@ if($_POST['hospital_id']!='todos' && is_numeric($_POST['hospital_id']) ){
                   hAxis: {title: 'Mes',  titleTextStyle: {color: 'Black'}}
                 };
 
-                var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+                var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
                 chart.draw(data, options);
 
-                var chart = new google.visualization.AreaChart(document.getElementById('chart_divPorcentajes'));
+                var chart = new google.visualization.ColumnChart(document.getElementById('chart_divPorcentajes'));
                 chart.draw(dataPorcentajes, optionsPorcentajes);
               }
 
             </script>
-
-
-
+			<div id="chart_divPorcentajes" style="width: 900px; height: 500px;"></div>
             <div id="chart_div" style="width: 900px; height: 500px;"></div>
-            <div id="chart_divPorcentajes" style="width: 900px; height: 500px;"></div>
+            
             <?php 
             //la cantidad de 
             $colsTabla = count($this->sqlRows);
@@ -331,14 +312,14 @@ if($_POST['hospital_id']!='todos' && is_numeric($_POST['hospital_id']) ){
             ?>
 
             <div style="span9">
-                <h3>Fuente de datos</h3>
+                <h3>Fuente de datos cantidades absolutas</h3>
                 <table class="table">
                     <thead>
                         <tr>
 
                         <th><?=$descFila[0]?></th>
                         <?php for($i = 0; $i< $colsTabla; $i++){
-                            ?> <th><?= $this->covertirAMes($this->sqlRows[$i]['mes'])?><br />(Cant - %)</th> <?php
+                            ?> <th><?= $this->covertirAMes($this->sqlRows[$i]['mes']) . ", ".$this->sqlRows[$i]['anio']?></th> <?php
                         }    
                         ?>
                         <th>Totales</th>
@@ -347,16 +328,53 @@ if($_POST['hospital_id']!='todos' && is_numeric($_POST['hospital_id']) ){
                     <tbody>
                         <?php
                         for($j=1;$j<$filasTabla;$j++){
+                        	if($descFila[$j] != 'ingresos'){
                             ?><tr>
                             <td>Total <?=$descFila[$j]?></td>
                             <?php
                             $c = 0;
                             for($k = 0; $k< $colsTabla; $k++){
-                                ?> <td><?=$this->sqlRows[$k][$j]?> - <? echo round(($this->sqlRows[$k][$j] * 100)/$this->sqlRows[$k][1],2 ); ?>%</td> <?php
+                                ?> <td><?=$this->sqlRows[$k][$j]?> </td> <?php
                               $c +=  $this->sqlRows[$k][$j];
                             }
                             ?><td><?php echo $c;?></td><?php
-                            ?></tr><?php
+                            ?></tr><?php }
+                        }
+                        ?>
+                    </tbody>
+
+
+                </table>
+                
+            </div>
+            
+            <div style="span9">
+                <h3>Fuente de datos porcentajes</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+
+                        <th><?=$descFila[0]?></th>
+                        <?php for($i = 0; $i< $colsTabla; $i++){
+                            ?> <th><?= $this->covertirAMes($this->sqlRows[$i]['mes'])?></th> <?php
+                        }    
+                        ?>
+                        
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        for($j=1;$j<$filasTabla;$j++){
+                        	if($descFila[$j] != 'ingresos'){
+                            ?><tr>
+                            <td>Total <?=$descFila[$j]?></td>
+                            <?php
+                            $c = 0;
+                            for($k = 0; $k< $colsTabla; $k++){
+                                ?> <td> <? echo round(($this->sqlRows[$k][$j] * 100)/$this->sqlRows[$k][1],2 ); ?>%</td> <?php
+                              $c +=  $this->sqlRows[$k][$j];
+                            }
+                            ?></tr><?php }
                         }
                         ?>
                     </tbody>
@@ -372,3 +390,9 @@ if($_POST['hospital_id']!='todos' && is_numeric($_POST['hospital_id']) ){
 
 
 </div>
+<style>
+	table.table tbody tr:first-child {
+		display: none;
+	}
+	
+</style>

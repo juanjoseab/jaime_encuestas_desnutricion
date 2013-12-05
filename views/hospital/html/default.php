@@ -124,6 +124,12 @@
                         <li><a class="needAlertConfirm" href="?v=hospital&action=delete&itemId=<?=$r['hospital_id']?>">Eliminar</a></li>
                       <?php }?>
                       
+                      <?php if($this->acl->acl("Submision")){ ?>
+                        <li><a href="?v=medicionesblh&idh=<?=$r['hospital_id']?>">Agregar medicion BLH</a></li>
+                      <?php }?>
+                      
+                      
+                      
                   </ul>
                 </div>
                 
