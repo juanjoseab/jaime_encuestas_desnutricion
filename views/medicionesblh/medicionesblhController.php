@@ -260,48 +260,46 @@ class medicionesblhController extends Display {
     }
 
     function submitProduccion() {
-        if (
-                !isset($_POST['cantidad_cunas_servicio_recien_nacido']) ||
-                !is_int($_POST['cantidad_cunas_servicio_recien_nacido'])
-        ) {
-            echo ' 
-                <div class="alert alert-error" id="alertResponseBox">
-                  <button type="button" class="close" data-dismiss="alert">&times;</button>
-                  <h4>¡Ooops!</h4>
-                  Error guardando la medición de información básica <br />
-                  El campo -- Cunas en servicio de recien nacido -- debe ser un numero entero
-                </div>
-            ';
-            die;
-        }
 
-        if (
-                !isset($_POST['cantidad_camas_maternidad']) ||
-                !is_int($_POST['cantidad_camas_maternidad'])
-        ) {
-            echo ' 
-                <div class="alert alert-error" id="alertResponseBox">
-                  <button type="button" class="close" data-dismiss="alert">&times;</button>
-                  <h4>¡Ooops!</h4>
-                  Error guardando la medición de información básica <br />
-                  El campo -- Camas de maternidad -- debe ser un numero entero
-                </div>
-            ';
-            die;
-        }
-
-
-        $this->masterCtrl->requerirModelo("medicion_blh_info");
-        $item = new medicion_blh_info();
+        $this->masterCtrl->requerirModelo("medicion_blh_produccion");
+        $item = new medicion_blh_produccion();
         $item->postToObject();
-        $item->setFecha(date("Y-m-d"));
+        $hoy = date("Y-m-d") . "";
+        $item->setFecha($hoy);
+        $fmedicion = $this->stringToDate($_POST['anio'] . "-" . $_POST['mes'] . "-01");
+        $fmedicionLimit = $this->stringToDate($_POST['anio'] . "-" . $_POST['mes'] . "-10");
+        $item->setFechaMedicion($fmedicion);
+        if ($item->getFecha() > $fmedicionLimit) {
+            $item->setMedicionTardia(1);
+        } else {
+            $item->setMedicionTardia(0);
+        }
+
+        /* echo "<pre>";
+          print_r($item);
+          echo "</pre>";die; */
+
+        /* echo "<pre>";
+          print_r($item->validateObject());
+          echo "</pre>";die; */
+        if (!$item->validateObject()) {
+            echo ' 
+                <div class="alert alert-error" id="alertResponseBox">
+                  <button type="button" class="close" data-dismiss="alert">&times;</button>
+                  <h4>¡Error!</h4>
+                  Faltan datos, por favor ingrese todos los campos
+                </div>
+            ';
+            die;
+        }
+
         $this->transaction->loadClass($item);
         if ($this->transaction->save()) {
             echo ' 
                 <div class="alert alert-success" id="alertResponseBox">
                   <button type="button" class="close" data-dismiss="alert">&times;</button>
                   <h4>¡Éxito!</h4>
-                  Medición de informaci&oacute;n B&aacute;sica guardada con exito!!
+                  Medición producción guardada con exito!!
                 </div>
             ';
         } else {
@@ -309,7 +307,7 @@ class medicionesblhController extends Display {
                 <div class="alert alert-error" id="alertResponseBox">
                   <button type="button" class="close" data-dismiss="alert">&times;</button>
                   <h4>¡Error!</h4>
-                  Error guardando la medición de información básica
+                  Error guardando la medición de producción
                 </div>
             ';
         }
@@ -319,157 +317,188 @@ class medicionesblhController extends Display {
 
         die;
     }
-
-    function insert() {
-
-        if (!$_POST) {
-            $this->alert = true;
-            $this->alertMsg = "<h4>Alerta!</h4> No se han recibido datos";
-            $this->loadContentView("viewAgregar");
-            return false;
+    
+    function submitCalidad(){
+        $this->masterCtrl->requerirModelo("medicion_blh_calidad");
+        $item = new medicion_blh_calidad();
+        $item->postToObject();
+        $hoy = date("Y-m-d") . "";
+        $item->setFecha($hoy);
+        $fmedicion = $this->stringToDate($_POST['anio'] . "-" . $_POST['mes'] . "-01");
+        $fmedicionLimit = $this->stringToDate($_POST['anio'] . "-" . $_POST['mes'] . "-10");
+        $item->setFechaMedicion($fmedicion);
+        if ($item->getFecha() > $fmedicionLimit) {
+            $item->setMedicionTardia(1);
+        } else {
+            $item->setMedicionTardia(0);
         }
+        
+        $item->setCantidadAnalisisAcidezDormic($_POST['cantidad_aceptable_acidez_dormic'] + $_POST['cantidad_no_aceptable_acidez_dormic']);
+        $item->setCantidadAnalisisCrematocrito($_POST['cantidad_aceptable_crematocrito'] + $_POST['cantidad_no_aceptable_crematocrito']);
+        $item->setCantidadAnalisisColiformes($_POST['cantidad_aceptable_coliformes'] + $_POST['cantidad_no_aceptable_coliformes']);
 
-        if (!$_POST['nombre']) {
-            $this->error = true;
-            $this->errorMsg = "<h4>Campos incompletos!</h4> Los datos de nombre, estandar y estado son obligatorios";
-            $this->loadContentView("viewAgregar");
-            return false;
+        /*echo "<pre>";
+          print_r($item);
+          echo "</pre>";die; */
+
+        /* echo "<pre>";
+          print_r($item->validateObject());
+          echo "</pre>";die; */
+        if (!$item->validateObject()) {
+            echo ' 
+                <div class="alert alert-error" id="alertResponseBox">
+                  <button type="button" class="close" data-dismiss="alert">&times;</button>
+                  <h4>¡Error!</h4>
+                  Faltan datos, por favor ingrese todos los campos
+                </div>
+            ';
+            die;
         }
-
-        MasterController::requerirModelo("indicador");
-        $item = new indicador();
-        if ($_POST['nombre'] != '') {
-            $item->nombre['val'] = $_POST['nombre'];
-        }
-
-
-
-        if ($_POST['estandar_id'] != '') {
-            $item->estandar_id['val'] = $_POST['estandar_id'];
-        }
-
-
-        $item->descripcion['val'] = $_POST['descripcion'];
 
         $this->transaction->loadClass($item);
-
         if ($this->transaction->save()) {
-            $this->done = true;
-            $this->doneMsg = "indicador {$_POST[nombre]} Agregado con exito";
-            $this->loadContentView("viewAgregar");
-            return true;
-        }
-    }
-
-    function doSubmission() {
-        if (!$_POST) {
-            $this->alert = true;
-            $this->alertMsg = "<h4>Alerta!</h4> No se han recibido datos";
-            $this->loadContentView("submision");
-            $this->getContentView();
-            die;
+            echo ' 
+                <div class="alert alert-success" id="alertResponseBox">
+                  <button type="button" class="close" data-dismiss="alert">&times;</button>
+                  <h4>¡Éxito!</h4>
+                  Medición de calidad guardada con exito!!
+                </div>
+            ';
         } else {
-            MasterController::requerirModelo("submision");
-            $item = new submision();
-        }
-
-        if (!$_POST['nombre_personal']) {
-            $this->error = true;
-            $this->errorMsg = "<h4>Campos incompletos!</h4>El dato del nombre del personal es obligatorio";
-            $this->loadContentView("submision");
-            $this->getContentView();
-            die;
-        } else {
-            $item->nombre_personal['val'] = $_POST['nombre_personal'];
-        }
-        if (!$_POST['historia_clinica']) {
-            $this->error = true;
-            $this->errorMsg = "<h4>Campos incompletos!</h4>El dato de historia clinica es obligatorio";
-            $this->loadContentView("submision");
-            $this->getContentView();
-            die;
-        } else {
-            $item->nombre_personal['val'] = $_POST['historia_clinica'];
+            echo ' 
+                <div class="alert alert-error" id="alertResponseBox">
+                  <button type="button" class="close" data-dismiss="alert">&times;</button>
+                  <h4>¡Error!</h4>
+                  Error guardando la medición de calidad
+                </div>
+            ';
         }
 
 
-        if (!$_POST['date']) {
-            $this->error = true;
-            $this->errorMsg = "<h4>Campos incompletos!</h4> El dato de fecha es obligatorio";
-            $this->loadContentView("submision");
-            $this->getContentView();
-            die;
-        } else {
-            $item->setFechaId($_POST['date']);
-        }
+        //print_r($item);
 
-        if (!$_POST['estandar_id']) {
-            $this->error = true;
-            $this->errorMsg = "<h4>Campos incompletos!</h4>El dato del estandar es obligatorio";
-            $this->loadContentView("submision");
-            $this->getContentView();
-            die;
-        } else {
-            $item->estandar_id['val'] = $_POST['estandar_id'];
-        }
-
-        if (!$_POST['hospital_id']) {
-            $this->error = true;
-            $this->errorMsg = "<h4>Campos incompletos!</h4>El dato del nombre del Hospital es obligatorio";
-            $this->loadContentView("submision");
-            $this->getContentView();
-            die;
-        } else {
-            $item->hospital_id['val'] = $_POST['hospital_id'];
-        }
-
-        if (!$_POST['servicio_intrahospitalario_id']) {
-            $this->error = true;
-            $this->errorMsg = "<h4>Campos incompletos!</h4>El dato del nombre del servicio intrahospitalario es obligatorio";
-            $this->loadContentView("submision");
-            $this->getContentView();
-            die;
-        } else {
-            $item->servicio_intrahospitalario_id['val'] = $_POST['servicio_intrahospitalario_id'];
-        }
-
-
-        //$item->fecha['val'] = date("Y-m-d");
-        $item->cargo['val'] = $_POST['cargo'];
-        $item->historia_clinica['val'] = $_POST['historia_clinica'];
-
-
-        //$this->grid = $item;
-        //echo "<pre>"; print_r($_POST);echo "<pre>";
-        $hexIds = explode("578460921", $_POST['indres']);
-        $errFlag = false;
-        foreach ($hexIds AS $id) {
-            $itemToInsert = $item;
-            $id = hexdec($id);
-            $field = "indicador" . $id;
-            $itemToInsert->valor_indicador_id['val'] = $_POST[$field];
-            $itemToInsert->fecha['val'] = date("Y-m-d H:i:s");
-            $this->transaction->loadClass($itemToInsert);
-            if ($this->transaction->save()) {
-                
-            } else {
-                $errFlag = true;
-            }
-        }
-
-        if ($errFlag) {
-            $this->alert = true;
-            $this->alertMsg = "<h4>Alerta!</h4> Error al ingresar los datos";
-        } else {
-            $this->done = true;
-            $this->doneMsg = "Dato ingresados con exito";
-        }
-
-
-        $this->loadContentView("submision");
-        $this->getContentView();
         die;
     }
+    
+    
+    function submitFuncionamientoMensual(){
+        $this->masterCtrl->requerirModelo("medicion_blh_funcionamiento_mensual");
+        $item = new medicion_blh_funcionamiento_mensual();
+        $item->postToObject();
+        $hoy = date("Y-m-d") . "";
+        $item->setFecha($hoy);
+        $fmedicion = $this->stringToDate($_POST['anio'] . "-" . $_POST['mes'] . "-01");
+        $fmedicionLimit = $this->stringToDate($_POST['anio'] . "-" . $_POST['mes'] . "-10");
+        $item->setFechaMedicion($fmedicion);
+        if ($item->getFecha() > $fmedicionLimit) {
+            $item->setMedicionTardia(1);
+        } else {
+            $item->setMedicionTardia(0);
+        }
+        
+        /*echo "<pre>";
+          print_r($item);
+          echo "</pre>";die; */
+
+        /* echo "<pre>";
+          print_r($item->validateObject());
+          echo "</pre>";die; */
+        if (!$item->validateObject()) {
+            echo ' 
+                <div class="alert alert-error" id="alertResponseBox">
+                  <button type="button" class="close" data-dismiss="alert">&times;</button>
+                  <h4>¡Error!</h4>
+                  Faltan datos, por favor ingrese todos los campos
+                </div>
+            ';
+            die;
+        }
+
+        $this->transaction->loadClass($item);
+        if ($this->transaction->save()) {
+            echo ' 
+                <div class="alert alert-success" id="alertResponseBox">
+                  <button type="button" class="close" data-dismiss="alert">&times;</button>
+                  <h4>¡Éxito!</h4>
+                  Medición de funcionamiento mensual guardada con exito!!
+                </div>
+            ';
+        } else {
+            echo ' 
+                <div class="alert alert-error" id="alertResponseBox">
+                  <button type="button" class="close" data-dismiss="alert">&times;</button>
+                  <h4>¡Error!</h4>
+                  Error guardando la medición de funcionamiento mensual
+                </div>
+            ';
+        }
+
+
+        //print_r($item);
+
+        die;
+    }
+    
+    
+    
+    function submitFuncionamientoAnual(){
+        $this->masterCtrl->requerirModelo("medicion_blh_funcionamiento_anual");
+        $item = new medicion_blh_funcionamiento_anual();
+        $item->postToObject();
+        $hoy = date("Y-m-d") . "";
+        $item->setFecha($hoy);
+        $fmedicion = $this->stringToDate($_POST['anio'] . "-" . $_POST['mes'] . "-01");
+        $fmedicionLimit = $this->stringToDate($_POST['anio'] . "-" . $_POST['mes'] . "-10");
+        $item->setFechaMedicion($fmedicion);
+        if ($item->getFecha() > $fmedicionLimit) {
+            $item->setMedicionTardia(1);
+        } else {
+            $item->setMedicionTardia(0);
+        }
+        
+        /*echo "<pre>";
+          print_r($item);
+          echo "</pre>";die; */
+
+        /* echo "<pre>";
+          print_r($item->validateObject());
+          echo "</pre>";die; */
+        if (!$item->validateObject()) {
+            echo ' 
+                <div class="alert alert-error" id="alertResponseBox">
+                  <button type="button" class="close" data-dismiss="alert">&times;</button>
+                  <h4>¡Error!</h4>
+                  Faltan datos, por favor ingrese todos los campos
+                </div>
+            ';
+            die;
+        }
+
+        $this->transaction->loadClass($item);
+        if ($this->transaction->save()) {
+            echo ' 
+                <div class="alert alert-success" id="alertResponseBox">
+                  <button type="button" class="close" data-dismiss="alert">&times;</button>
+                  <h4>¡Éxito!</h4>
+                  Medición de funcionamiento anual guardada con exito!!
+                </div>
+            ';
+        } else {
+            echo ' 
+                <div class="alert alert-error" id="alertResponseBox">
+                  <button type="button" class="close" data-dismiss="alert">&times;</button>
+                  <h4>¡Error!</h4>
+                  Error guardando la medición de funcionamiento anual
+                </div>
+            ';
+        }
+
+
+        //print_r($item);
+
+        die;
+    }
+    
 
     function viewUpdateForm() {
         $this->loadContentView("updateForm");
@@ -567,6 +596,94 @@ class medicionesblhController extends Display {
         $this->loadContentView("default");
         $this->getContentView();
         die;
+    }
+
+    function getAvailableMonths() {
+        if (isset($_GET['idh']) && isset($_GET['anio']) && isset($_GET['medicion'])) {
+            $modelName = "";
+            $yearMonths = Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+            switch ($_GET['medicion']) {
+                case "calidad":
+                    $modelName = "medicion_blh_calidad";
+                    break;
+                case "produccion":
+                    $modelName = "medicion_blh_produccion";
+                    break;
+                case "funcionamiento":
+                    $modelName = "medicion_blh_funcionamiento_mensual";
+                    break;
+                case "func-semestral":
+                    $modelName = "medicion_blh_funcionamiento_semestral";
+                    break;
+            }
+
+            $this->masterCtrl->requerirModelo($modelName);
+            $model = new $modelName();
+            
+            $this->masterCtrl->requerirClase("MysqlSelect");
+            $sl = new MysqlSelect();
+            $tb = $model->getReference();
+            
+            $sl->setTableReference($tb);
+            $sl->addSelection($tb, "fecha_medicion");
+            $sl->addFilter($tb, "fecha_medicion", $_GET['anio'] . "-01-01", ">=");
+            $sl->addFilter($tb, "fecha_medicion", $_GET['anio'] . "-12-31", "<=");
+            $sl->addFilter($tb, "hospital_id", $_GET['idh'] , "=");
+            
+            $sl->execute();            
+
+
+
+            if ($sl->rowsCount()) {
+                
+                $months = array();
+                foreach ($sl->rows AS $d => $date ) {
+                    $parts = explode("-", $date[0]);
+                    $index = $parts[1] * 1;
+                    $months[$index] = $index;
+                }
+                //echo json_encode($months); die;
+                $monthsAvaliables = array_diff($yearMonths, $months);
+                //echo json_encode($monthsAvaliables); die;
+                foreach ($monthsAvaliables AS $mt => $mn ) {
+                    echo "<option value=\"".$mn."\">" . $this->monthName($mn) . "</option>";
+                }
+                
+                die;
+            } else {
+                for($m = 1; $m <= 12; $m++ ) {
+                    echo "<option value=\"".$m."\">" . $this->monthName($m) . "</option>";
+                }
+                die;
+            }
+
+            die;
+        } else {
+            
+        }
+    }
+    
+    function getAvailableYears($idh) {
+        $this->masterCtrl->requerirModelo("medicion_blh_funcionamiento_anual");
+        $model = new medicion_blh_funcionamiento_anual();
+        $selection = array("anio");
+        $filters = array("hospital_id" => Array($idh,"="));
+        $anios = $model->getList($selection, $filters);
+        $return = array();
+        foreach($anios AS $year){
+            $return[] = $year[0];
+        }
+        return $return;
+        
+        
+    }
+    
+    
+    
+
+    function stringToDate($date) {
+        $time = strtotime($date);
+        return date('Y-m-d', $time);
     }
 
 }

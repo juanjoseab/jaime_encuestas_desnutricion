@@ -96,7 +96,7 @@ class Display {
                         . '             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Registro de datos <b class="caret"></b></a>'
                         . '             <ul class="dropdown-menu">';
                 $this->mainMenu .= '<li ><a href="?v=submision">Estandares</a></li>';
-                $this->mainMenu .= '<li ><a href="?v=submision">Bancos de Leche Humana (BLH)</a></li>';
+                $this->mainMenu .= '<li ><a href="?v=medicionesblh&action=verIngresoMediciones">Bancos de Leche Humana (BLH)</a></li>';
 
                 $this->mainMenu .= '</ul><li>';
             }
@@ -108,10 +108,12 @@ class Display {
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reportes <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                   <li><a href="?v=reportes">Indicadores</a></li>
+                  <li><a href="?v=reportes&action=viewLineaBasal">Comparación de mediciones de indicadores</a></li>
                   <li><a href="#">Mediciones BLH</a></li>
                   
                 </ul>
-              </li>';
+              </li>
+              <li><a href="media/files/manual_usuario.pdf" target="_blank"><i class="icon-question-sign icon-white"></i> Manual</a></li>';
         } else {
             //$this->mainMenu .= '<li ><a href="?v=reportes">ver reportes</a></li>';
 
@@ -119,8 +121,7 @@ class Display {
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reportes <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                   <li><a href="?v=reportes">Indicadores</a></li>
-                  <li><a href="#">Mediciones BLH</a></li>
-                  
+                  <li><a href="?v=reportes&action=viewLineaBasal">Comparación de mediciones de indicadores</a></li>
                 </ul>
               </li>';
             $this->mainMenu .= '<li ><a href="?v=login">ingreso</a></li>';

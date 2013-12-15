@@ -19,7 +19,7 @@ if ($this->acl->acl("Submision")) {
 
 
 
-    
+
     <form class="form-horizontal" id="infoBasica">
 
         <fieldset>
@@ -48,7 +48,21 @@ if ($this->acl->acl("Submision")) {
                            name="inauguracion" 
                            value="<?= $info['inauguracion'] ?>" />
                 </div>
-            </div><div class="control-group">
+            </div>
+            <div class="control-group">
+                <label class="control-label" >Fecha de primera pasteurización</label>
+                <div class="controls">
+                    <input type="text" 
+                           class="signedField notNulleable datepicker" 
+                           required="required"  
+                           placeholder="Fecha de primera pasteurizacion"
+                           id="Fecha_primera_pasteurizacion"
+                           name="fecha_primera_pasteurizacion" 
+                           value="<?= $info['fecha_primera_pasteurizacion'] ?>" />
+                </div>
+            </div>
+
+            <div class="control-group">
                 <label class="control-label" >Cantidad de cunas en servicio de recien nacido</label>
                 <div class="controls">
                     <input type="text" class=" intField signedField notNulleable" maxsize=""  
@@ -58,7 +72,9 @@ if ($this->acl->acl("Submision")) {
                            name="cantidad_cunas_servicio_recien_nacido" 
                            value="<?= $info['cantidad_cunas_servicio_recien_nacido'] ?>" />
                 </div>
-            </div><div class="control-group">
+            </div>
+
+            <div class="control-group">
                 <label class="control-label" >Cantidad de camas en maternidad</label>
                 <div class="controls">
                     <input type="text" class=" intField signedField notNulleable" maxsize=""  
@@ -66,7 +82,30 @@ if ($this->acl->acl("Submision")) {
                            id="Cantidad Camas Maternidad"  name="cantidad_camas_maternidad" 
                            value="<?= $info['cantidad_camas_maternidad'] ?>" />
                 </div>
-            </div><div class="control-group">
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" >Días a la semana que se pauteuriza</label>
+                <div class="controls">
+                    <input type="text" class=" intField signedField notNulleable" maxsize=""  
+                           required="required"  placeholder="Días a la semana que se pauteuriza"  
+                           id="dias_pasteurizacion_semanal"  name="dias_pasteurizacion_semanal" 
+                           value="<?= $info['dias_pasteurizacion_semanal'] ?>" />
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" >Veces al día que se pauteuriza</label>
+                <div class="controls">
+                    <input type="text" class=" intField signedField notNulleable" maxsize=""  
+                           required="required"  placeholder="Veces al dia que se pauteuriza"  
+                           id="veces_pasteurizacion_diaria"  name="veces_pasteurizacion_diaria" 
+                           value="<?= $info['veces_pasteurizacion_diaria'] ?>" />
+                </div>
+            </div>
+
+
+            <div class="control-group">
                 <label class="control-label" >Nombre de la coordinadora</label>
                 <div class="controls">
                     <input type="text" class=" stringField signedField notNulleable" 

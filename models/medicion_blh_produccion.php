@@ -1,6 +1,6 @@
 <?php
 class medicion_blh_produccion extends OrmClass{
-    	protected $_datasource = "medicion_blh_produccion";	public $medicion_blh_produccion_id = Array ('type' => 'int', 'size' => '10', 'unsigned' => TRUE, 'null' =>  'NO', 'primary' => TRUE, 'auto_increment' => TRUE, 'val'=>''); 	public $fecha = Array ('type' => '', 'null' =>  'NO', 'val'=>''); 	public $fecha_medicion = Array ('type' => '', 'null' =>  'NO', 'val'=>''); 	public $litros_leche_recolectada = Array ('type' => 'varchar', 'null' =>  'NO', 'val'=>''); 	public $litros_leche_distribuida = Array ('type' => 'varchar', 'null' =>  'NO', 'val'=>''); 	public $uso_leche_recolectada = Array ('type' => 'varchar', 'null' =>  'YES', 'val'=>''); 	public $rn_atendidos_ucip_neumo_rn = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $rn_tratados_leche_humana = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $cobertura_atencion = Array ('type' => 'varchar', 'null' =>  'NO', 'val'=>''); 	public $cantidad_partos_atendidos = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $cantidad_madres_donadoras = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $captacion_donadoras = Array ('type' => 'varchar', 'null' =>  'NO', 'val'=>''); 	public $hospital_id = Array ('type' => 'int', 'size' => '10', 'unsigned' => TRUE, 'null' =>  'NO', 'foreign' => TRUE, 'reference' => 'hospital', 'val'=>''); 	public $medicion_tardia = Array ('type' => 'tinyint', 'null' =>  'NO', 'val'=>''); 	function getReference() {
+    	protected $_datasource = "medicion_blh_produccion";	public $medicion_blh_produccion_id = Array ('type' => 'int', 'size' => '10', 'unsigned' => TRUE, 'null' =>  'NO', 'primary' => TRUE, 'auto_increment' => TRUE, 'val'=>''); 	public $fecha = Array ('type' => '', 'null' =>  'NO', 'val'=>''); 	public $fecha_medicion = Array ('type' => '', 'null' =>  'NO', 'val'=>''); 	public $litros_leche_recolectada = Array ('type' => '', 'null' =>  'NO', 'val'=>''); 	public $litros_leche_distribuida = Array ('type' => '', 'null' =>  'NO', 'val'=>''); 	public $litros_leche_recolectada_intrahospitalaria = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $litros_leche_recolectada_extrahospitalaria = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $litros_leche_pasteurizada = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $litros_leche_descartada = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $uso_leche_recolectada = Array ('type' => '', 'null' =>  'YES', 'val'=>''); 	public $rn_atendidos_ucip_neumo_rn = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $rn_tratados_leche_humana = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $cobertura_atencion = Array ('type' => '', 'null' =>  'NO', 'val'=>''); 	public $cantidad_partos_atendidos = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $cantidad_madres_donadoras = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $captacion_donadoras = Array ('type' => '', 'null' =>  'NO', 'val'=>''); 	public $numero_madres_donadoras_internas = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $numero_madres_donadoras_externas = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $hospital_id = Array ('type' => 'int', 'size' => '10', 'unsigned' => TRUE, 'null' =>  'NO', 'foreign' => TRUE, 'reference' => 'hospital', 'val'=>''); 	public $medicion_tardia = Array ('type' => 'tinyint', 'null' =>  'NO', 'val'=>''); 	function getReference() {
             return $this->_datasource;
         }	function setMedicionBlhProduccionId($var){
                 $this->medicion_blh_produccion_id['val'] = $var;
@@ -22,6 +22,22 @@ class medicion_blh_produccion extends OrmClass{
                 $this->litros_leche_distribuida['val'] = $var;
              }	function getLitrosLecheDistribuida(){
                 return $this->litros_leche_distribuida['val'];
+             }	function setLitrosLecheRecolectadaIntrahospitalaria($var){
+                $this->litros_leche_recolectada_intrahospitalaria['val'] = $var;
+             }	function getLitrosLecheRecolectadaIntrahospitalaria(){
+                return $this->litros_leche_recolectada_intrahospitalaria['val'];
+             }	function setLitrosLecheRecolectadaExtrahospitalaria($var){
+                $this->litros_leche_recolectada_extrahospitalaria['val'] = $var;
+             }	function getLitrosLecheRecolectadaExtrahospitalaria(){
+                return $this->litros_leche_recolectada_extrahospitalaria['val'];
+             }	function setLitrosLechePasteurizada($var){
+                $this->litros_leche_pasteurizada['val'] = $var;
+             }	function getLitrosLechePasteurizada(){
+                return $this->litros_leche_pasteurizada['val'];
+             }	function setLitrosLecheDescartada($var){
+                $this->litros_leche_descartada['val'] = $var;
+             }	function getLitrosLecheDescartada(){
+                return $this->litros_leche_descartada['val'];
              }	function setUsoLecheRecolectada($var){
                 $this->uso_leche_recolectada['val'] = $var;
              }	function getUsoLecheRecolectada(){
@@ -50,6 +66,14 @@ class medicion_blh_produccion extends OrmClass{
                 $this->captacion_donadoras['val'] = $var;
              }	function getCaptacionDonadoras(){
                 return $this->captacion_donadoras['val'];
+             }	function setNumeroMadresDonadorasInternas($var){
+                $this->numero_madres_donadoras_internas['val'] = $var;
+             }	function getNumeroMadresDonadorasInternas(){
+                return $this->numero_madres_donadoras_internas['val'];
+             }	function setNumeroMadresDonadorasExternas($var){
+                $this->numero_madres_donadoras_externas['val'] = $var;
+             }	function getNumeroMadresDonadorasExternas(){
+                return $this->numero_madres_donadoras_externas['val'];
              }	function setHospitalId($var){
                 $this->hospital_id['val'] = $var;
              }	function getHospitalId(){

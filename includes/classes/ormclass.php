@@ -320,6 +320,37 @@ class OrmClass {
         }
     }
 
+    function validateObject($validatePK = False) {
+
+        //return get_object_vars($this);
+        $f = get_object_vars($this);
+        foreach ($f AS $i => $v) {
+            if ($i != '_datasource') {
+                $array = $this->$i;
+                $function = $this->returnfunctionGet($i);
+                if ($validatePK && array_key_exists("primary", $array) && $array['primary'] == TRUE) {
+                    $exitsKey = array_key_exists("null", $array);
+                    if ($exitsKey) {
+                        //echo $i . " - " . $this->$function() . "<br />";
+                        if ($array['null'] == 'NO' && !$this->$function()) {
+                          return false;
+                          }
+                    }
+                }elseif(!array_key_exists("primary", $array) || $array['primary'] != TRUE){
+                    $exitsKey = array_key_exists("null", $array);
+                    if ($exitsKey) {
+                        //echo $i . " - " . $this->$function() . "<br />";
+                        if ($array['null'] == 'NO' && !$this->$function()) {
+                          return false;
+                          }
+                    }
+                }
+            }
+        }
+        
+        return true;
+    }
+
     function getParentReferences($fk) {
         MasterController::requerirModelo($fk);
         $item = new $fk();
@@ -396,7 +427,7 @@ class OrmClass {
             }
         }
     }
-       
+
     function returnfunctionSet($property) {
         return "set" . str_replace(" ", "", ucwords(str_replace("_", " ", $property)));
     }
@@ -404,11 +435,11 @@ class OrmClass {
     function returnfunctionGet($property) {
         return "get" . str_replace(" ", "", ucwords(str_replace("_", " ", $property)));
     }
-    
+
     function getList(array $selection = array(), array $filters = array()) {
-        
+
         if (method_exists($this, 'getReference')) {
-            
+
             MasterController::requerirClase("MysqlSelect");
             $sl = new MysqlSelect();
             $sl->setTableReference($this->getReference());
@@ -423,19 +454,16 @@ class OrmClass {
                     $sl->addFilter($table, $field, $value[0], $value[1]);
                 }
             }
-            if ($sl->execute()) {                
-               return $sl->rows;               
-            }else{
-               return false;
+            if ($sl->execute()) {
+                return $sl->rows;
+            } else {
+                return false;
             }
-            
         } else {
             return false;
         }
     }
-    
-    
-    
+
 }
 
 ?>

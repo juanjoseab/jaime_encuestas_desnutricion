@@ -31,6 +31,7 @@ if ($this->acl->acl("Submision")) {
         <br />
         <br />
         <select size="20" name="hospital_id"  id="hospitalCombo" style="width: 375px;">
+
             <?php
             foreach ($hospitales AS $h) {
                 ?> <option value="<?= $h['hospital_id'] ?>"><?= $h['nombre'] ?></option> <?php
@@ -169,6 +170,8 @@ if ($this->acl->acl("Submision")) {
                     $("#formLoaderBox").append(res);
                     bind_datepicker_to_date_fields();
                     bindTabs();
+                    bindAjaxDates();
+                    numericOnly();
                 }
             })
         });
@@ -191,6 +194,85 @@ if ($this->acl->acl("Submision")) {
                 }
             })
         });
+
+
+        $("body").on("click", "#sbmtProd", function() {
+            var values = $("form#infoProduccion").serialize();
+            
+            $.ajax({
+                url: '?v=medicionesblh&action=submitProduccion',
+                type: 'POST',
+                data: values,
+                success: function(res) {
+                    $("#modalBodyP *").remove();
+                    $("#modalBodyP").append(res);
+                    $("#myModal").modal("show");
+                    $('form#infoProduccion input[type="text"]').val("");
+                    $('form#infoProduccion .text-info strong').text("");
+
+                    //alert(res);
+                }
+            })
+        });
+        
+        
+        $("body").on("click", "#sbmtCalidad", function() {
+            var values = $("form#infoCalidad").serialize();
+            
+            $.ajax({
+                url: '?v=medicionesblh&action=submitCalidad',
+                type: 'POST',
+                data: values,
+                success: function(res) {
+                    $("#modalBodyP *").remove();
+                    $("#modalBodyP").append(res);
+                    $("#myModal").modal("show");
+                    $('form#infoCalidad input[type="text"]').val("");
+                    $('form#infoCalidad .text-info strong').text("");
+
+                    //alert(res);
+                }
+            })
+        });
+        
+        
+        $("body").on("click", "#sbmtFuncMensual", function() {
+            var values = $("form#infoFuncionamientoMensual").serialize();
+            
+            $.ajax({
+                url: '?v=medicionesblh&action=submitFuncionamientoMensual',
+                type: 'POST',
+                data: values,
+                success: function(res) {
+                    $("#modalBodyP *").remove();
+                    $("#modalBodyP").append(res);
+                    $("#myModal").modal("show");
+                    $('form#infoFuncionamientoMensual input[type="text"]').val("");
+                    //$('form#infoFuncionamientoMensual .text-info strong').text("");
+
+                    //alert(res);
+                }
+            })
+        });
+        
+        $("body").on("click", "#sbmtFuncAnual", function() {
+            var values = $("form#infoFuncionamientoAnual").serialize();
+            
+            $.ajax({
+                url: '?v=medicionesblh&action=submitFuncionamientoAnual',
+                type: 'POST',
+                data: values,
+                success: function(res) {
+                    $("#modalBodyP *").remove();
+                    $("#modalBodyP").append(res);
+                    $("#myModal").modal("show");
+                    $('form#infoFuncionamientoAnual input[type="text"]').val("");
+                }
+            })
+        });
+        
+
+
         function bindTabs() {
             $('#myTab a').click(function(e) {
                 //e.preventDefault();
@@ -199,6 +281,239 @@ if ($this->acl->acl("Submision")) {
             })
         }
 
+        function bindAjaxDates() {
+            $('select.bindAnio').change(function() {
+                 $("#" + $(this).attr('rel') + "-mes option").remove();
+                if(!$(this).val()){                   
+                    return false;
+                }
+                var thisSelect = $(this);
+                var monthSelectTag = $("#" + $(this).attr('rel') + "-mes");
+                var uri = "?v=medicionesblh&action=getAvailableMonths&idh=" +
+                        thisSelect.attr("relhid") + "&anio=" +
+                        thisSelect.val() + "&medicion=" + thisSelect.attr("rel");
+                //alert (uri);
+                $.ajax({
+                    type: "GET",
+                    url: uri,
+                    data: "",
+                    success: function(res) {
+                        monthSelectTag.append(res);
+                        //console.log(res);
+                    }
+                });
+            });
+
+            function converToMonthName(monthNumber) {
+                var Months = new Array("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre");
+                return Months[monthNumber];
+            }
+        }
+
+
+        $("body").on("blur", "#LitrosLecheRecolectada, #LitrosLecheDistribuida", function() {
+            var llr = $("#LitrosLecheRecolectada").val();
+            var lld = $("#LitrosLecheDistribuida").val();
+            if (
+                    (llr && lld)
+                    &&
+                    (!isNaN(llr) && llr > 0)
+                    &&
+                    (!isNaN(lld) && lld > 0)
+                    ) {
+                var result = ((lld / llr) * 100);
+                $("#usolecherecolectada").val(result.toFixed(2));
+                $("#usolecherecolectadaLabel strong").text(result.toFixed(2) + "%");
+            }
+        });
+
+        $("body").on("blur", "#RnTratadosLecheHumana, #RnAtendidosUcipNeumoRn", function() {
+            var num = $("#RnTratadosLecheHumana").val();
+            var den = $("#RnAtendidosUcipNeumoRn").val();
+            if (
+                    (num && den)
+                    &&
+                    (!isNaN(num) && num > 0)
+                    &&
+                    (!isNaN(den) && den > 0)
+                    ) {
+                var result = ((num / den) * 100);
+                $("#coberturaatencion").val(result.toFixed(2));
+                $("#coberturaatencionLabel strong").text(result.toFixed(2) + "%");
+            }
+        });
+        
+        
+        $("body").on("blur", "#litros_leche_recolectada_intrahospitalaria, #litros_leche_recolectada_extrahospitalaria", function() {
+            var num = $("#litros_leche_recolectada_intrahospitalaria").val();
+            var den = $("#litros_leche_recolectada_extrahospitalaria").val();
+            if (
+                    (num || den)
+                    &&
+                    (!isNaN(num) && num > 0)
+                    ||
+                    (!isNaN(den) && den > 0)
+                    ) {
+                var result = (num * 1) + (den * 1);
+                $("#LitrosLecheRecolectada").val(result);
+                $("#LitrosLecheRecolectadaLabel strong").text(result);
+            }
+        });
+        
+        
+        $("body").on("blur", "#CantidadMadresDonadorasInternas, #CantidadMadresDonadorasExternas", function() {
+            var num = $("#CantidadMadresDonadorasInternas").val();
+            var den = $("#CantidadMadresDonadorasExternas").val();
+            if (
+                    (num || den)
+                    &&
+                    (!isNaN(num) && num > 0)
+                    ||
+                    (!isNaN(den) && den > 0)
+                    ) {
+                var result = (num * 1) + (den * 1);
+                $("#CantidadMadresDonadoras").val(result);
+                $("#CantidadMadresDonadorasLabel strong").text(result);
+                var dd = $("#CantidadPartosAtendidos").val();
+                if(dd && !isNaN(dd) && dd > 0 ){                    
+                    var result2 = (result / dd) * 100
+                    $("#captaciondonadoras").val(result2.toFixed(2));
+                    $("#captaciondonadorasLabel strong").text(result2.toFixed(2) + "%");
+                }
+                
+            }
+        });
+
+        $("body").on("blur", "#CantidadMadresDonadoras, #CantidadPartosAtendidos", function() {
+            var num = $("#CantidadMadresDonadoras").val();
+            var den = $("#CantidadPartosAtendidos").val();
+            if (
+                    (num && den)
+                    &&
+                    (!isNaN(num) && num > 0)
+                    &&
+                    (!isNaN(den) && den > 0)
+                    ) {
+                var result = ((num / den) * 100);
+                $("#captaciondonadoras").val(result.toFixed(2));
+                $("#captaciondonadorasLabel strong").text(result.toFixed(2) + "%");
+            }
+        });
+        
+        
+        $("body").on("keyup", "#CantidadAceptableAcidezDormic, #CantidadNoAceptableAcidezDormic", function() {
+            var llr = $("#CantidadNoAceptableAcidezDormic").val();
+            var lld = $("#CantidadAceptableAcidezDormic").val();
+            
+            if (
+                    (llr || lld)
+                    &&
+                        (
+                            (!isNaN(llr) && llr > 0)
+                            ||
+                            (!isNaN(lld) && lld > 0)
+                        )                    
+                    ) {
+                
+                var res = (llr * 1) + (lld * 1);
+                $("#TotalAcidezDormic").val(res);
+                $("#TotalAcidezDormicLabel strong").text(res);
+            }
+            
+            
+            if (
+                    (llr && lld)
+                    &&
+                    (!isNaN(llr) && llr > 0)
+                    &&
+                    (!isNaN(lld) && lld > 0)
+                    ) {
+                var denominador = parseFloat(llr) + parseFloat(lld);
+                var result = ((lld / denominador) * 100);
+                $("#ConformidadAcidezDormic").val(result.toFixed(2));
+                $("#ConformidadAcidezDormicLabel strong").text(result.toFixed(2) + "%");
+            }
+        });
+        
+        
+        $("body").on("keyup", "#CantidadAceptableCrematocrito, #CantidadNoAceptableCrematocrito", function() {
+            var llr = $("#CantidadNoAceptableCrematocrito").val();
+            var lld = $("#CantidadAceptableCrematocrito").val();
+            
+            if (
+                    (llr || lld)
+                    &&
+                        (
+                            (!isNaN(llr) && llr > 0)
+                            ||
+                            (!isNaN(lld) && lld > 0)
+                        )                    
+                    ) {
+                
+                var res = (llr * 1) + (lld * 1);
+                $("#TotalCrematocrito").val(res);
+                $("#TotalCrematocritoLabel strong").text(res);
+            }
+            
+            
+            
+            if (
+                    (llr && lld)
+                    &&
+                    (!isNaN(llr) && llr > 0)
+                    &&
+                    (!isNaN(lld) && lld > 0)
+                    ) {
+                var denominador = parseFloat(llr) + parseFloat(lld);
+                var result = ((lld / denominador) * 100);
+                $("#ConformidadCrematocrito").val(result.toFixed(2));
+                $("#ConformidadCrematocritoLabel strong").text(result.toFixed(2) + "%");
+            }
+        });
+        
+        
+        $("body").on("keyup", "#CantidadAceptableColiformes, #CantidadNoAceptableColiformes", function() {
+            var llr = $("#CantidadNoAceptableColiformes").val();
+            var lld = $("#CantidadAceptableColiformes").val();
+            
+            if (
+                    (llr || lld)
+                    &&
+                        (
+                            (!isNaN(llr) && llr > 0)
+                            ||
+                            (!isNaN(lld) && lld > 0)
+                        )                    
+                    ) {
+                
+                var res = (llr * 1) + (lld * 1);
+                $("#TotalColiformes").val(res);
+                $("#TotalColiformesLabel strong").text(res);
+            }
+            
+            
+            
+            if (
+                    (llr && lld)
+                    &&
+                    (!isNaN(llr) && llr > 0)
+                    &&
+                    (!isNaN(lld) && lld > 0)
+                    ) {
+                var denominador = parseFloat(llr) + parseFloat(lld);
+                var result = ((lld / denominador) * 100);
+                $("#ConformidadColiformes").val(result.toFixed(2));
+                $("#ConformidadColiformesLabel strong").text(result.toFixed(2) + "%");
+            }
+        });
+        
+        
+
+        function numericOnly() {
+            jQuery('.numericfield').keyup(function() {
+                this.value = this.value.replace(/[^0-9\.]/g, '');
+            });
+        }
 
     })
 </script>

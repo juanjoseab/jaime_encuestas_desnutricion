@@ -2,6 +2,16 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/xampp/htdocs/projects/jaime_encuestas_desnutricion/libraries/system/display.php</file>
+            <file>file:/C:/xampp/htdocs/projects/jaime_encuestas_desnutricion/views/medicionesblh/html/mediciones.php</file>
+            <file>file:/C:/xampp/htdocs/projects/jaime_encuestas_desnutricion/views/medicionesblh/html/default.php</file>
+            <file>file:/C:/xampp/htdocs/projects/jaime_encuestas_desnutricion/views/municipio/html/default.php</file>
+            <file>file:/C:/xampp/htdocs/projects/jaime_encuestas_desnutricion/views/municipio/municipioController.php</file>
+            <file>file:/C:/xampp/htdocs/projects/jaime_encuestas_desnutricion/views/medicionesblh/medicionesblhController.php</file>
+            <file>file:/C:/xampp/htdocs/projects/jaime_encuestas_desnutricion/includes/classes/ormclass.php</file>
+            <file>file:/C:/xampp/htdocs/projects/jaime_encuestas_desnutricion/views/medicionesblh/html/infoBasicaForm.php</file>
+            <file>file:/C:/xampp/htdocs/projects/jaime_encuestas_desnutricion/views/medicionesblh/html/listadoHospitales.php</file>
+        </group>
     </open-files>
 </project-private>

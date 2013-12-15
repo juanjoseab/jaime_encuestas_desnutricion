@@ -53,6 +53,20 @@ if($_GET){
                 }
             }
             break;
+        case 'indicadoresNotAll':
+            if($_GET['itemId']){
+                $sl->setTableReference("indicador");
+                $sl->addFilter("indicador", "estandar_id", $_GET['itemId'], "=");
+                
+                if ( $sl->execute() ){
+                    if (count($sl->rows)){                        
+                        foreach($sl->rows AS $r){
+                            ?> <option value="<?=$r['indicador_id']?>"><?=$r['nombre']?></option> <?php
+                        }
+                    }
+                }
+            }
+            break;
         
         
         
