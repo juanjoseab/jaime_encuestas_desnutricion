@@ -109,7 +109,7 @@ class Display {
                 <ul class="dropdown-menu">
                   <li><a href="?v=reportes">Indicadores</a></li>
                   <li><a href="?v=reportes&action=viewLineaBasal">Comparación de mediciones de indicadores</a></li>
-                  <li><a href="#">Mediciones BLH</a></li>
+                  <li><a href="?v=reportesblh">Mediciones BLH</a></li>
                   
                 </ul>
               </li>
