@@ -4,10 +4,9 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/xampp/htdocs/projects/jaime_encuestas_desnutricion/libraries/system/display.php</file>
-            <file>file:/C:/xampp/htdocs/projects/jaime_encuestas_desnutricion/views/reportes/reportesController.php</file>
-            <file>file:/C:/xampp/htdocs/projects/jaime_encuestas_desnutricion/views/reportes/html/default.php</file>
-            <file>file:/C:/xampp/htdocs/projects/jaime_encuestas_desnutricion/views/reportes/html/lineaBasal.php</file>
-            <file>file:/C:/xampp/htdocs/projects/jaime_encuestas_desnutricion/views/reportes/html/getReferencias.php</file>
+            <file>file:/C:/xampp/htdocs/projects/jaime_encuestas_desnutricion/views/reportesblh/reportesblhController.php</file>
+            <file>file:/C:/xampp/htdocs/projects/jaime_encuestas_desnutricion/views/medicionesblh/html/listadoHospitales.php</file>
+            <file>file:/C:/xampp/htdocs/projects/jaime_encuestas_desnutricion/views/reportesblh/html/default.php</file>
         </group>
     </open-files>
 </project-private>

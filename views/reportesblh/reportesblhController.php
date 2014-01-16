@@ -33,6 +33,103 @@ class reportesblhController extends Display {
 
         require_once P_THEME . DS . "index.php";
     }
+	
+	
+	
+	public function viewReport()
+	{
+		
+	}
+	
+	function getBasicInfoTable(){
+		MasterController::requerirModelo("medicion_blh_info");
+		$item = new medicion_blh_info();		
+		return $item->getList(Array(),Array());		
+	}
+	
+	function getProductionTable(){
+		$init = $_POST['fechainicio'];
+		$end = $_POST['fechafin'];
+		
+		MasterController::requerirClase("MysqlSelect");
+		$ms = new MysqlSelect();
+		$ms->setTableReference('medicion_blh_produccion m');
+		$ms->addSelection("hospital", "nombre", "hospital");
+		$ms->addCustomSelection("SUM(m.litros_leche_recolectada) as litros_leche_recolectada");
+		$ms->addCustomSelection("SUM(m.litros_leche_distribuida) as litros_leche_distribuida");
+		$ms->addCustomSelection("SUM(m.litros_leche_recolectada_extrahospitalaria) as litros_leche_recolectada_extrahospitalaria");
+		$ms->addCustomSelection("SUM(m.litros_leche_recolectada_intrahospitalaria) as litros_leche_recolectada_intrahospitalaria");
+		$ms->addCustomSelection("SUM(m.litros_leche_pasteurizada) as litros_leche_pasteurizada");
+		$ms->addCustomSelection("SUM(m.litros_leche_descartada) as litros_leche_descartada");
+		$ms->addCustomSelection("AVG(m.uso_leche_recolectada) as uso_leche_recolectada");
+		$ms->addCustomSelection("SUM(m.rn_atendidos_ucip_neumo_rn) as rn_atendidos_ucip_neumo_rn");
+		$ms->addCustomSelection("SUM(m.rn_tratados_leche_humana) as rn_tratados_leche_humana");
+		$ms->addCustomSelection("AVG(m.cobertura_atencion) as cobertura_atencion");
+		$ms->addCustomSelection("SUM(m.cantidad_partos_atendidos) as cantidad_partos_atendidos");
+		$ms->addCustomSelection("SUM(m.cantidad_madres_donadoras) as cantidad_madres_donadoras");
+		$ms->addCustomSelection("SUM(m.numero_madres_donadoras_internas) as numero_madres_donadoras_internas");
+		$ms->addCustomSelection("SUM(m.numero_madres_donadoras_externas) as numero_madres_donadoras_externas");
+		$ms->addCustomSelection("SUM(m.captacion_donadoras) as captacion_donadoras");
+		$ms->addJoin("hospital","hospital_id","=","m","hospital_id","LEFT");
+		$ms->addFilter("m","fecha_medicion",$init,">=");
+		$ms->addFilter("m","fecha_medicion",$end,"<=");
+		$ms->addGroup("hospital","hospital_id");
+		$ms->execute();
+		
+		$table =  "
+			<h3> Variables de producci&oacute;n</h3>
+			<table class=\"table table-condensed table-bordered\">
+				<tr>
+					<th>Hospital</th>
+					<th>Leche Recolectada (L)</th>
+					<th>Leche Recolectada intra hospitalaria (L)</th>
+					<th>Leche Recolectada extra hospitalaria (L)</th>
+					<th>Leche Distribuida (L)</th>
+					<th>Leche Pasteurizada (L)</th>
+					<th>Leche Descartada (L)</th>
+					<th>Uso de la leche recolectada</th>
+					<th>RN Atendidos en UCIP / Neumologia / Recien Nacido</th>
+					<th>RN tratados con Leche Humana</th>
+					<th>cobertura_atencion</th>
+					<th>Partos atendidos</th>
+					<th>Madres donadoras</th>
+					<th>Madres donadoras internas</th>
+					<th>Madres donadoras externas</th>
+					<th>Captacion de donadoras</th>
+				</tr>
+		" ;
+		foreach($ms->rows AS $row){
+			$table .="
+					<tr>
+					<td>{$row[hospital]}</td>
+					<td>{$row[litros_leche_recolectada]}</td>
+					<td>{$row[litros_leche_recolectada_intrahospitalaria]}</td>
+					<td>{$row[litros_leche_recolectada_extrahospitalaria]}</td>
+					<td>{$row[litros_leche_distribuida]}</td>
+					<td>{$row[litros_leche_pasteurizada]}</td>
+					<td>{$row[litros_leche_descartada]}</td>
+					<td>{$row[uso_leche_recolectada]}</td>
+					<td>{$row[rn_atendidos_ucip_neumo_rn]}</td>
+					<td>{$row[rn_tratados_leche_humana]}</td>
+					<td>{$row[cobertura_atencion]}</td>
+					<td>{$row[cantidad_partos_atendidos]}</td>
+					<td>{$row[cantidad_madres_donadoras]}</td>
+					<td>{$row[numero_madres_donadoras_internas]}</td>
+					<td>{$row[numero_madres_donadoras_externas]}</td>
+					<td>{$row[captacion_donadoras]}</td>
+				</tr>
+				";
+		}
+		
+		$table .="</table>";
+		echo $table; die; 
+		
+		//echo "<pre>"; print_r($ms->rows); echo "</pre>"; die;
+		
+		//return $item->getList(Array(),$filters);		
+	}
+	
+	
 
     
 

@@ -93,7 +93,7 @@ $fechas = $fecha->getList(array(), array());
 
                 <div class="control-group">
                     <div class="controls">
-                        <button type="submit" class="btn">Ver reporte</button>
+                        <button type="button" id="repGeneral" class="btn">Ver reporte</button>
                     </div>            
                 </div>
 
@@ -102,7 +102,7 @@ $fechas = $fecha->getList(array(), array());
             </form>
 
 
-            <div id="formGeneralReportResponse"></div>
+            
 
         </div>
         <div class="tab-pane" id="profile">
@@ -115,6 +115,11 @@ $fechas = $fecha->getList(array(), array());
 
 
 </div>
+
+
+	<div id="formGeneralReportResponse">            	
+          	
+    </div>
 
 <script type="text/javascript" src="template/js/jquery-ui-1.10.3.custom.min.js"></script>
 <link href="template/css/jqui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet">
@@ -153,14 +158,15 @@ $fechas = $fecha->getList(array(), array());
             $(this).tab('show');
         })
 
-        $("select#select_departamaento_combo_box").change(function() {
-            $("select#select_municipio_combo_box option").remove();
+        $("#repGeneral").click(function() {
+        	var values = $("form#medicionBlhReportForm").serialize();
+            $("#formGeneralReportResponse *").remove();
             $.ajax({
-                url: '?v=reportes&action=returnOptions&referencia=municipios&itemId=' + $(this).val(),
-                type: 'GET',
-                data: '',
+                url: '?v=reportesblh&action=getProductionTable',
+                type: 'POST',
+                data: values,
                 success: function(res) {
-                    $("select#select_municipio_combo_box").append(res);
+                    $("#formGeneralReportResponse").append(res);
                 }
             });
         })

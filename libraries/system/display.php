@@ -84,7 +84,7 @@ class Display {
                         . '             <ul class="dropdown-menu">';
                 $this->mainMenu .= '<li ><a href="?v=estandares">Estandares</a></li>';
                 $this->mainMenu .= '<li ><a href="?v=hospital">Servicios</a></li>';
-                $this->mainMenu .= '<li ><a href="?v=medicionesblh&action=verlistadohospitales">Ficha hospitalaria de BLH</a></li>';
+                
                 if ($this->acl->acl("Administrar Usuarios")) {
                     $this->mainMenu .= '<li ><a href="?v=usuario">usuarios</a></li>';
                 }
@@ -97,6 +97,7 @@ class Display {
                         . '             <ul class="dropdown-menu">';
                 $this->mainMenu .= '<li ><a href="?v=submision">Estandares</a></li>';
                 $this->mainMenu .= '<li ><a href="?v=medicionesblh&action=verIngresoMediciones">Bancos de Leche Humana (BLH)</a></li>';
+				$this->mainMenu .= '<li ><a href="?v=medicionesblh&action=verlistadohospitales">Ficha hospitalaria de BLH</a></li>';
 
                 $this->mainMenu .= '</ul><li>';
             }

@@ -685,6 +685,31 @@ class medicionesblhController extends Display {
         $time = strtotime($date);
         return date('Y-m-d', $time);
     }
+    
+    function getLastStock(){
+        $idh = $_GET['idh'];
+        $month = $_GET['month'];
+        $year = $_GET['year'];
+        $date = "{$year}-{$month}-01";
+        
+        $sl = new MysqlSelect();
+        
+        $sl->setTableReference("medicion_blh_produccion");
+        $sl->addSelection("medicion_blh_produccion", "stock");
+        $sl->addFilter("medicion_blh_produccion", "fecha_medicion", $date, "<");
+        $sl->addSimpleLimit(1);
+        $sl->addOrderBy("medicion_blh_produccion", "fecha_medicion","DESC");
+        $sl->execute();
+        //echo $sl->query;
+        //die;
+        if($sl->rowsCount() > 0){
+           echo $sl->rows[0]['stock'];
+        }else{
+            echo 0;
+        }        
+        die;
+    }
+    
 
 }
 

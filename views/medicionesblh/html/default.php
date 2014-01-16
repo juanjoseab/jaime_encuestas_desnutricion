@@ -58,6 +58,13 @@ if ($this->acl->acl("Submision")) {
                         </div>
                     </div>
                     
+                    <div class="control-group">
+                        <label class="control-label" >Existencia de litros de leche del ultimo registro</label>
+                        <div class="controls">
+                            <div id="stockanteriorLabel" class="text-info"><strong></strong></div>
+                            <input id="stockanterior" type="hidden" name="stock_anterior" value="0" >                            
+                        </div>
+                    </div>
                     
                     <div class="control-group">
                         <label class="control-label" >Litros de leche recolectada intrahospitalaria</label>
@@ -116,6 +123,15 @@ if ($this->acl->acl("Submision")) {
                             <input type="text" class="numericfield stringField signedField notNulleable" 
                                    required="required"  placeholder="Litros Leche Descartada"  
                                    id="LitrosLecheDescartada"  name="litros_leche_descartada" value="" />
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="control-group">
+                        <label class="control-label" >Existencia actual</label>
+                        <div class="controls">
+                            <div id="stockactualLabel" class="text-info"><strong></strong></div>
+                            <input id="stockactual" type="hidden" name="stock" value="0" />
                         </div>
                     </div>
                                         
