@@ -1,6 +1,6 @@
 <?php
 class medicion_blh_produccion extends OrmClass{
-    	protected $_datasource = "medicion_blh_produccion";	public $medicion_blh_produccion_id = Array ('type' => 'int', 'size' => '10', 'unsigned' => TRUE, 'null' =>  'NO', 'primary' => TRUE, 'auto_increment' => TRUE, 'val'=>''); 	public $fecha = Array ('type' => '', 'null' =>  'NO', 'val'=>''); 	public $fecha_medicion = Array ('type' => '', 'null' =>  'NO', 'val'=>''); 	public $litros_leche_recolectada = Array ('type' => '', 'null' =>  'NO', 'val'=>''); 	public $litros_leche_distribuida = Array ('type' => '', 'null' =>  'NO', 'val'=>''); 	public $litros_leche_recolectada_intrahospitalaria = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $litros_leche_recolectada_extrahospitalaria = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $litros_leche_pasteurizada = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $litros_leche_descartada = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $uso_leche_recolectada = Array ('type' => '', 'null' =>  'YES', 'val'=>''); 	public $rn_atendidos_ucip_neumo_rn = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $rn_tratados_leche_humana = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $cobertura_atencion = Array ('type' => '', 'null' =>  'NO', 'val'=>''); 	public $cantidad_partos_atendidos = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $cantidad_madres_donadoras = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $captacion_donadoras = Array ('type' => '', 'null' =>  'NO', 'val'=>''); 	public $numero_madres_donadoras_internas = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $numero_madres_donadoras_externas = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $hospital_id = Array ('type' => 'int', 'size' => '10', 'unsigned' => TRUE, 'null' =>  'NO', 'foreign' => TRUE, 'reference' => 'hospital', 'val'=>''); 	public $medicion_tardia = Array ('type' => 'tinyint', 'null' =>  'NO', 'val'=>''); 	public $stock = Array ('type' => 'int', 'null' =>  'YES', 'val'=>''); 	public $stock_anterior = Array ('type' => 'int', 'null' =>  'YES', 'val'=>''); 	function getReference() {
+    	protected $_datasource = "medicion_blh_produccion";	public $medicion_blh_produccion_id = Array ('type' => 'int', 'size' => '10', 'unsigned' => TRUE, 'null' =>  'NO', 'primary' => TRUE, 'auto_increment' => TRUE, 'val'=>''); 	public $fecha = Array ('type' => '', 'null' =>  'NO', 'val'=>''); 	public $fecha_medicion = Array ('type' => '', 'null' =>  'NO', 'val'=>''); 	public $litros_leche_recolectada = Array ('type' => '', 'null' =>  'NO', 'val'=>''); 	public $litros_leche_distribuida = Array ('type' => '', 'null' =>  'NO', 'val'=>''); 	public $litros_leche_recolectada_intrahospitalaria = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $litros_leche_recolectada_extrahospitalaria = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $litros_leche_pasteurizada = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $litros_leche_descartada = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $uso_leche_recolectada = Array ('type' => '', 'null' =>  'YES', 'val'=>''); 	public $rn_atendidos_ucip_neumo_rn = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $rn_tratados_leche_humana = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $cobertura_atencion = Array ('type' => '', 'null' =>  'NO', 'val'=>''); 	public $cantidad_madres_donadoras = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $numero_madres_donadoras_internas = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $numero_madres_donadoras_externas = Array ('type' => 'int', 'null' =>  'NO', 'val'=>''); 	public $hospital_id = Array ('type' => 'int', 'size' => '10', 'unsigned' => TRUE, 'null' =>  'NO', 'foreign' => TRUE, 'reference' => 'hospital', 'val'=>''); 	public $medicion_tardia = Array ('type' => 'tinyint', 'null' =>  'NO', 'val'=>''); 	public $stock = Array ('type' => 'int', 'null' =>  'YES', 'val'=>''); 	public $stock_anterior = Array ('type' => 'int', 'null' =>  'YES', 'val'=>''); 	public $stock_leche_pasteurizada = Array ('type' => 'int', 'null' =>  'YES', 'val'=>''); 	public $stock_leche_pasteurizada_anterior = Array ('type' => 'int', 'null' =>  'YES', 'val'=>''); 	public $porcentaje_donadoras_internas = Array ('type' => '', 'null' =>  'YES', 'val'=>''); 	public $porcentaje_donadoras_externas = Array ('type' => '', 'null' =>  'YES', 'val'=>''); 	function getReference() {
             return $this->_datasource;
         }	function setMedicionBlhProduccionId($var){
                 $this->medicion_blh_produccion_id['val'] = $var;
@@ -54,18 +54,10 @@ class medicion_blh_produccion extends OrmClass{
                 $this->cobertura_atencion['val'] = $var;
              }	function getCoberturaAtencion(){
                 return $this->cobertura_atencion['val'];
-             }	function setCantidadPartosAtendidos($var){
-                $this->cantidad_partos_atendidos['val'] = $var;
-             }	function getCantidadPartosAtendidos(){
-                return $this->cantidad_partos_atendidos['val'];
              }	function setCantidadMadresDonadoras($var){
                 $this->cantidad_madres_donadoras['val'] = $var;
              }	function getCantidadMadresDonadoras(){
                 return $this->cantidad_madres_donadoras['val'];
-             }	function setCaptacionDonadoras($var){
-                $this->captacion_donadoras['val'] = $var;
-             }	function getCaptacionDonadoras(){
-                return $this->captacion_donadoras['val'];
              }	function setNumeroMadresDonadorasInternas($var){
                 $this->numero_madres_donadoras_internas['val'] = $var;
              }	function getNumeroMadresDonadorasInternas(){
@@ -90,4 +82,20 @@ class medicion_blh_produccion extends OrmClass{
                 $this->stock_anterior['val'] = $var;
              }	function getStockAnterior(){
                 return $this->stock_anterior['val'];
+             }	function setStockLechePasteurizada($var){
+                $this->stock_leche_pasteurizada['val'] = $var;
+             }	function getStockLechePasteurizada(){
+                return $this->stock_leche_pasteurizada['val'];
+             }	function setStockLechePasteurizadaAnterior($var){
+                $this->stock_leche_pasteurizada_anterior['val'] = $var;
+             }	function getStockLechePasteurizadaAnterior(){
+                return $this->stock_leche_pasteurizada_anterior['val'];
+             }	function setPorcentajeDonadorasInternas($var){
+                $this->porcentaje_donadoras_internas['val'] = $var;
+             }	function getPorcentajeDonadorasInternas(){
+                return $this->porcentaje_donadoras_internas['val'];
+             }	function setPorcentajeDonadorasExternas($var){
+                $this->porcentaje_donadoras_externas['val'] = $var;
+             }	function getPorcentajeDonadorasExternas(){
+                return $this->porcentaje_donadoras_externas['val'];
              }}

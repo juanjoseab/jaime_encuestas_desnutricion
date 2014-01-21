@@ -260,7 +260,7 @@ class medicionesblhController extends Display {
     }
 
     function submitProduccion() {
-
+        //echo "<pre>"; print_r($_POST); echo "</pre>"; die;
         $this->masterCtrl->requerirModelo("medicion_blh_produccion");
         $item = new medicion_blh_produccion();
         $item->postToObject();
@@ -274,6 +274,7 @@ class medicionesblhController extends Display {
         } else {
             $item->setMedicionTardia(0);
         }
+        $item->setCantidadMadresDonadoras($_POST['numero_madres_donadoras_internas'] + $_POST['numero_madres_donadoras_externas']);
 
         /* echo "<pre>";
           print_r($item);
@@ -334,13 +335,13 @@ class medicionesblhController extends Display {
         }
         
         $item->setCantidadAnalisisAcidezDormic($_POST['cantidad_aceptable_acidez_dormic'] + $_POST['cantidad_no_aceptable_acidez_dormic']);
-        $item->setCantidadAnalisisCrematocrito($_POST['cantidad_aceptable_crematocrito'] + $_POST['cantidad_no_aceptable_crematocrito']);
+        //$item->setCantidadAnalisisCrematocrito($_POST['cantidad_aceptable_crematocrito'] + $_POST['cantidad_no_aceptable_crematocrito']);
         $item->setCantidadAnalisisColiformes($_POST['cantidad_aceptable_coliformes'] + $_POST['cantidad_no_aceptable_coliformes']);
-
-        /*echo "<pre>";
-          print_r($item);
-          echo "</pre>";die; */
-
+        /*  
+            echo "<pre>";
+            print_r($item);
+            echo "</pre>";die; 
+        */
         /* echo "<pre>";
           print_r($item->validateObject());
           echo "</pre>";die; */
@@ -696,17 +697,54 @@ class medicionesblhController extends Display {
         
         $sl->setTableReference("medicion_blh_produccion");
         $sl->addSelection("medicion_blh_produccion", "stock");
+        $sl->addSelection("medicion_blh_produccion", "stock_leche_pasteurizada");
         $sl->addFilter("medicion_blh_produccion", "fecha_medicion", $date, "<");
         $sl->addSimpleLimit(1);
         $sl->addOrderBy("medicion_blh_produccion", "fecha_medicion","DESC");
         $sl->execute();
+        $stocks =  array();
         //echo $sl->query;
         //die;
         if($sl->rowsCount() > 0){
-           echo $sl->rows[0]['stock'];
+            //echo "<pre>"; print_r($sl->rows); echo "</pre>"; die;
+            
+            $stocks["stock"] = ($sl->rows[0]['stock']) ? $sl->rows[0]['stock'] : 0;
+            $stocks["stock_pasteurizada"] = ($sl->rows[0]['stock_leche_pasteurizada']) ? $sl->rows[0]['stock_leche_pasteurizada'] : 0;
+            
         }else{
-            echo 0;
+            $stocks["stock"] = 0;
+            $stocks["stock_pasteurizada"] = 0;            
         }        
+        echo json_encode($stocks);
+        die;
+    }
+    
+    function getLastTotalLeche(){
+        $idh = $_GET['idh'];
+        $month = $_GET['month'];
+        $year = $_GET['year'];
+        $date = "{$year}-{$month}-01";
+        
+        $sl = new MysqlSelect();
+        
+        $sl->setTableReference("medicion_blh_produccion");
+        $sl->addSelection("medicion_blh_produccion", "litros_leche_recolectada");        
+        $sl->addFilter("medicion_blh_produccion", "fecha_medicion", $date, "<=");
+        $sl->addSimpleLimit(1);
+        $sl->addOrderBy("medicion_blh_produccion", "fecha_medicion","DESC");
+        $sl->execute();
+        $stocks =  array();
+        //echo $sl->query;
+        //die;
+        if($sl->rowsCount() > 0){
+            //echo "<pre>"; print_r($sl->rows); echo "</pre>"; die;
+            
+            $stocks["lecheRecolectada"] = ($sl->rows[0]['litros_leche_recolectada']) ? $sl->rows[0]['litros_leche_recolectada'] : 0;            
+            
+        }else{
+            $stocks["lecheRecolectada"] = 0;            
+        }        
+        echo json_encode($stocks);
         die;
     }
     

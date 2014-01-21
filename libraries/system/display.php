@@ -84,7 +84,7 @@ class Display {
                         . '             <ul class="dropdown-menu">';
                 $this->mainMenu .= '<li ><a href="?v=estandares">Estandares</a></li>';
                 $this->mainMenu .= '<li ><a href="?v=hospital">Servicios</a></li>';
-                
+
                 if ($this->acl->acl("Administrar Usuarios")) {
                     $this->mainMenu .= '<li ><a href="?v=usuario">usuarios</a></li>';
                 }
@@ -97,7 +97,7 @@ class Display {
                         . '             <ul class="dropdown-menu">';
                 $this->mainMenu .= '<li ><a href="?v=submision">Estandares</a></li>';
                 $this->mainMenu .= '<li ><a href="?v=medicionesblh&action=verIngresoMediciones">Bancos de Leche Humana (BLH)</a></li>';
-				$this->mainMenu .= '<li ><a href="?v=medicionesblh&action=verlistadohospitales">Ficha hospitalaria de BLH</a></li>';
+                $this->mainMenu .= '<li ><a href="?v=medicionesblh&action=verlistadohospitales">Ficha hospitalaria de BLH</a></li>';
 
                 $this->mainMenu .= '</ul><li>';
             }
@@ -110,8 +110,7 @@ class Display {
                 <ul class="dropdown-menu">
                   <li><a href="?v=reportes">Indicadores</a></li>
                   <li><a href="?v=reportes&action=viewLineaBasal">Comparación de mediciones de indicadores</a></li>
-                  <li><a href="?v=reportesblh">Mediciones BLH</a></li>
-                  
+                  <li><a href="?v=reportesblh">Mediciones BLH</a></li>                  
                 </ul>
               </li>
               <li><a href="media/files/manual_usuario.pdf" target="_blank"><i class="icon-question-sign icon-white"></i> Manual</a></li>';
@@ -280,6 +279,15 @@ class Display {
 
     function passParam($param, &$var) {
         $this->params[$param] = $var;
+    }
+
+    function formatFromMysqlDate($date, $separator = "-", $newSeparator = "/") {
+        if ($date) {
+            $parts = explode("-", $date);
+            return $parts[2] . $newSeparator . $parts[1] . $newSeparator . $parts[0];
+        }else{
+            return;
+        }
     }
 
 }

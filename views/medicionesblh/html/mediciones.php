@@ -299,7 +299,7 @@ if ($this->acl->acl("Submision")) {
                     data: "",
                     success: function(res) {
                         monthSelectTag.append(res);
-                        
+
                         getStockLast();
                         //console.log(res);
                     }
@@ -310,20 +310,20 @@ if ($this->acl->acl("Submision")) {
                 var Months = new Array("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre");
                 return Months[monthNumber];
             }
-            
+
             $('select#produccion-mes').change(function() {
                 getStockLast();
             });
         }
 
-        
-        
-        function getStockLast(){            
-            
-            var monthSelect = $("select#produccion-mes").val();            
+
+
+        function getStockLast() {
+
+            var monthSelect = $("select#produccion-mes").val();
             var yearSelect = $('.bindAnio[rel="produccion"]').val();
             var idh = $('.bindAnio[rel="produccion"]').attr("relhid");
-            
+
             //alert(yearSelect + " - " + monthSelect + " *** " + idh );
             //return false;
             var uri = "?v=medicionesblh&action=getLastStock&idh=" +
@@ -335,16 +335,22 @@ if ($this->acl->acl("Submision")) {
                 url: uri,
                 data: "",
                 success: function(res) {
-                    $("#stockanteriorLabel").text(res);
-                    $("#stockanterior").val(res);
+                    var obj = jQuery.parseJSON(res);
+                    //alert( "stock cruda: " + obj.stock + "  -- stock pasteurizada:  " + obj.stock_pasteurizada );
+
+                    $("#stockanteriorLabel").text(obj.stock);
+                    $("#stockanterior").val(obj.stock);
+
+                    $("#stockpasteurizadaanteriorLabel").text(obj.stock_pasteurizada);
+                    $("#stockpasteurizadaanterior").val(obj.stock_pasteurizada);
                     //console.log(res);
                 }
             });
         }
-        
+
         $("body").on("blur", "#litros_leche_recolectada_intrahospitalaria, #litros_leche_recolectada_extrahospitalaria", function() {
             var llr = ($("#litros_leche_recolectada_intrahospitalaria").val() * 1) + ($("#litros_leche_recolectada_extrahospitalaria").val() * 1) + ($("#stockanterior").val() * 1);
-            if ( llr && !isNaN(llr) ) {                
+            if (llr && !isNaN(llr)) {
                 $("#LitrosLecheRecolectada").val(llr);
                 $("#LitrosLecheRecolectadaLabel strong").text(llr);
             }
@@ -353,7 +359,7 @@ if ($this->acl->acl("Submision")) {
         $("body").on("blur", "#litros_leche_recolectada_intrahospitalaria, #litros_leche_recolectada_extrahospitalaria, #LitrosLecheDistribuida", function() {
             var llr = ($("#litros_leche_recolectada_intrahospitalaria").val() * 1) + ($("#litros_leche_recolectada_extrahospitalaria").val() * 1) + ($("#stockanterior").val() * 1);
             var lld = $("#LitrosLecheDistribuida").val();
-            
+
             if (
                     (llr && lld)
                     &&
@@ -384,21 +390,34 @@ if ($this->acl->acl("Submision")) {
         });
 
 
-        $("body").on("blur", "#LitrosLecheDescartada", function() {
-            
+        $("body").on("blur", "#LitrosLecheDescartada, #litros_leche_recolectada_intrahospitalaria, #litros_leche_recolectada_extrahospitalaria, #LitrosLecheDistribuida", function() {
+
             var lri = $("#litros_leche_recolectada_intrahospitalaria").val() * 1;
             var lre = $("#litros_leche_recolectada_extrahospitalaria").val() * 1;
             var ldi = $("#LitrosLecheDistribuida").val() * 1;
             var lde = $("#LitrosLecheDescartada").val() * 1;
             var lsa = $("#stockanterior").val() * 1;
-            
+
             //alert(lri + " - " + lre + " - " + ldi + " - " + lde + " - " + lsa);
-            
-                var result = (lri + lre + lsa) - (ldi + lde);
-                //alert(result);
-                $("#stockactual").val(result);
-                $("#stockactualLabel strong").text(result);
-            
+
+            var result = (lri + lre + lsa) - (ldi + lde);
+            //alert(result);
+            $("#stockactual").val(result);
+            $("#stockactualLabel strong").text(result);
+
+        });
+
+
+        $("body").on("blur", "#LitrosLecheDistribuida, #LitrosLechePasteurizada", function() {
+
+            var ldi = $("#LitrosLecheDistribuida").val() * 1;
+            var lp = $("#LitrosLechePasteurizada").val() * 1;
+            var lpa = $("#stockpasteurizadaanterior").val() * 1;
+            var result = (lpa + lp) - (ldi);
+            //alert(result);
+            $("#stockpasteurizadaactual").val(result);
+            $("#stockpasteurizadaactualLabel strong").text(result);
+
         });
 
 
@@ -425,21 +444,79 @@ if ($this->acl->acl("Submision")) {
             }
         });
 
-        $("body").on("blur", "#CantidadMadresDonadoras, #CantidadPartosAtendidos", function() {
-            var num = $("#CantidadMadresDonadoras").val();
-            var den = $("#CantidadPartosAtendidos").val();
+
+
+        $("body").on("keyup", "#CantidadMadresDonadorasInternas, #CantidadMadresDonadorasExternas", function() {
+            var int = $("#CantidadMadresDonadorasInternas").val();
+            var ext = $("#CantidadMadresDonadorasExternas").val();
             if (
-                    (num && den)
+                    (int && ext)
                     &&
-                    (!isNaN(num) && num > 0)
+                    (!isNaN(int) && ext > 0)
                     &&
-                    (!isNaN(den) && den > 0)
+                    (!isNaN(int) && ext > 0)
                     ) {
-                var result = ((num / den) * 100);
-                $("#captaciondonadoras").val(result.toFixed(2));
-                $("#captaciondonadorasLabel strong").text(result.toFixed(2) + "%");
+                var total = (int * 1) + (ext * 1);
+                var porInt = int / total * 100;
+                var porExt = ext / total * 100;
+
+                /*
+                 porcentaje_donadoras_internas
+                 PorcMadresDonadorasInternasLabel
+                 
+                 CantidadMadresDonadorasExternas
+                 PorcMadresDonadorasInternasLabel
+                 */
+                $("#PorcMadresDonadorasExternas").val(porExt.toFixed(2));
+                $("#PorcMadresDonadorasExternasLabel strong").text(porExt.toFixed(2) + "%");
+
+                $("#PorcMadresDonadorasInternas").val(porInt.toFixed(2));
+                $("#PorcMadresDonadorasInternasLabel strong").text(porInt.toFixed(2) + "%");
             }
         });
+
+        $("body").on("blur", "#litrosLecheDescartadaAnalisisSensiorial, #calidad-anio, #calidad-mes", function() {
+            var idh = $("input#calidad-hospital_id").val();
+            var anio = $("#calidad-anio").val();
+            var mes = $("#calidad-mes").val();
+            
+            if(!anio || !mes ){
+                alert("indicar un año y un mes primero");
+                $("#PorcLecheDescartadaAnalisisSensiorialLabel strong").text( "");
+                $("#PorcLecheDescartadaAnalisisSensiorial").val("");
+                return false;
+            }
+            
+            var den;
+                var uri = "?v=medicionesblh&action=getLastTotalLeche&idh=" +
+                        idh + "&year=" +
+                        anio + "&month=" + mes;
+                $.ajax({
+                    url: uri,
+                    data: "",
+                    type: 'GET',
+                    success: function(res) {
+                        var obj = jQuery.parseJSON(res);
+                        //alert( "stock cruda: " + obj.stock + "  -- stock pasteurizada:  " + obj.stock_pasteurizada );
+                        console.log(parseInt(obj.lecheRecolectada));
+                        den = parseInt(obj.lecheRecolectada);
+                        var num = $("#litrosLecheDescartadaAnalisisSensiorial").val() * 1;
+                        //var den = getLastTotalLecheRecolectada(idh, anio, mes) ;
+                        console.log("numerador: " + num);
+                        console.log("denominador: " + den);
+                        var resultado = num / parseInt(den) * 100;
+                        console.log("resultado: " + resultado);
+
+                        $("#PorcLecheDescartadaAnalisisSensiorialLabel strong").text(resultado.toFixed(2) + "%");
+                        $("#PorcLecheDescartadaAnalisisSensiorial").val(resultado.toFixed(2));
+                    }
+                    
+                });
+            
+            
+        });
+
+
 
 
         $("body").on("keyup", "#CantidadAceptableAcidezDormic, #CantidadNoAceptableAcidezDormic", function() {
@@ -456,60 +533,17 @@ if ($this->acl->acl("Submision")) {
                             )
                     ) {
 
-                var res = (llr * 1) + (lld * 1);
-                $("#TotalAcidezDormic").val(res);
-                $("#TotalAcidezDormicLabel strong").text(res);
+                //var res = (llr * 1) / ((llr * 1) + (lld * 1) ) * 100;
+                $("#TotalAcidezDormic").val((llr * 1) + (lld * 1));
+                $("#TotalAcidezDormicLabel strong").text((llr * 1) + (lld * 1));
             }
 
 
-            if (
-                    (llr && lld)
-                    &&
-                    (!isNaN(llr) && llr > 0)
-                    &&
-                    (!isNaN(lld) && lld > 0)
-                    ) {
                 var denominador = parseFloat(llr) + parseFloat(lld);
-                var result = ((lld / denominador) * 100);
+                var result = ((llr / denominador) * 100);
                 $("#ConformidadAcidezDormic").val(result.toFixed(2));
                 $("#ConformidadAcidezDormicLabel strong").text(result.toFixed(2) + "%");
-            }
-        });
 
-
-        $("body").on("keyup", "#CantidadAceptableCrematocrito, #CantidadNoAceptableCrematocrito", function() {
-            var llr = $("#CantidadNoAceptableCrematocrito").val();
-            var lld = $("#CantidadAceptableCrematocrito").val();
-
-            if (
-                    (llr || lld)
-                    &&
-                    (
-                            (!isNaN(llr) && llr > 0)
-                            ||
-                            (!isNaN(lld) && lld > 0)
-                            )
-                    ) {
-
-                var res = (llr * 1) + (lld * 1);
-                $("#TotalCrematocrito").val(res);
-                $("#TotalCrematocritoLabel strong").text(res);
-            }
-
-
-
-            if (
-                    (llr && lld)
-                    &&
-                    (!isNaN(llr) && llr > 0)
-                    &&
-                    (!isNaN(lld) && lld > 0)
-                    ) {
-                var denominador = parseFloat(llr) + parseFloat(lld);
-                var result = ((lld / denominador) * 100);
-                $("#ConformidadCrematocrito").val(result.toFixed(2));
-                $("#ConformidadCrematocritoLabel strong").text(result.toFixed(2) + "%");
-            }
         });
 
 
@@ -537,12 +571,12 @@ if ($this->acl->acl("Submision")) {
             if (
                     (llr && lld)
                     &&
-                    (!isNaN(llr) && llr > 0)
+                    (!isNaN(llr) && llr >= 0)
                     &&
-                    (!isNaN(lld) && lld > 0)
+                    (!isNaN(lld) && lld >= 0)
                     ) {
                 var denominador = parseFloat(llr) + parseFloat(lld);
-                var result = ((lld / denominador) * 100);
+                var result = ((llr / denominador) * 100);
                 $("#ConformidadColiformes").val(result.toFixed(2));
                 $("#ConformidadColiformesLabel strong").text(result.toFixed(2) + "%");
             }

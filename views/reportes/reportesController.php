@@ -57,45 +57,7 @@ class reportesController extends Display {
     }
 
     function visualizar() {
-        /* 	
-          $db = new dbexec();
-
-          $db->queryExecute("select * from submision limit 10");
-          if($db->error){ echo $db->error;}else{
-          echo "<pre>";print_r($db->getArray());echo "<pre>";die;
-          }
-
-          /*
-          $exsl =  new MysqlSelect();
-          echo 'debug';
-          $exsl->setTableReference("submision");
-          echo 'debug2';
-          $exsl->addSelection("submision", "submision_id");
-          echo 'debug3';
-          $exsl->addSelection("submision", "fecha");
-          echo 'debug3';
-          $exsl->addSelection("submision", "anio");
-          echo 'debug4';
-          $exsl->addSelection("submision", "mes");
-          echo 'debug5';
-          $exsl->addSelection("submision", "municipio_id");
-          echo 'debug6';
-          $exsl->execute();
-          echo 'debug7 <br>';
-          echo $exsl->error;
-          echo 'debug8';
-          ?>
-          asdf
-          <pre>
-          <?php print_r($exsl->rows);?>
-          </pre>
-          <?php
-          die;
-
-         */
-
-
-        if ($_POST['indicador_id'] == 0) {
+       if ($_POST['indicador_id'] == 0) {
             $this->visualizarAllIndicadores();
             return;
         }
@@ -221,7 +183,7 @@ class reportesController extends Display {
         $vr->addCustomSelection("SUM(IF(UPPER(valor_indicador.valor) = 'NO',1,0)) AS No");
         $vr->addJoin("indicador", "indicador_id", "=", "valor_indicador", "indicador_id", "LEFT");
         $vr->addFilter("indicador", "estandar_id", $_POST['estandar_id'], "=");
-        $vr->addCustomFilter("(UPPER(valor_indicador.valor) = 'NO' OR UPPER(valor_indicador.valor) = 'SI')");
+        $vr->addCustomFilter("(UPPER(valor_indicador.valor) = 'NO' OR UPPER(valor_indicador.valor) = 'SI')", "AND");
         $vr->addGroup("indicador", "indicador_id");
         $vr->addGroup("valor_indicador", "valor_indicador_id");
 
@@ -394,7 +356,7 @@ class reportesController extends Display {
         $sl->addFilter("fecha", "date", $date->getDate(), ">=");
         $sl->addGroup("submision", "hospital_id");
         $sl->addGroup("submision", "fecha_id");
-        $sl->addOrderBy("fecha", "date", "DESC");
+        $sl->addOrderBy("fecha", "date", "ASC");
         $sl->execute();
 
         //echo $sl->query; die;
@@ -421,18 +383,24 @@ class reportesController extends Display {
         $totalSiFecha = Array();
         $totalNoFecha = Array();
         $totalNaFecha = Array();
-
+        $countHospital = 0;
         foreach ($hospitales as $h) {
+            $countHospital++;
             foreach ($fechas as $f) {
 
                 foreach ($sl->rows as $row) {
                     if ($row['hospital'] == $h && $row['fecha'] == $f) {
-                        $totalSiFecha[$f] += $row['SIS'];
-                        $totalNoFecha[$f] += $row['NOS'];
-                        $totalNaFecha[$f] += $row['NAS'];
-                        $matriz[$h][$f]["si"] = $row['SIS'];
-                        $matriz[$h][$f]["no"] = $row['NOS'];
-                        $matriz[$h][$f]["no_aplica"] = $row['NAS'];
+                        
+                        $totalIndicadoresSuma = $row['SIS'] + $row['NOS'] + $row['NAS'];
+                        $matriz[$h][$f]["si"] = number_format((float)($row['SIS'] / $totalIndicadoresSuma * 100), 2, '.', '');
+                        $matriz[$h][$f]["no"] = number_format((float)($row['NOS'] / $totalIndicadoresSuma * 100), 2, '.', '');
+                        $matriz[$h][$f]["no_aplica"] = number_format((float)($row['NAS'] / $totalIndicadoresSuma * 100), 2, '.', '');
+                        
+                        
+                        $totalSiFecha[$f] += $matriz[$h][$f]["si"];
+                        $totalNoFecha[$f] += $matriz[$h][$f]["no"];
+                        $totalNaFecha[$f] += $matriz[$h][$f]["no_aplica"];
+                        
                     } else {
                         if (!$matriz[$h][$f]["si"]) {
                             $matriz[$h][$f]["si"] = 0;
@@ -453,9 +421,9 @@ class reportesController extends Display {
             $tableHCellNo = "<td>No</td>";
             $tableHCellNa = "<td>No Aplica</td>";
             foreach ($value as $fecha => $val) {
-                $tableHCellSi .= "<td>" . $val['si'] . "</td>";
-                $tableHCellNo .= "<td>" . $val['no'] . "</td>";
-                $tableHCellNa .= "<td>" . $val['no_aplica'] . "</td>";
+                $tableHCellSi .= "<td>" . $val['si'] . "%</td>";
+                $tableHCellNo .= "<td>" . $val['no'] . "%</td>";
+                $tableHCellNa .= "<td>" . $val['no_aplica'] . "%</td>";
             }
             $tableHCell .= $tableHCellSi;
             $tableHCell .= "</tr>";
@@ -467,23 +435,26 @@ class reportesController extends Display {
 
 
 
-        $tableFooter = "<tr><td rowspan=\"3\">Totales</td>";
+        $tableFooter = "<tr><td rowspan=\"3\">Promedio Totales</td>";
         $footerSiCell = "<td>Si</td>";
         $footerNoCell = "<td>No</td>";
         $footerNaCell = "<td>No Aplica</td>";
         foreach ($fechas as $f) {
-            $footerSiCell .= "<td>" . $totalSiFecha[$f] . "</td>";
-            $footerNoCell .= "<td>" . $totalNoFecha[$f] . "</td>";
-            $footerNaCell .= "<td>" . $totalNaFecha[$f] . "</td>";
+            $promedioSi = number_format((float)($totalSiFecha[$f] / $countHospital),2);
+            $promedioNo = number_format((float)($totalNoFecha[$f] / $countHospital),2);
+            $promedioNa = number_format((float)($totalNaFecha[$f] / $countHospital),2);
+            $footerSiCell .= "<td>" . $promedioSi . "%</td>";
+            $footerNoCell .= "<td>" . $promedioNo. "%</td>";
+            $footerNaCell .= "<td>" . $promedioNa . "%</td>";
         }
-        $tableFooter .= $footerSiCell;
+        $tableFooter .= $footerSiCell  ;
         $tableFooter .= "</tr>";
 
-        $tableFooter .= "<tr>" . $footerNoCell . "</tr>";
-        $tableFooter .= "<tr>" . $footerNaCell . "</tr>";
+        $tableFooter .= "<tr>" . $footerNoCell  . "</tr>";
+        $tableFooter .= "<tr>" . $footerNaCell  . "</tr>";
 
 
-
+        echo "<h3>Porcentajes de cumplimiento de estándares hospitalarios</h3>";
         echo "<table class=\"table table-bordered table-condensed \">" . $tableHeader . $tableHCell . $tableFooter . "</table>";
         die;
     }

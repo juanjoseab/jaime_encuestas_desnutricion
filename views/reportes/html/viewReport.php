@@ -265,20 +265,20 @@ if($_POST['hospital_id']!='todos' && is_numeric($_POST['hospital_id']) ){
               google.load("visualization", "1", {packages:["corechart"]});
               google.setOnLoadCallback(drawChart);
               function drawChart() {
-                var data = google.visualization.arrayToDataTable([
+                /*var data = google.visualization.arrayToDataTable([
                   
                   <?php echo $this->grid; ?>
-                ]);
+                ]);*/
 
                 var dataPorcentajes = google.visualization.arrayToDataTable([
                   <?php echo $this->gridPorcentaje; ?>
                 ]);
 
-                var options = {
+                /*var options = {
                   colors:['#1B55C0','#488C13',"#97080E","#E9B104"],  
                   title: 'Reporte por cantidades consolidadas',
                   hAxis: {title: 'Mes',  titleTextStyle: {color: 'red'}}
-                };
+                };*/
 
                 var optionsPorcentajes = {
                   colors:['#1B55C0','#488C13',"#97080E","#E9B104"],  
@@ -286,16 +286,16 @@ if($_POST['hospital_id']!='todos' && is_numeric($_POST['hospital_id']) ){
                   hAxis: {title: 'Mes',  titleTextStyle: {color: 'Black'}}
                 };
 
-                var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
-                chart.draw(data, options);
+                /*var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+                chart.draw(data, options);*/
 
                 var chart = new google.visualization.ColumnChart(document.getElementById('chart_divPorcentajes'));
                 chart.draw(dataPorcentajes, optionsPorcentajes);
               }
 
             </script>
-			<div id="chart_divPorcentajes" style="width: 900px; height: 500px;"></div>
-            <div id="chart_div" style="width: 900px; height: 500px;"></div>
+            <div id="chart_divPorcentajes" style="width: 900px; height: 500px;"></div>
+            <!--<div id="chart_div" style="width: 900px; height: 500px;"></div> -->
             
             <?php 
             //la cantidad de 
@@ -310,7 +310,7 @@ if($_POST['hospital_id']!='todos' && is_numeric($_POST['hospital_id']) ){
             }
 
             ?>
-
+            <!--
             <div style="span9">
                 <h3>Fuente de datos cantidades absolutas</h3>
                 <table class="table">
@@ -347,6 +347,7 @@ if($_POST['hospital_id']!='todos' && is_numeric($_POST['hospital_id']) ){
                 </table>
                 
             </div>
+            -->
             
             <div style="span9">
                 <h3>Fuente de datos porcentajes</h3>
@@ -354,7 +355,7 @@ if($_POST['hospital_id']!='todos' && is_numeric($_POST['hospital_id']) ){
                     <thead>
                         <tr>
 
-                        <th><?=$descFila[0]?></th>
+                        <th><?=ucfirst($descFila[0])?></th>
                         <?php for($i = 0; $i< $colsTabla; $i++){
                             ?> <th><?= $this->covertirAMes($this->sqlRows[$i]['mes'])?></th> <?php
                         }    
@@ -367,11 +368,12 @@ if($_POST['hospital_id']!='todos' && is_numeric($_POST['hospital_id']) ){
                         for($j=1;$j<$filasTabla;$j++){
                         	if($descFila[$j] != 'ingresos'){
                             ?><tr>
-                            <td>Total <?=$descFila[$j]?></td>
+                                <td>Total <?= ucfirst( $descFila[$j])?></td>
                             <?php
                             $c = 0;
                             for($k = 0; $k< $colsTabla; $k++){
-                                ?> <td> <? echo round(($this->sqlRows[$k][$j] * 100)/$this->sqlRows[$k][1],2 ); ?>%</td> <?php
+                                ?> <td><!-- <?=$this->sqlRows[$k][2]?> -- <?=$this->sqlRows[$k][$j]?>--> 
+                                    <? $this->sqlRows[$k][1]?>  <? echo round(($this->sqlRows[$k][$j] * 100/ $this->sqlRows[$k][2]),2 ); ?>%</td> <?php
                               $c +=  $this->sqlRows[$k][$j];
                             }
                             ?></tr><?php }

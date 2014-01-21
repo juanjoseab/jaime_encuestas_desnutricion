@@ -167,6 +167,14 @@ class MysqlSelect {
             $this->query = substr($this->query, 0,-3);
         }
         
+        if(count($this->customFilter) > 0){
+            if(count($this->filter) > 0){$this->query .= "OR ";}else{ $this->query .= " WHERE "; }
+            foreach ($this->customFilter AS $custom){
+                $this->query .= " {$custom}, ";
+            }
+            $this->query = substr($this->query, 0,-2);
+        }
+        
         if(count($this->group) > 0){
             $this->query .= "   
                         GROUP BY ";

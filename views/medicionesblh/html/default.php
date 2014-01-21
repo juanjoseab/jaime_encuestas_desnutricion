@@ -59,7 +59,7 @@ if ($this->acl->acl("Submision")) {
                     </div>
                     
                     <div class="control-group">
-                        <label class="control-label" >Existencia de litros de leche del ultimo registro</label>
+                        <label class="control-label" >Stock de litros de leche cruda del ultimo registro</label>
                         <div class="controls">
                             <div id="stockanteriorLabel" class="text-info"><strong></strong></div>
                             <input id="stockanterior" type="hidden" name="stock_anterior" value="0" >                            
@@ -67,14 +67,22 @@ if ($this->acl->acl("Submision")) {
                     </div>
                     
                     <div class="control-group">
-                        <label class="control-label" >Litros de leche recolectada intrahospitalaria</label>
+                        <label class="control-label" >Stock de litros de leche pasteurizada del ultimo registro</label>
+                        <div class="controls">
+                            <div id="stockpasteurizadaanteriorLabel" class="text-info"><strong></strong></div>
+                            <input id="stockpasteurizadaanterior" type="hidden" name="stock_leche_pasteurizada_anterior" value="0" >                            
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label" >Litros de leche cruda recolectada intrahospitalaria</label>
                         <div class="controls">                            
                             <input id="litros_leche_recolectada_intrahospitalaria" type="text" name="litros_leche_recolectada_intrahospitalaria" value="0" >
                         </div>
                     </div>
                     
                     <div class="control-group">
-                        <label class="control-label" >Litros de leche recolectada extrahospitalaria</label>
+                        <label class="control-label" >Litros de leche cruda recolectada extrahospitalaria</label>
                         <div class="controls">
                            
                             <input id="litros_leche_recolectada_extrahospitalaria" type="text" name="litros_leche_recolectada_extrahospitalaria" value="0" >
@@ -84,7 +92,7 @@ if ($this->acl->acl("Submision")) {
                     
                     
                     <div class="control-group">
-                        <label class="control-label" >Litros de leche recolectada</label>
+                        <label class="control-label" >Litros de leche cruda recolectada</label>
                         <div class="controls">
                             <div id="LitrosLecheRecolectadaLabel" class="text-info"><strong></strong></div>
                             <input id="LitrosLecheRecolectada" type="hidden" name="litros_leche_recolectada" value="0" >                            
@@ -92,10 +100,45 @@ if ($this->acl->acl("Submision")) {
                     </div>
                     
                     <div class="control-group">
-                        <label class="control-label" >Litros de leche distribuida</label>
+                        <label class="control-label" >Litros de leche cruda descartada</label>
+                        <div class="controls">
+                            <input type="text" class="numericfield stringField signedField notNulleable" 
+                                   required="required"  placeholder="Litros Leche Descartada"  
+                                   id="LitrosLecheDescartada"  name="litros_leche_descartada" value="" />
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label" >Litros de leche pasteurizada</label>
+                        <div class="controls">
+                            <input type="text" class="numericfield stringField signedField notNulleable" 
+                                   required="required"  placeholder="Litros Leche Pasteurizada"  
+                                   id="LitrosLechePasteurizada"  name="litros_leche_pasteurizada" value="" />
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="control-group">
+                        <label class="control-label" >Litros de leche distribuida (pasteurizada) </label>
                         <div class="controls">
                             <input type="text" class="numericfield stringField signedField notNulleable" maxsize=""  required="required"  placeholder="Litros Leche Distribuida"  
                                    id="LitrosLecheDistribuida"  name="litros_leche_distribuida" value="" />
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label" >Stock actual de leche cruda</label>
+                        <div class="controls">
+                            <div id="stockactualLabel" class="text-info"><strong></strong></div>
+                            <input id="stockactual" type="hidden" name="stock" value="0" />
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label" >Stock actual de leche pasteurizada</label>
+                        <div class="controls">
+                            <div id="stockpasteurizadaactualLabel" class="text-info"><strong></strong></div>
+                            <input id="stockpasteurizadaactual" type="hidden" name="stock_leche_pasteurizada" value="0" />
                         </div>
                     </div>
                     
@@ -107,33 +150,7 @@ if ($this->acl->acl("Submision")) {
                         </div>
                     </div>
                     
-                    
-                    <div class="control-group">
-                        <label class="control-label" >Litros de leche pasteurizada</label>
-                        <div class="controls">
-                            <input type="text" class="numericfield stringField signedField notNulleable" 
-                                   required="required"  placeholder="Litros Leche Pasteurizada"  
-                                   id="LitrosLechePasteurizada"  name="litros_leche_pasteurizada" value="" />
-                        </div>
-                    </div>
-                    
-                    <div class="control-group">
-                        <label class="control-label" >Litros de leche descartada</label>
-                        <div class="controls">
-                            <input type="text" class="numericfield stringField signedField notNulleable" 
-                                   required="required"  placeholder="Litros Leche Descartada"  
-                                   id="LitrosLecheDescartada"  name="litros_leche_descartada" value="" />
-                        </div>
-                    </div>
-                    
-                    
-                    <div class="control-group">
-                        <label class="control-label" >Existencia actual</label>
-                        <div class="controls">
-                            <div id="stockactualLabel" class="text-info"><strong></strong></div>
-                            <input id="stockactual" type="hidden" name="stock" value="0" />
-                        </div>
-                    </div>
+            
                                         
                     <div class="control-group">
                         <label class="control-label" >Recien nacidos atendidos en UCIP/Neonatología/RN</label>
@@ -162,15 +179,7 @@ if ($this->acl->acl("Submision")) {
                             <input id="coberturaatencion" type="hidden" name="cobertura_atencion" value="0" >
                         </div>
                     </div>
-                    
-                    <div class="control-group">
-                        <label class="control-label" >Cantidad de partos atendidos</label>
-                        <div class="controls">
-                            <input type="text" class="numericfield intField signedField notNulleable" 
-                                   required="required"  placeholder="Cantidad Partos Atendidos"  
-                                   id="CantidadPartosAtendidos"  name="cantidad_partos_atendidos" value="" />
-                        </div>
-                    </div>
+
                     
                     <div class="control-group">
                         <label class="control-label" >Cantidad de madres donadoras internas</label>
@@ -194,20 +203,22 @@ if ($this->acl->acl("Submision")) {
                     
                     
                     <div class="control-group">
-                        <label class="control-label" >Cantidad de madres donadoras</label>
+                        <label class="control-label" >% de madres donadoras internas</label>
                         <div class="controls">                            
-                            <div id="CantidadMadresDonadorasLabel" class="text-info"><strong></strong></div>
-                            <input id="CantidadMadresDonadoras" type="hidden" name="cantidad_madres_donadoras" value="0" >                            
+                            <div id="PorcMadresDonadorasInternasLabel" class="text-info"><strong></strong></div>
+                            <input id="PorcMadresDonadorasInternas" type="hidden" name="porcentaje_donadoras_internas" value="0" >                            
                         </div>
                     </div>
                     
                     <div class="control-group">
-                        <label class="control-label" >Captacion de donadoras</label>
-                        <div class="controls">
-                            <div id="captaciondonadorasLabel" class="text-info"><strong></strong></div>
-                            <input id="captaciondonadoras" type="hidden" name="captacion_donadoras" value="0" >
+                        <label class="control-label" >% de madres donadoras externas</label>
+                        <div class="controls">                            
+                            <div id="PorcMadresDonadorasExternasLabel" class="text-info"><strong></strong></div>
+                            <input id="PorcMadresDonadorasExternas" type="hidden" name="porcentaje_donadoras_externas" value="0" >                            
                         </div>
                     </div>
+                    
+
 
                     <input type="hidden" value="<?= $this->params['hospital']->getHospitalId() ?>" 
                            name="hospital_id" />
@@ -233,7 +244,8 @@ if ($this->acl->acl("Submision")) {
                         <label class="control-label" for="inputEmail">Fecha de medicion</label>
                         <div class="controls">
                             A&ntilde;o: <select name="anio" 
-                                                rel="calidad" 
+                                                rel="calidad"
+                                                id="calidad-anio"
                                                 relhid="<?= $this->params['hospital']->getHospitalId() ?>" 
                                                 class="input-small bindAnio">
                                 <option value="">A&ntilde;o</option>
@@ -251,6 +263,28 @@ if ($this->acl->acl("Submision")) {
 
                         </div>
                     </div>
+                    
+                    
+                    
+                    <h3>Análisis sensorial</h3>
+                    <div class="control-group">
+                        <label class="control-label" for="litrosLecheDescartadaAnalisisSensiorial">Litros de leche descartada por análisis sensorial</label>
+                        <div class="controls">
+                            <input type="text" class="numericfield intField signedField notNulleable" maxsize="" 
+                                   required="required" placeholder="Litros de leche descartada por análisis sensiorial" 
+                                   id="litrosLecheDescartadaAnalisisSensiorial" name="litros_leche_descartada_analisis_sensiorial" 
+                                   value="">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="PorcLecheDescartadaAnalisisSensiorial">% de leche descartada por análisis sensorial</label>
+                        <div class="controls">
+                            <h3 id="PorcLecheDescartadaAnalisisSensiorialLabel" class="text-error"><strong></strong></h3>
+                            <input id="PorcLecheDescartadaAnalisisSensiorial" type="hidden" name="porcentaje_leche_descartada_analisis_sensorial" value="0" >
+                        </div>
+                    </div>
+                    
+                    
                     <h3>Acidez Dormic</h3>
                     <div class="control-group">
                         <label class="control-label" for="CantidadAceptableAcidezDormic">Número de análisis aceptable</label>
@@ -275,7 +309,7 @@ if ($this->acl->acl("Submision")) {
                     <div class="control-group">
                         <label class="control-label" for="TotalAcidezDormic">Total acidez dormic</label>
                         <div class="controls">
-                            <div id="TotalAcidezDormicLabel" class="text-info"><strong></strong></div>
+                            <h3 id="TotalAcidezDormicLabel" class="text-info"><strong></strong></h3>
                             <input id="TotalAcidezDormic" type="hidden" name="total_acidez_dormic" value="0" >
                         </div>
                     </div>
@@ -283,7 +317,7 @@ if ($this->acl->acl("Submision")) {
                     <div class="control-group">
                         <label class="control-label" for="ConformidadAcidezDormic">Conformidad acidez dormic</label>
                         <div class="controls">
-                            <div id="ConformidadAcidezDormicLabel" class="text-info"><strong></strong></div>
+                            <h3 id="ConformidadAcidezDormicLabel" class="text-error"><strong></strong></h3>
                             <input id="ConformidadAcidezDormic" type="hidden" name="conformidad_acidez_dormic" value="0" >
                         </div>
                     </div>
@@ -299,24 +333,26 @@ if ($this->acl->acl("Submision")) {
                         </div> 
                     </div>
 
-                    <h3>crematocrito</h3>
+                    <h3>Crematocrito</h3>
                     <div class="control-group">
-                        <label class="control-label" for="CantidadAceptableCrematocrito">Número de análisis aceptable</label>
+                        <label class="control-label" for="ValorCrematocritoAlto">Valor del crematocrito mas alto</label>
                         <div class="controls">
-                            <input type="text" class="numericfield intField signedField notNulleable" maxsize="" required="required" placeholder="Cantidad Aceptable Crematocrito" 
-                                   id="CantidadAceptableCrematocrito" 
-                                   name="cantidad_aceptable_crematocrito" 
-                                   value=""> <strong><span class="text-info">&lt;= 250Kcal/L</span></strong>
+                            <input type="text" class="numericfield intField signedField notNulleable" 
+                                   maxsize="" required="required" 
+                                   placeholder="Valor del crematocrito mas alto" 
+                                   id="ValorCrematocritoBajo" 
+                                   name="valor_crematocrito_mas_alto" 
+                                   value=""> <strong><span class="text-info">Kcal/L</span></strong>
                         </div>
                     </div>
                     
                     <div class="control-group">
-                        <label class="control-label" for="CantidadNoAceptableCrematocrito">Número de análisis <b>no</b> aceptable</label>
+                        <label class="control-label" for="ValorCrematocritoBajo">Valor del crematocrito mas bajo</label>
                         <div class="controls">
                             <input type="text" class="numericfield intField signedField notNulleable" maxsize="" 
-                                   required="required" placeholder="Cantidad No Aceptable Crematocrito" 
-                                   id="CantidadNoAceptableCrematocrito" name="cantidad_no_aceptable_crematocrito" 
-                                   value=""> <strong> <span class="text-error">Menor</span></strong>
+                                   required="required" placeholder="Valor del crematocrito mas Bajo" 
+                                   id="ValorCrematocritoBajo" name="valor_crematocrito_mas_bajo"
+                                   value=""> <strong> <span class="text-error">Kcal/L</span></strong>
                             
                         </div>
                     </div>
@@ -326,30 +362,10 @@ if ($this->acl->acl("Submision")) {
                         <label class="control-label" for="TotalCrematocrito">Total crematocrito</label>
                         <div class="controls">
                             <div id="TotalCrematocritoLabel" class="text-info"><strong></strong></div>
-                            <input id="TotalCrematocrito" type="hidden" name="total_crematocrito" value="0" >
+                            <input id="TotalCrematocrito" type="text" name="total_crematocrito" value="" placeholder="Cantidad total crematocrito" >
                         </div>
                     </div>
-                    
-                    <div class="control-group">
-                        <label class="control-label" for="ConformidadCrematocrito">Conformidad crematocrito</label>
-                        <div class="controls">
-                            <div id="ConformidadCrematocritoLabel" class="text-info"><strong></strong></div>
-                            <input id="ConformidadCrematocrito" type="hidden" name="conformidad_crematocrito" value="0" >
-                        </div>
 
-                    </div>
-                    
-                    
-                    <div class="control-group">
-                        <label class="control-label" for="crematocrito_promedio">Promedio crematocrito</label>
-                        <div class="controls">
-                            <input type="text" class="numericfield intField signedField notNulleable"
-                                   required="required" 
-                                   placeholder="Promedio crematocrito" 
-                                   id="crematocrito_promedio" name="crematocrito_promedio" 
-                                   value="">
-                        </div> 
-                    </div>
                     
                     <h3>Coliformes</h3>
                     <div class="control-group">
@@ -377,7 +393,7 @@ if ($this->acl->acl("Submision")) {
                     <div class="control-group">
                         <label class="control-label" for="TotalColiformes">Total Coliformes</label>
                         <div class="controls">
-                            <div id="TotalColiformesLabel" class="text-info"><strong></strong></div>
+                            <h3 id="TotalColiformesLabel" class="text-info"><strong></strong></h3>
                             <input id="TotalColiformes" type="hidden" name="total_coliformes" value="0" >
                         </div>
                     </div>
@@ -385,13 +401,13 @@ if ($this->acl->acl("Submision")) {
                     <div class="control-group">
                         <label class="control-label" for="ConformidadColiformes">Conformidad coliformes</label>
                         <div class="controls">
-                            <div id="ConformidadColiformesLabel" class="text-info"><strong></strong></div>
+                            <h3 id="ConformidadColiformesLabel" class="text-error"><strong></strong></h3>
                             <input id="ConformidadColiformes" type="hidden" name="conformidad_coliformes" value="0" >
                         </div>
                     </div>
                     
                     <input type="hidden" value="<?= $this->params['hospital']->getHospitalId() ?>" 
-                           name="hospital_id" />
+                           id="calidad-hospital_id" name="hospital_id" />
 
 
                     <div class="control-group">

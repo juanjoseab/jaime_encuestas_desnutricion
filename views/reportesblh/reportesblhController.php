@@ -20,6 +20,7 @@ class reportesblhController extends Display {
 
     function deploy() {
         $this->deployMainMenu();
+        $this->deploySideMenu();
         //$this->deploySideMenu();
         $this->vista = "reportesblh";
         MasterController::requerirClase("MysqlSelect");
@@ -33,50 +34,62 @@ class reportesblhController extends Display {
 
         require_once P_THEME . DS . "index.php";
     }
-	
-	
-	
-	public function viewReport()
-	{
-		
-	}
-	
-	function getBasicInfoTable(){
-		MasterController::requerirModelo("medicion_blh_info");
-		$item = new medicion_blh_info();		
-		return $item->getList(Array(),Array());		
-	}
-	
-	function getProductionTable(){
-		$init = $_POST['fechainicio'];
-		$end = $_POST['fechafin'];
-		
-		MasterController::requerirClase("MysqlSelect");
-		$ms = new MysqlSelect();
-		$ms->setTableReference('medicion_blh_produccion m');
-		$ms->addSelection("hospital", "nombre", "hospital");
-		$ms->addCustomSelection("SUM(m.litros_leche_recolectada) as litros_leche_recolectada");
-		$ms->addCustomSelection("SUM(m.litros_leche_distribuida) as litros_leche_distribuida");
-		$ms->addCustomSelection("SUM(m.litros_leche_recolectada_extrahospitalaria) as litros_leche_recolectada_extrahospitalaria");
-		$ms->addCustomSelection("SUM(m.litros_leche_recolectada_intrahospitalaria) as litros_leche_recolectada_intrahospitalaria");
-		$ms->addCustomSelection("SUM(m.litros_leche_pasteurizada) as litros_leche_pasteurizada");
-		$ms->addCustomSelection("SUM(m.litros_leche_descartada) as litros_leche_descartada");
-		$ms->addCustomSelection("AVG(m.uso_leche_recolectada) as uso_leche_recolectada");
-		$ms->addCustomSelection("SUM(m.rn_atendidos_ucip_neumo_rn) as rn_atendidos_ucip_neumo_rn");
-		$ms->addCustomSelection("SUM(m.rn_tratados_leche_humana) as rn_tratados_leche_humana");
-		$ms->addCustomSelection("AVG(m.cobertura_atencion) as cobertura_atencion");
-		$ms->addCustomSelection("SUM(m.cantidad_partos_atendidos) as cantidad_partos_atendidos");
-		$ms->addCustomSelection("SUM(m.cantidad_madres_donadoras) as cantidad_madres_donadoras");
-		$ms->addCustomSelection("SUM(m.numero_madres_donadoras_internas) as numero_madres_donadoras_internas");
-		$ms->addCustomSelection("SUM(m.numero_madres_donadoras_externas) as numero_madres_donadoras_externas");
-		$ms->addCustomSelection("SUM(m.captacion_donadoras) as captacion_donadoras");
-		$ms->addJoin("hospital","hospital_id","=","m","hospital_id","LEFT");
-		$ms->addFilter("m","fecha_medicion",$init,">=");
-		$ms->addFilter("m","fecha_medicion",$end,"<=");
-		$ms->addGroup("hospital","hospital_id");
-		$ms->execute();
-		
-		$table =  "
+
+    function deploySideMenu() {
+        $this->sideMenu = "";
+
+        $this->sideMenu .= '
+            <div class="span2 bs-docs-sidebar">
+            <ul class="nav nav-list bs-docs-sidenav affix-top">              
+              <li><a href="?v=reportesblh&action=viewDatosGenerales">Datos Generales</a></li>
+              <li><a href="?v=reportesblh&action=viewRecoleccionLeche">Recolección de leche</a></li>
+              <li><a href="?v=reportesblh&action=viewDatosGenerales">Producción</a></li>
+              <li><a href="?v=reportesblh&action=viewDatosGenerales">Atención</a></li>
+              <li><a href="?v=reportesblh&action=viewDatosGenerales">Producción Global</a></li>
+            </ul>
+            </div>';
+    }
+
+    public function viewReport() {
+        
+    }
+
+    function getBasicInfoTable() {
+        MasterController::requerirModelo("medicion_blh_info");
+        $item = new medicion_blh_info();
+        return $item->getList(Array(), Array());
+    }
+
+    function getProductionTable() {
+        $init = $_POST['fechainicio'];
+        $end = $_POST['fechafin'];
+
+        MasterController::requerirClase("MysqlSelect");
+        $ms = new MysqlSelect();
+        $ms->setTableReference('medicion_blh_produccion m');
+        $ms->addSelection("hospital", "nombre", "hospital");
+        $ms->addCustomSelection("SUM(m.litros_leche_recolectada) as litros_leche_recolectada");
+        $ms->addCustomSelection("SUM(m.litros_leche_distribuida) as litros_leche_distribuida");
+        $ms->addCustomSelection("SUM(m.litros_leche_recolectada_extrahospitalaria) as litros_leche_recolectada_extrahospitalaria");
+        $ms->addCustomSelection("SUM(m.litros_leche_recolectada_intrahospitalaria) as litros_leche_recolectada_intrahospitalaria");
+        $ms->addCustomSelection("SUM(m.litros_leche_pasteurizada) as litros_leche_pasteurizada");
+        $ms->addCustomSelection("SUM(m.litros_leche_descartada) as litros_leche_descartada");
+        $ms->addCustomSelection("AVG(m.uso_leche_recolectada) as uso_leche_recolectada");
+        $ms->addCustomSelection("SUM(m.rn_atendidos_ucip_neumo_rn) as rn_atendidos_ucip_neumo_rn");
+        $ms->addCustomSelection("SUM(m.rn_tratados_leche_humana) as rn_tratados_leche_humana");
+        $ms->addCustomSelection("AVG(m.cobertura_atencion) as cobertura_atencion");
+        $ms->addCustomSelection("SUM(m.cantidad_partos_atendidos) as cantidad_partos_atendidos");
+        $ms->addCustomSelection("SUM(m.cantidad_madres_donadoras) as cantidad_madres_donadoras");
+        $ms->addCustomSelection("SUM(m.numero_madres_donadoras_internas) as numero_madres_donadoras_internas");
+        $ms->addCustomSelection("SUM(m.numero_madres_donadoras_externas) as numero_madres_donadoras_externas");
+        $ms->addCustomSelection("SUM(m.captacion_donadoras) as captacion_donadoras");
+        $ms->addJoin("hospital", "hospital_id", "=", "m", "hospital_id", "LEFT");
+        $ms->addFilter("m", "fecha_medicion", $init, ">=");
+        $ms->addFilter("m", "fecha_medicion", $end, "<=");
+        $ms->addGroup("hospital", "hospital_id");
+        $ms->execute();
+
+        $table = "
 			<h3> Variables de producci&oacute;n</h3>
 			<table class=\"table table-condensed table-bordered\">
 				<tr>
@@ -97,9 +110,9 @@ class reportesblhController extends Display {
 					<th>Madres donadoras externas</th>
 					<th>Captacion de donadoras</th>
 				</tr>
-		" ;
-		foreach($ms->rows AS $row){
-			$table .="
+		";
+        foreach ($ms->rows AS $row) {
+            $table .="
 					<tr>
 					<td>{$row[hospital]}</td>
 					<td>{$row[litros_leche_recolectada]}</td>
@@ -119,19 +132,15 @@ class reportesblhController extends Display {
 					<td>{$row[captacion_donadoras]}</td>
 				</tr>
 				";
-		}
-		
-		$table .="</table>";
-		echo $table; die; 
-		
-		//echo "<pre>"; print_r($ms->rows); echo "</pre>"; die;
-		
-		//return $item->getList(Array(),$filters);		
-	}
-	
-	
+        }
 
-    
+        $table .="</table>";
+        echo $table;
+        die;
+
+        //echo "<pre>"; print_r($ms->rows); echo "</pre>"; die;
+        //return $item->getList(Array(),$filters);		
+    }
 
     function returnOptions() {
 
@@ -295,8 +304,6 @@ class reportesblhController extends Display {
 
         MasterController::requerirClase("MysqlSelect");
         $vr = new MysqlSelect();
-
-        
     }
 
     function viewLineaBasal() {
@@ -438,6 +445,212 @@ class reportesblhController extends Display {
         header('Content-disposition: attachment; filename="reporte-comparacion-indicadores.xls"');
 
         $this->generateLineaBasalTable();
+    }
+
+    function generateToExcel($action) {
+        header('Content-type: application/vnd.ms-excel');
+        header('Content-disposition: attachment; filename="reporte-comparacion-indicadores.xls"');
+
+        $this->$action();
+    }
+
+    function viewDatosGenerales() {
+        MasterController::requerirModelo("medicion_blh_info");
+        $model = new medicion_blh_info();
+        //$list = $model->getList(array(),array());
+        //$this->_pre($list );
+
+        $sl = new MysqlSelect();
+        $sl->setTableReference("medicion_blh_info");
+        $sl->addSelection("hospital", "nombre", "hospital");
+        $sl->addSelection("medicion_blh_info", "nombre_coordinadora", "coordinador");
+        $sl->addSelection("profesion_coordinadora_blh", "profesion", "profesion");
+        $sl->addSelection("medicion_blh_info", "telefono");
+        $sl->addSelection("medicion_blh_info", "email_contacto", "email");
+        $sl->addSelection("medicion_blh_info", "cantidad_cunas_servicio_recien_nacido", "camas_rn");
+        $sl->addSelection("medicion_blh_info", "inauguracion", "inauguracion");
+        $sl->addSelection("medicion_blh_info", "fecha_primera_pasteurizacion", "primera_pasteurizacion");
+        $sl->addSelection("medicion_blh_info", "dias_pasteurizacion_semanal", "dias_pasteurizacion_semana");
+        $sl->addSelection("medicion_blh_info", "veces_pasteurizacion_diaria", "pasteurizaciones_diarias");
+        $sl->addJoin("hospital", "hospital_id", "=", "medicion_blh_info", "hospital_id");
+        $sl->addJoin("profesion_coordinadora_blh", "profesion_coordinadora_blh_id", "=", "medicion_blh_info", "profesion_coordinadora_blh_id");
+
+        $sl->execute();
+        $this->grid = $sl->rows;
+
+        //$this->_pre($sl->rows);
+        $this->loadContentView("datosGenerales");
+    }
+
+    function viewRecoleccionLeche() {
+        $this->data = array();
+        $sl = new MysqlSelect();
+        $sl->setTableReference("medicion_blh_produccion");
+        $sl->addCustomSelection("DISTINCT YEAR( medicion_blh_produccion.fecha_medicion ) AS anio");
+        $sl->addOrderBy("medicion_blh_produccion", "fecha_medicion", "DESC");
+        $sl->execute();
+        $anios = array();
+        if (is_array($sl->rows) && count($sl->rows) > 0) {
+            foreach ($sl->rows AS $year) {
+                $anios[] = $year['anio'];
+            }
+        }
+        $this->data['year'] = $anios;
+
+        //$this->_pre($anios);
+        //$anos = 
+
+        if (!$_GET['year'] || !$_GET['month']) {
+            $this->loadContentView("recoleccionLeche");
+        } else {
+            $this->loadContentView("recoleccionLeche");
+            MasterController::requerirModelo("medicion_blh_produccion");
+            //$model = new medicion_blh_produccion();
+            //$list = $model->getList(array(),array());
+            //$this->_pre($list );
+
+            $sl = new MysqlSelect();
+            $sl->setTableReference("medicion_blh_produccion");
+            $sl->addCustomSelection("   SUM(litros_leche_recolectada_intrahospitalaria) AS llri,
+                                        SUM(litros_leche_recolectada_intrahospitalaria) AS llre");
+            $sl->addCustomFilter("YEAR( medicion_blh_produccion.fecha_medicion ) = " . $_GET['year'] );            
+            $sl->execute();
+            //echo $sl->query;
+            $this->data['gobal']['acumulado'] = $sl->rows[0];
+            
+            $sl = new MysqlSelect();
+            $sl->setTableReference("medicion_blh_produccion");
+            $sl->addCustomSelection("   SUM(litros_leche_recolectada_intrahospitalaria) AS llri,
+                                        SUM(litros_leche_recolectada_extrahospitalaria) AS llre            
+                                        ");
+            $sl->addCustomFilter("YEAR( medicion_blh_produccion.fecha_medicion ) = " . $_GET['year'] 
+                    . " AND MONTH( medicion_blh_produccion.fecha_medicion ) = " . $_GET['month'] ."");
+            $sl->execute();
+            //echo $sl->query;
+            $this->data['gobal']['parcial'] = $sl->rows[0];
+            
+            
+            
+            
+            $sl = new MysqlSelect();
+            $sl->setTableReference("medicion_blh_produccion");
+            $sl->addCustomSelection("   SUM(litros_leche_recolectada_intrahospitalaria) AS llri,
+                                        SUM(litros_leche_recolectada_extrahospitalaria) AS llre,
+                                        MONTH( medicion_blh_produccion.fecha_medicion ) AS mes
+                                        ");
+            $sl->addCustomFilter("YEAR( medicion_blh_produccion.fecha_medicion ) = " . $_GET['year'] . " GROUP BY mes ORDER BY mes ASC");
+            $sl->execute();
+            //$this->_pre($sl->rows);
+            $this->data['mensual']= $sl->rows;
+            
+            
+            $sl = new MysqlSelect();
+            $sl->setTableReference("medicion_blh_produccion");
+            $sl->addCustomSelection("   SUM(litros_leche_recolectada_intrahospitalaria) AS llri,
+                                        SUM(litros_leche_recolectada_extrahospitalaria) AS llre,
+                                        hospital.nombre,
+                                        SUM(IF(MONTH(medicion_blh_produccion.fecha_medicion)='".$_GET['month']."', litros_leche_recolectada_intrahospitalaria,0) ) AS llrim,
+                                        SUM(IF(MONTH(medicion_blh_produccion.fecha_medicion)='".$_GET['month']."', litros_leche_recolectada_extrahospitalaria,0) ) AS llrem
+                                        ");            
+            $sl->addCustomFilter("YEAR( medicion_blh_produccion.fecha_medicion ) = " . $_GET['year'] . " GROUP BY hospital.nombre");
+            
+            $sl->addJoin("hospital", "hospital_id", "=", "medicion_blh_produccion" , "hospital_id", "LEFT");
+            $sl->execute();
+            //$this->_pre($sl->rows);
+            $this->data['porhospital']= $sl->rows;
+        }
+        
+    }
+    
+    
+    function viewRecoleccionLecheASDF() {
+        $this->data = array();
+        $sl = new MysqlSelect();
+        $sl->setTableReference("medicion_blh_produccion");
+        $sl->addCustomSelection("DISTINCT YEAR( medicion_blh_produccion.fecha_medicion ) AS anio");
+        $sl->addOrderBy("medicion_blh_produccion", "fecha_medicion", "DESC");
+        $sl->execute();
+        $anios = array();
+        if (is_array($sl->rows) && count($sl->rows) > 0) {
+            foreach ($sl->rows AS $year) {
+                $anios[] = $year['anio'];
+            }
+        }
+        $this->data['year'] = $anios;
+
+        //$this->_pre($anios);
+        //$anos = 
+
+        if (!$_GET['year'] || !$_GET['month']) {
+            $this->loadContentView("recoleccionLeche");
+        } else {
+            $this->loadContentView("recoleccionLeche");
+            MasterController::requerirModelo("medicion_blh_produccion");
+            //$model = new medicion_blh_produccion();
+            //$list = $model->getList(array(),array());
+            //$this->_pre($list );
+
+            $sl = new MysqlSelect();
+            $sl->setTableReference("medicion_blh_produccion");
+            $sl->addCustomSelection("   SUM(litros_leche_recolectada) AS llr,
+                                        SUM(litros_leche_pasteurizada) AS llp,
+                                        SUM(litros_leche_distribuida) AS lld,
+                                        SUM(litros_leche_descartada) AS lldes,
+                                        SUM(stock) AS stock"
+                    );
+            $sl->addCustomFilter("YEAR( medicion_blh_produccion.fecha_medicion ) = " . $_GET['year'] );            
+            $sl->execute();
+            //echo $sl->query;
+            $this->data['gobal']['acumulado'] = $sl->rows;
+            
+            $sl = new MysqlSelect();
+            $sl->setTableReference("medicion_blh_produccion");
+            $sl->addCustomSelection("   SUM(litros_leche_recolectada) AS llr,
+                                        SUM(litros_leche_pasteurizada) AS llp,
+                                        SUM(litros_leche_distribuida) AS lld,
+                                        SUM(litros_leche_descartada) AS lldes,
+                                        SUM(stock) AS stock"
+                    );
+            $sl->addCustomFilter("YEAR( medicion_blh_produccion.fecha_medicion ) = " . $_GET['year'] . " AND MONTH( medicion_blh_produccion.fecha_medicion ) = " . $_GET['month']);            
+            $sl->execute();
+            //echo $sl->query;
+            $this->data['gobal']['mes'] = $sl->rows;
+            
+            //$this->_pre($sl->rows);
+        }
+        
+    }
+    
+    function getProductionMonthsByYear(){
+        
+        $this->data = array();
+        $sl = new MysqlSelect();
+        $sl->setTableReference("medicion_blh_produccion");
+        $sl->addCustomSelection("DISTINCT MONTH( medicion_blh_produccion.fecha_medicion ) AS mes");
+        $sl->addCustomFilter(" YEAR( medicion_blh_produccion.fecha_medicion ) = " . $_GET['year']);        
+        $sl->execute();
+        $meses = array();
+        $string = "";
+        if (is_array($sl->rows) && count($sl->rows) > 0) {
+            foreach ($sl->rows AS $mes) {
+                $meses[] = $mes['mes'];
+                $string .='<option value="' . $mes['mes'] . '">' . $this->monthName($mes['mes']) . '</option>';
+            }
+        }
+        
+        
+        
+        echo $string;
+        die;
+    }
+
+    function _pre($var, $die = true) {
+        echo "<pre>";
+        print_r($var);
+        echo "</pre>";
+        if ($die) {
+            die;
+        }
     }
 
 }
